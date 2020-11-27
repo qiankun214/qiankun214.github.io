@@ -1,0 +1,437 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DianNao系列分析 | 月见樽'blog</title><meta name="keywords" content="NeuralNetwork"><meta name="author" content="月见樽"><meta name="copyright" content="月见樽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="简介DianNao系列是中科院计算所推出的系列机器学习加速器，包括以下四个成员：  DianNao：神经网络加速器，DianNao系列的开山之作。 DaDianNao：神经网络“超级计算机”，DianNao的多核升级版本 ShiDianNao：机器视觉专用加速器，集成了视频处理部分 PuDianNao：机器学习加速器，DianNao系列收山之作，可支持7种机器学习算法  DianNao系列相比于其">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DianNao系列分析">
+<meta property="og:url" content="http://www.yuejianzun.xyz/2018/05/14/DianNao%E7%B3%BB%E5%88%97%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="月见樽&#39;blog">
+<meta property="og:description" content="简介DianNao系列是中科院计算所推出的系列机器学习加速器，包括以下四个成员：  DianNao：神经网络加速器，DianNao系列的开山之作。 DaDianNao：神经网络“超级计算机”，DianNao的多核升级版本 ShiDianNao：机器视觉专用加速器，集成了视频处理部分 PuDianNao：机器学习加速器，DianNao系列收山之作，可支持7种机器学习算法  DianNao系列相比于其">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.yuejianzun.xyz/img/1.PNG">
+<meta property="article:published_time" content="2018-05-14T10:12:05.000Z">
+<meta property="article:modified_time" content="2020-11-27T16:47:57.061Z">
+<meta property="article:author" content="月见樽">
+<meta property="article:tag" content="NeuralNetwork">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yuejianzun.xyz/img/1.PNG"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.yuejianzun.xyz/2018/05/14/DianNao%E7%B3%BB%E5%88%97%E5%88%86%E6%9E%90/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-11-28 00:47:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/had.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/1.PNG)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">月见樽'blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">DianNao系列分析</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2018-05-14T10:12:05.000Z" title="发表于 2018-05-14 18:12:05">2018-05-14</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-27T16:47:57.061Z" title="更新于 2020-11-28 00:47:57">2020-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1/">硬件设计</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">4.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>13分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>DianNao系列是中科院计算所推出的系列机器学习加速器，包括以下四个成员：</p>
+<ul>
+<li>DianNao：神经网络加速器，DianNao系列的开山之作。</li>
+<li>DaDianNao：神经网络“超级计算机”，DianNao的多核升级版本</li>
+<li>ShiDianNao：机器视觉专用加速器，集成了视频处理部分</li>
+<li>PuDianNao：机器学习加速器，DianNao系列收山之作，可支持7种机器学习算法</li>
+</ul>
+<p>DianNao系列相比于其他神经网络加速器，除了关心运算的实现外，更关心存储的优化。</p>
+<h1 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h1><p>DianNao系列的整体架构比较类似，均分为以下三个部分：</p>
+<ul>
+<li>运算核心：完成对应的运算加速功能</li>
+<li>缓存：缓存输入输出数据与参数，减小访存带宽需求</li>
+<li>控制：协调运算核心和缓存的工作</li>
+</ul>
+<p>前三代（DianNao，DaDianNao，ShiDianNao）的整体架构如下图所示：</p>
+<img src="/2018/05/14/DianNao%E7%B3%BB%E5%88%97%E5%88%86%E6%9E%90/DianNao_structure.png" class="">
+<p>其中：</p>
+<ul>
+<li>NBin，NBout和SB：均为存储器，分别用于存储输入数据，输出数据或临时数据和参数</li>
+<li>NFU：运算核心，用于完成神经网络相关的运算</li>
+</ul>
+<p>以下为原论文中所绘制的架构图（左图为DianNao/DaDianNao，右图为ShiDianNao）：</p>
+<img src="/2018/05/14/DianNao%E7%B3%BB%E5%88%97%E5%88%86%E6%9E%90/source_structrue.png" class="">
+<p>最后一代PuDianNao为了适应更多的机器学习算法（PuDianNao不专门为神经网络设计），抛弃了按功能分别缓存的方法，转而使用按重用频率缓存，因此架构上发生了一些变化，如下图所示：</p>
+<img src="/2018/05/14/DianNao%E7%B3%BB%E5%88%97%E5%88%86%E6%9E%90/PuDianNao_structure.png" class="">
+<p>其中：</p>
+<ul>
+<li>HotBuf，ColdBuf：输入数据缓存，分别用于存储频繁重用和重用时间间隔较长的输入数据</li>
+<li>OutBuf：输出数据缓存，用于存储输出数据</li>
+<li>FU：功能模块，完成机器学习相关运算</li>
+<li>Controller：控制核心，协调存储器和功能模块的工作</li>
+</ul>
+<p>原论文中绘制的系统结构图如下所示：</p>
+<img src="/2018/05/14/DianNao%E7%B3%BB%E5%88%97%E5%88%86%E6%9E%90/PuDianNao.JPG" class="">
+<h1 id="运算模块"><a href="#运算模块" class="headerlink" title="运算模块"></a>运算模块</h1><p>运算模块用于完成待加速的运算，是加速器的核心部分之一。</p>
+<h2 id="运算分析"><a href="#运算分析" class="headerlink" title="运算分析"></a>运算分析</h2><p>DianNao系列的论文每一篇都会花大量的篇幅阐述运算分析部分，这对学习者来说非常友好。</p>
+<h3 id="DianNao与DaDianNao"><a href="#DianNao与DaDianNao" class="headerlink" title="DianNao与DaDianNao"></a>DianNao与DaDianNao</h3><p>这两个系列支持的神经网络计算类型较为基础，论文中概括，要想实现卷积神经网络，需要实现以下几种操作：</p>
+<ul>
+<li>卷积运算：$out(x,y)^{fo} = \sum \limits<em>{f_i = 0}^{K</em>{if}} \sum \limits<em>{k_x = 0}^{K_x} \sum\limits</em>{k<em>y = 0}^{K_y} w</em>{f_i,f_o}(k_x,k_y) \times in(x+k_x,y+k_y)^{f_i}$</li>
+<li>池化运算：$out(x,y)^f = max_{0 \leq k_x \leq K_x,0 \leq k_y \leq K_y} in(x+k_x,y+k_y)^f$</li>
+<li>LRN（区域响应标准化，当时批标准化还未流行）：$out(x,y)^f = \cfrac{in(x,y)^f}{(c + \alpha \sum \limits_{g=max(0,f-k/2)}^{min(N_f,f+k/2)}(a(x,y)^g)^2)^{\beta}}$ </li>
+<li>矩阵乘：$out(j) = t(\sum\limits^{N<em>i}</em>{i = 0} w_{ij} \cdot in(i))$</li>
+</ul>
+<p>其中，DianNao未实现LRN功能，该功能在DaDianNao中才实现。另外，DaDianNao支持神经网络的训练，其训练过程所需要的运算，基本与测试过程基本相同。</p>
+<h3 id="ShiDianNao"><a href="#ShiDianNao" class="headerlink" title="ShiDianNao"></a>ShiDianNao</h3><p>ShiDianNao除了支持DianNao所支持的操作外，对于标准化，还支持LCN（局部对比度归一化）：</p>
+<script type="math/tex; mode=display">
+O^{mi}_{a,b} = \cfrac{I^{mi}_{a,b}}{(k+\alpha \times \sum\limits^{min(Mi-1,mi+M/2)}_{j=max(0,mi-M/2)}(I^j_{a,b}))^\beta}</script><h3 id="PuDianNao"><a href="#PuDianNao" class="headerlink" title="PuDianNao"></a>PuDianNao</h3><p>PuDianNao支持7种机器学习算法：神经网络，线性模型，支持向量机，决策树，朴素贝叶斯，K临近和K类聚，所需要支持的运算较多，因此PuDianNao的运算分析主要集中在存储方面，其运算核心的设计中说明PuDianNao支持的运算主要有：向量点乘，距离计算，计数，排序和非线性函数。其他未覆盖的计算使用ALU实现。</p>
+<h2 id="运算模块设计"><a href="#运算模块设计" class="headerlink" title="运算模块设计"></a>运算模块设计</h2><h3 id="DianNao"><a href="#DianNao" class="headerlink" title="DianNao"></a>DianNao</h3><p>DianNao的运算模块奠定了DianNao系列运算模块的主基调。结构图如下所示：</p>
+<img src="/2018/05/14/DianNao%E7%B3%BB%E5%88%97%E5%88%86%E6%9E%90/DianNao_nfu.JPG" class="">
+<p>运算模块分为三级流水线：</p>
+<ul>
+<li>NFU-1：乘法器阵列，16bit定点数乘法器，1位符号位，5位整数位，10位小数位</li>
+<li>NFU-2：加法树/最大值树，将乘法器所得的结果累加或取最大值，可选的与上一次/部分和累加。这一部分的结尾处有寄存器结构，可以存储这一次运算的部分和。</li>
+<li>NFU-3：非线性激活函数，该部分由分段线性近似实现非线性函数</li>
+</ul>
+<p>当需要实现向量相乘和卷积运算时，使用NFU-1完成对应位置元素相乘，NFU-2完成相乘结果相加，最后由NFU-3完成激活函数映射。完成池化运算时，使用NFU-2完成多个元素取最大值或取平均值运算。由此分析，尽管该运算模块非常简单，也覆盖了神经网络所需要的大部分运算（LRN在DianNao中未实现）</p>
+<h3 id="DaDianNao"><a href="#DaDianNao" class="headerlink" title="DaDianNao"></a>DaDianNao</h3><p>DaDianNao的运算单元NFU与DianNao基本相同，最大的区别是为了完成训练任务多加了几条数据通路，且配置更加灵活。NFU的尺寸为16x16，即16个输出神经元，每个输出神经元有16个输入（输入端需要一次提供256个数据）。同时，NFU可以可选的跳过一些步骤以达到灵活可配置的功能。DaDianNao的NFU结构如下所示：</p>
+
+<h3 id="ShiDianNao-1"><a href="#ShiDianNao-1" class="headerlink" title="ShiDianNao"></a>ShiDianNao</h3><p>ShiDianNao是DianNao系列中唯一一个考虑运算单元级数据重用的加速器，也是唯一使用二维运算阵列的加速器，其加速器的运算阵列结构如下所示：</p>
+<img src="/2018/05/14/DianNao%E7%B3%BB%E5%88%97%E5%88%86%E6%9E%90/ShiDianNao_nfu.JPG" class="">
+<p>ShiDianNao的运算阵列为2D格点结构，对于每一个运算单元（节点）而言，运算所使用的参数统一来源于Kernel，而参与运算的数据则可能来自于：</p>
+<ul>
+<li>数据缓存NBin</li>
+<li>下方的节点</li>
+<li>右侧的节点</li>
+</ul>
+<p>下图为每个运算单元的结构（左）和抽象结构（右）：</p>
+<img src="/2018/05/14/DianNao%E7%B3%BB%E5%88%97%E5%88%86%E6%9E%90/ShiDianNao_nfu_node_model.png" class="">
+<p>该计算节点的功能包括转发数据和进行计算：</p>
+<ul>
+<li>转发数据：每个数据可来源于右侧节点，下方节点和NBin，根据控制信号选择其中一个存储到输入寄存器中，且根据控制信号可选的将其存储到FIFO-H和FIFO-V中。同时根据控制信号选择FIFO-H和FIFO-V中的信号从FIFO output端口输出</li>
+<li>进行计算：根据控制信号进行计算，包括相加，累加，乘加和比较等，并将结果存储到输出寄存器中，并根据控制信号选择寄存器或计算结果输出到PE output端口。</li>
+</ul>
+<p>对于计算功能，根据上文的结构图，可以发现，PE支持的运算有：kernel和输入数据相乘并与输出寄存器数据相加（乘加），输入数据与输出寄存器数据取最大或最小（应用于池化），kernel与输入数据相加（向量加法），输入数据与输出寄存器数据相加（累加）等。</p>
+<h3 id="PuDianNao-1"><a href="#PuDianNao-1" class="headerlink" title="PuDianNao"></a>PuDianNao</h3><p>PuDianNao的运算单元是电脑系列中唯一一个异构的，除了有MLU（机器学习单元）外，还有一个ALU用于处理通用运算和MLU无法处理的运算，其运算单元（左）和MLU（右）结构如下图所示：</p>
+<img src="/2018/05/14/DianNao%E7%B3%BB%E5%88%97%E5%88%86%E6%9E%90/PuDianNao_mlu_structure.png" class="">
+<p>MLU分为6层：</p>
+<ul>
+<li>计数层/比较层：这一层的处理为两个数按位与或比较大小，结果将被累加，这一层可以单独输出且可以被bypass</li>
+<li>加法层：这一层为两个输入对应相加，这一层可以单独输出且可以被bypass</li>
+<li>乘法层：这一层为两个输入或上一层（加法层）结果对应位置相乘，可以单独输出</li>
+<li>加法树层：将乘法层的结果累加</li>
+<li>累加层：将上一层（加法树层）的结果累加，可以单独输出</li>
+<li>特殊处理层：由一个分段线性逼近实现的非线性函数和k排序器（输出上一层输出中最小的输出）组成</li>
+</ul>
+<p>该运算单元是DianNao系列中功能最多的单元，配置非常灵活。例如实现向量相乘（对应位置相乘后累加）时，弃用计数层，加法层，将数据从乘法层，加法树层和累加层流过即可实现。</p>
+<h1 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h1><p>DianNao系列的存储的设计理念是分裂存储，这样有几个好处：</p>
+<ul>
+<li>增大带宽：相同大小的单个存储器和多个存储器相比，多个存储器能提供更大的带宽</li>
+<li>匹配位宽：有些数据对位宽的需求不同，将位宽需求不同的数据放在不同位宽的存储器中可以避免位宽浪费</li>
+</ul>
+<h2 id="DianNao与DaDianNao-1"><a href="#DianNao与DaDianNao-1" class="headerlink" title="DianNao与DaDianNao"></a>DianNao与DaDianNao</h2><p>DianNao和DaDianNao的存储设计基本相同，区别在于DaDianNao使用了片上eDRAM增大了片上存储的面积，下图为DaDianNao的存储部分，DianNao的存储部分类似，可以参考整体架构中DianNao的架构图：</p>
+<img src="/2018/05/14/DianNao%E7%B3%BB%E5%88%97%E5%88%86%E6%9E%90/DaDianNao_store.JPG" class="">
+<p>存储被分裂为三个部分：</p>
+<ul>
+<li>NBin：用于存储输入数据，需要位宽$T_n$（一次处理所需的输入数量x每个输入位宽）</li>
+<li>NBout：用于存储部分和与最终运算结果，需要位宽$T_n$</li>
+<li>SB：用于存储权值，需要位宽$T_n \times T_n$</li>
+</ul>
+<p>DianNao和DaDianNao的重用策略是重用输入数据即NBin中的数据。当需要NBin参与的运算全部完成后，NBin才会被覆盖。因此，在DaDianNao中，所有运算单元共享eDRAM实现的NBin和NBout（图中eDRAM router部分），但具有自己的SB缓存（每个节点有4个eDRAM）</p>
+<h2 id="ShiDianNao-2"><a href="#ShiDianNao-2" class="headerlink" title="ShiDianNao"></a>ShiDianNao</h2><p>ShiDianNao的存储比较有特色，由于其特殊性，并未采用DaDianNao的eDRAM组成超大片上存储。仅使用了288KB的SRAM，因此其存储组织更值得研究，下图为NBin缓存及其控制器的设计：</p>
+<img src="/2018/05/14/DianNao%E7%B3%BB%E5%88%97%E5%88%86%E6%9E%90/ShiDianNao_store.JPG" class="">
+<p>可以发现，每个存储器分裂为$2 \times P_y$个Bank，每个Bank的位宽是$P_x \times 16bit$。其中$P_y$为运算阵列的行数，$P_x$为计算阵列的列数，16bit为数据位宽。该存储器支持的读取方式有6种：</p>
+<ul>
+<li>读bank0~bank$P_y-1$，共$P_y \times P_x \times 16bit$数据，可以填充计算阵列中每个节点。</li>
+<li>读bank$P_y$~bank$2 \times P_y-1$，共$P_y \times P_x \times 16bit$数据，可以填充计算阵列中每个节点。</li>
+<li>读取一个Bank，共$P_x \times 16bit$数据，可以填充计算阵列中的一行。</li>
+<li>读取一个Bank中的一个数据（16bit）</li>
+<li>读取每个Bank中指定间隔的数据，共$2 \times P_y \times 16bit$数据。</li>
+<li>读取bank$P_y$~bank$2 \times P_y-1$中每个Bank中指定位置的数据，共$P_y \times 16bit$数据，可以填充计算阵列中的一列。</li>
+</ul>
+<p>写方面，采用缓存-存储的方式，即现先待写入数据换存入output寄存器中，待全部运算单元完成运算后统一将数据从output寄存器中写入存储器。</p>
+<h2 id="PuDianNao-2"><a href="#PuDianNao-2" class="headerlink" title="PuDianNao"></a>PuDianNao</h2><p>PuDianNao抛弃了按用途分裂存储器的方法，改为按重用频率分裂存储器。且其设计方法更贴近通用处理器CPU，以实现通用机器学习处理器。PuDianNao认为其能实现的7种机器学习算法在存储上分为两种：</p>
+<img src="/2018/05/14/DianNao%E7%B3%BB%E5%88%97%E5%88%86%E6%9E%90/PuDianNao_store_analysis.JPG" class="">
+<p>第一种与k-NN（k-邻近算法）类似，每个数据的重用间隔（这一次使用和下一次使用之间的间隔数据数量）明确的类聚为几类。第二种与NB（朴素贝叶斯）类似，除了位置为1上的明显类聚外，数据重用间隔在一段上均有分布。因此PuDianNao实现三个片上存储，分别为：</p>
+<ul>
+<li>ColdBuffer：16KB，存储重用间隔较长的数据，位宽较小。</li>
+<li>HotBuffer：8KB，存储重用数据较少的数据，位宽较大。</li>
+<li>OutputBuffer：8KB，存储输出数据。</li>
+</ul>
+<h1 id="映射方法"><a href="#映射方法" class="headerlink" title="映射方法"></a>映射方法</h1><p>映射方法指现有硬件加速器如何实现神经网络中的运算，包括卷积，池化和全连接层等。</p>
+<h2 id="DianNao与DaDianNao-2"><a href="#DianNao与DaDianNao-2" class="headerlink" title="DianNao与DaDianNao"></a>DianNao与DaDianNao</h2><p>由于DianNao和DaDianNao的论文中都没有明确阐述这两款加速器如何映射运算，因此以下内容均为<strong>个人推测</strong></p>
+<p>DianNao和DaDianNao的运算单元均为NFU，参考其设计，其功能描述如下：</p>
+<script type="math/tex; mode=display">
+mul: y_i = \sum\limits^{T_n}_{i=1} w_i \cdot x_i \\
+max:y_i = max\{x_1,x_2,...,x_{T_n}\}</script><h3 id="向量内积与卷积"><a href="#向量内积与卷积" class="headerlink" title="向量内积与卷积"></a>向量内积与卷积</h3><p>无论是向量内积还是卷积，其最终都是对应位置元素相乘再相加。都可以使用运算核心的MUL功能解决，即将NFU-2配置为加法树。在存储中，输入数据按[高度，宽度，通道数]维度排列，即先存储第一个数据位置的所有通道数据，再存储第二个数据位置的所有通道数据，以此类推。权值数据按[高度，宽度，输出通道数，输入通道数]排列。其实现图如下所示：</p>
+<img src="/2018/05/14/DianNao%E7%B3%BB%E5%88%97%E5%88%86%E6%9E%90/DianNao_map.png" class="">
+<p>上图为一个$T_n = 2$的例子，其中数据含义如下所示：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>标记</th>
+<th>来源</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>X000</td>
+<td>输入数据</td>
+<td>数据位置(0,0)，通道0数据</td>
+</tr>
+<tr>
+<td>X001</td>
+<td>输入数据</td>
+<td>数据位置(0,0)，通道1数据</td>
+</tr>
+<tr>
+<td>W0000</td>
+<td>参数</td>
+<td>数据位置(0,0)，通道0数据对应输出通道0的参数</td>
+</tr>
+<tr>
+<td>W0001</td>
+<td>参数</td>
+<td>数据位置(0,0)，通道1数据对应输出通道0的参数</td>
+</tr>
+<tr>
+<td>W0010</td>
+<td>参数</td>
+<td>数据位置(0,0)，通道0数据对应输出通道1的参数</td>
+</tr>
+<tr>
+<td>W0011</td>
+<td>参数</td>
+<td>数据位置(0,0)，通道1数据对应输出通道1的参数</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>其实现的运算在卷积中如下所示：</p>
+<img src="/2018/05/14/DianNao%E7%B3%BB%E5%88%97%E5%88%86%E6%9E%90/DianNao_conv_map.png" class="">
+<h3 id="池化"><a href="#池化" class="headerlink" title="池化"></a>池化</h3><p>实现池化层时，输入数据按[通道数，高度，宽度]排列，NFU-2被配置为取最大值树。</p>
+<h2 id="ShiDianNao-3"><a href="#ShiDianNao-3" class="headerlink" title="ShiDianNao"></a>ShiDianNao</h2><p>ShiDianNao由阵列实现卷积，池化，向量内积等操作，映射比较复杂。以下说明均使用$P_x=P_y=2$</p>
+<h3 id="卷积"><a href="#卷积" class="headerlink" title="卷积"></a>卷积</h3><p>ShiDianNao的每个节点的简化图形如下所示，以下说明将使用该图示：</p>
+<img src="/2018/05/14/DianNao%E7%B3%BB%E5%88%97%E5%88%86%E6%9E%90/ShiDianNao_node_model.png" class="">
+<p>实现卷积的第一步是初始化，将数据读入运算阵列，使用缓存读方式1或2：</p>
+<img src="/2018/05/14/DianNao%E7%B3%BB%E5%88%97%E5%88%86%E6%9E%90/ShiDianNao_map0.png" class="">
+<p>随后读Bank2和Bank3的第一个神经元，将其填充到运算阵列的右侧，同时输入数据右移，这等效的是标记参与运算的数据框向右扩展：</p>
+<img src="/2018/05/14/DianNao%E7%B3%BB%E5%88%97%E5%88%86%E6%9E%90/ShiDianNao_map1.png" class="">
+<p>之后读Bank2和Bank3的第二个神经元，将其填充到运算阵列右侧，同时输入数据右移，这等效的是标记参与运算的数据框向右扩展：</p>
+<img src="/2018/05/14/DianNao%E7%B3%BB%E5%88%97%E5%88%86%E6%9E%90/ShiDianNao_map2.png" class="">
+<p>随后读Bank1的两个神经元，将其填充到底部，同时数据上移，这等效标记参与运算的数据框向下扩展：</p>
+<img src="/2018/05/14/DianNao%E7%B3%BB%E5%88%97%E5%88%86%E6%9E%90/ShiDianNao_map3.png" class="">
+<p>下表表示了每一个运算节点使用过的权值和数据：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>坐标</th>
+<th>参数=K00</th>
+<th>参数=K10</th>
+<th>参数=K20</th>
+<th>参数=K01</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0,0（左上）</td>
+<td>X00</td>
+<td>X10</td>
+<td>X20</td>
+<td>X01</td>
+</tr>
+<tr>
+<td>0,1（右上）</td>
+<td>X10</td>
+<td>X20</td>
+<td>X30</td>
+<td>X11</td>
+</tr>
+<tr>
+<td>1,0（左下）</td>
+<td>X01</td>
+<td>X11</td>
+<td>X21</td>
+<td>X02</td>
+</tr>
+<tr>
+<td>1,1（右下）</td>
+<td>X11</td>
+<td>X21</td>
+<td>X31</td>
+<td>X12</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>注意上文中运算单元和SB的行为为原文中注明的，存储器行为为<strong>个人推断</strong>，此外，原文中的推断到此为止，理由为保持简洁，然而下一步的操作<strong>使用以上几步无法完全推测</strong>，原文中说明该复用方法可以节约44.4%的带宽，有$4 \times 9 \times 44.4\% = 16$，所以一共读了20次，图像中有16个数据，推测就是中心处被复用最多次的X11，X21，X12和X22。该部分说明的原图如下图所示：</p>
+<img src="/2018/05/14/DianNao%E7%B3%BB%E5%88%97%E5%88%86%E6%9E%90/ShiDianNao_map_source.JPG" class="">
+<h3 id="池化-1"><a href="#池化-1" class="headerlink" title="池化"></a>池化</h3><p>池化的映射方法与卷积类似，且由于池化的Stride一般不为1，因此需要注意的是FIFO-H和FIFO-V的深度不再是1。其中$S_x$和$S_y$分别是X方向和Y方向的Stride。</p>
+<h3 id="全连接层"><a href="#全连接层" class="headerlink" title="全连接层"></a>全连接层</h3><p>矩阵乘法中，每个计算节点代表一个输出神经元，除非一个输出神经元的计算全部完成，否则不会进行下一个神经元的运算。与卷积不同的是，被广播的数据是输入数据而不是权值。因为在矩阵乘运算中，权值的数量多于数据且不被复用。每次运算分为以下几个步骤：</p>
+<ul>
+<li>一个输入数据和$P_x \times P_y$个权值，每个计算节点接收一个数据和被广播的数据。</li>
+<li>计算节点将输入数据和权值相乘后与之前的部分和积累。</li>
+<li>当一个输出神经元的所有计算都完成后，将每个节点累积的结果缓存回片上存储中。</li>
+</ul>
+<h2 id="PuDianNao-3"><a href="#PuDianNao-3" class="headerlink" title="PuDianNao"></a>PuDianNao</h2><p>PuDianNao的映射方法比较简单，由于较多的考虑了灵活性，因此使用类似软件的方式控制整个芯片。推测方法为：</p>
+<ul>
+<li>控制模块控制DMA将指定数据从片外存储搬运到片上buufer中，并将其搬运到指定处理单元中</li>
+<li>处理单元在控制模块控制下对数据进行处理</li>
+<li>DMA将结果从处理单元单元搬运到buffer中</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">月见樽</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.yuejianzun.xyz/2018/05/14/DianNao%E7%B3%BB%E5%88%97%E5%88%86%E6%9E%90/">http://www.yuejianzun.xyz/2018/05/14/DianNao%E7%B3%BB%E5%88%97%E5%88%86%E6%9E%90/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.yuejianzun.xyz" target="_blank">月见樽'blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/NeuralNetwork/">NeuralNetwork</a></div><div class="post_share"><div class="social-share" data-image="/img/1.PNG" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2018/07/03/YOLO1%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><img class="prev-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">YOLO1学习笔记</div></div></a></div><div class="next-post pull-right"><a href="/2018/04/24/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/"><img class="next-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">神经网络优化算法总结</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2018/02/21/CNN的反向传播/" title="CNN的反向传播"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-02-21</div><div class="title">CNN的反向传播</div></div></a></div><div><a href="/2018/03/11/CapsNet学习笔记/" title="CapsNet学习笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-03-11</div><div class="title">CapsNet学习笔记</div></div></a></div><div><a href="/2018/09/16/Deep-compression阅读笔记/" title="Deep-compression阅读笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-09-16</div><div class="title">Deep-compression阅读笔记</div></div></a></div><div><a href="/2018/12/24/DianNao运算单元与体系结构分析/" title="DianNao运算单元与体系结构分析"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-12-24</div><div class="title">DianNao运算单元与体系结构分析</div></div></a></div><div><a href="/2019/07/22/EIE结构与算法映射/" title="EIE结构与算法映射"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-07-22</div><div class="title">EIE结构与算法映射</div></div></a></div><div><a href="/2018/08/07/Fast-RCNN阅读笔记/" title="Fast-RCNN阅读笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-08-07</div><div class="title">Fast-RCNN阅读笔记</div></div></a></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/had.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">月见樽</div><div class="author-info__description">日隐月现，潜龙在渊</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/qiankun214"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">整体架构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E6%A8%A1%E5%9D%97"><span class="toc-number">3.</span> <span class="toc-text">运算模块</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E5%88%86%E6%9E%90"><span class="toc-number">3.1.</span> <span class="toc-text">运算分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DianNao%E4%B8%8EDaDianNao"><span class="toc-number">3.1.1.</span> <span class="toc-text">DianNao与DaDianNao</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ShiDianNao"><span class="toc-number">3.1.2.</span> <span class="toc-text">ShiDianNao</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PuDianNao"><span class="toc-number">3.1.3.</span> <span class="toc-text">PuDianNao</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E6%A8%A1%E5%9D%97%E8%AE%BE%E8%AE%A1"><span class="toc-number">3.2.</span> <span class="toc-text">运算模块设计</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DianNao"><span class="toc-number">3.2.1.</span> <span class="toc-text">DianNao</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DaDianNao"><span class="toc-number">3.2.2.</span> <span class="toc-text">DaDianNao</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ShiDianNao-1"><span class="toc-number">3.2.3.</span> <span class="toc-text">ShiDianNao</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PuDianNao-1"><span class="toc-number">3.2.4.</span> <span class="toc-text">PuDianNao</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%98%E5%82%A8"><span class="toc-number">4.</span> <span class="toc-text">存储</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#DianNao%E4%B8%8EDaDianNao-1"><span class="toc-number">4.1.</span> <span class="toc-text">DianNao与DaDianNao</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ShiDianNao-2"><span class="toc-number">4.2.</span> <span class="toc-text">ShiDianNao</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PuDianNao-2"><span class="toc-number">4.3.</span> <span class="toc-text">PuDianNao</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%98%A0%E5%B0%84%E6%96%B9%E6%B3%95"><span class="toc-number">5.</span> <span class="toc-text">映射方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#DianNao%E4%B8%8EDaDianNao-2"><span class="toc-number">5.1.</span> <span class="toc-text">DianNao与DaDianNao</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%91%E9%87%8F%E5%86%85%E7%A7%AF%E4%B8%8E%E5%8D%B7%E7%A7%AF"><span class="toc-number">5.1.1.</span> <span class="toc-text">向量内积与卷积</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B1%A0%E5%8C%96"><span class="toc-number">5.1.2.</span> <span class="toc-text">池化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ShiDianNao-3"><span class="toc-number">5.2.</span> <span class="toc-text">ShiDianNao</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%B7%E7%A7%AF"><span class="toc-number">5.2.1.</span> <span class="toc-text">卷积</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B1%A0%E5%8C%96-1"><span class="toc-number">5.2.2.</span> <span class="toc-text">池化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%A8%E8%BF%9E%E6%8E%A5%E5%B1%82"><span class="toc-number">5.2.3.</span> <span class="toc-text">全连接层</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PuDianNao-3"><span class="toc-number">5.3.</span> <span class="toc-text">PuDianNao</span></a></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/09/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%EF%BC%89/" title="网络学习笔记2——信号与系统">网络学习笔记2——信号与系统</a><time datetime="2020-11-09T15:51:13.000Z" title="发表于 2020-11-09 23:51:13">2020-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/" title="网络学习笔记1——协议分层">网络学习笔记1——协议分层</a><time datetime="2020-11-06T15:51:13.000Z" title="发表于 2020-11-06 23:51:13">2020-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/" title="高级综合工具StratusHLS学习笔记(4)">高级综合工具StratusHLS学习笔记(4)</a><time datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/" title="高级综合工具StratusHLS学习笔记(3)">高级综合工具StratusHLS学习笔记(3)</a><time datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/" title="高级综合工具StratusHLS学习笔记(2)">高级综合工具StratusHLS学习笔记(2)</a><time datetime="2020-07-19T15:51:13.000Z" title="发表于 2020-07-19 23:51:13">2020-07-19</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 月见樽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

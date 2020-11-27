@@ -1,0 +1,244 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>基2FFT原理 | 月见樽'blog</title><meta name="keywords" content="Verilog,数字信号处理"><meta name="author" content="月见樽"><meta name="copyright" content="月见樽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="FFT前置知识FT和DFT傅里叶变换FT（fourier transform）用于将时域信号$x(t)$和频域信号$X(f)$之间变换，公式如下所示：  X(f) &#x3D; \int^{\infty}_{-\infty}x(t)e^{-j2\pi ft}dt \\ x(t) &#x3D; \int^{\infty}_{-\infty}X(f)e^{j2\pi ft}df对于计算机系统中，无法处理连续的过程，因此离">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基2FFT原理">
+<meta property="og:url" content="http://www.yuejianzun.xyz/2019/07/09/%E5%9F%BA2FFT%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="月见樽&#39;blog">
+<meta property="og:description" content="FFT前置知识FT和DFT傅里叶变换FT（fourier transform）用于将时域信号$x(t)$和频域信号$X(f)$之间变换，公式如下所示：  X(f) &#x3D; \int^{\infty}_{-\infty}x(t)e^{-j2\pi ft}dt \\ x(t) &#x3D; \int^{\infty}_{-\infty}X(f)e^{j2\pi ft}df对于计算机系统中，无法处理连续的过程，因此离">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.yuejianzun.xyz/img/1.PNG">
+<meta property="article:published_time" content="2019-07-09T15:57:10.000Z">
+<meta property="article:modified_time" content="2020-11-27T16:47:57.158Z">
+<meta property="article:author" content="月见樽">
+<meta property="article:tag" content="Verilog">
+<meta property="article:tag" content="数字信号处理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yuejianzun.xyz/img/1.PNG"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.yuejianzun.xyz/2019/07/09/%E5%9F%BA2FFT%E5%8E%9F%E7%90%86/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-11-28 00:47:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/had.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/1.PNG)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">月见樽'blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">基2FFT原理</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2019-07-09T15:57:10.000Z" title="发表于 2019-07-09 23:57:10">2019-07-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-27T16:47:57.158Z" title="更新于 2020-11-28 00:47:57">2020-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Verilog%E5%B7%A9%E5%9B%BA%E6%89%8B%E8%AE%B0/">Verilog巩固手记</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="FFT前置知识"><a href="#FFT前置知识" class="headerlink" title="FFT前置知识"></a>FFT前置知识</h1><h2 id="FT和DFT"><a href="#FT和DFT" class="headerlink" title="FT和DFT"></a>FT和DFT</h2><p>傅里叶变换FT（fourier transform）用于将时域信号$x(t)$和频域信号$X(f)$之间变换，公式如下所示：</p>
+<script type="math/tex; mode=display">
+X(f) = \int^{\infty}_{-\infty}x(t)e^{-j2\pi ft}dt \\
+x(t) = \int^{\infty}_{-\infty}X(f)e^{j2\pi ft}df</script><p>对于计算机系统中，无法处理连续的过程，因此离散化为离散傅里叶变换DFT（Discrete Fourier Transform）：</p>
+<script type="math/tex; mode=display">
+X[k] = \frac{1}{N}\sum\limits^{N-1}_{n=0} x[n] \times e^{-\frac{2\pi k}{N}j\times n} \\
+x[n] = \frac{1}{N}\sum\limits^{N-1}_{k=0} X[k]\times e^{-\frac{2\pi n}{N}j\times k}</script><p>取$W_N  = e^{-\frac{2\pi}{N}j}$，可将DFT改写为以下公式：</p>
+<script type="math/tex; mode=display">
+X[k] = \frac{1}{N}\sum\limits^{N-1}_{n=0} x[n] \times W_N^{kn} \\
+x[n] = \frac{1}{N}\sum\limits^{N-1}_{k=0} X[k]\times W_N^{-kn}</script><h2 id="DFT改进（削减计算量）"><a href="#DFT改进（削减计算量）" class="headerlink" title="DFT改进（削减计算量）"></a>DFT改进（削减计算量）</h2><p>首先分析原始公式的计算量，取一个8点DFT算法，对于一个点：</p>
+<ul>
+<li>需要复数乘法N次，每次复数乘法由四次实数乘法和两次实数加法实现</li>
+<li>需要复数加法N-1次，每次复数加法由两次实数加法构成</li>
+</ul>
+<p>因此，对于一个点，需要实数乘法共4N次，实数加法共（2N-2+2N）=4N-2次。削减计算量的主要重点在$W_N$上，使用欧拉公式有：</p>
+<script type="math/tex; mode=display">
+W_N^{k} = e^{-\frac{2\pi}{N}jk} = \cos\frac{2\pi k}{N} - j\sin\frac{2\pi k}{N}</script><p>考虑$W_N^{k+\frac{N}{2}}$的情况，有以下公式：</p>
+<script type="math/tex; mode=display">
+W_N^{k+\frac{N}{2}} = e^{-\frac{2\pi}{N}j(k+\frac{N}{2})} = \cos\frac{2\pi (k+\frac{N}{2})}{N} - j\sin\frac{2\pi (k+\frac{N}{2})}{N} \\
+= \cos(\frac{2\pi k}{N}+\pi) - j\sin(\frac{2\pi k}{N}+\pi) = -\cos\frac{2\pi k}{N} + j\sin\frac{2\pi k}{N} = -W_N^{k}</script><p>同理有$W_N^{k+N} = W_N$，因此以一个4点DFT为例，有以下公式：</p>
+<script type="math/tex; mode=display">
+X[1] = x(0)W_4^0 + x(1)W_4^1 +x(2)W_4^2+x(3)W_4^3 =[x(0) - x(2)]W^0_4 + [x(1)-x(3)]W_4^2</script><p>可减少所需要的复数乘法的次数，进而减少对应的实数乘法和加法的数量</p>
+<h1 id="FFT"><a href="#FFT" class="headerlink" title="FFT"></a>FFT</h1><h2 id="基2FFT"><a href="#基2FFT" class="headerlink" title="基2FFT"></a>基2FFT</h2><p>基2FFT指点数为$2^n$的FFT变换，取$N = 2^n$的FFT变换如下所示：</p>
+<script type="math/tex; mode=display">
+X[k] = \sum\limits^{N-1}_{n=0}x(n)W_N^{kn} = \sum\limits^{\frac{N}{2}-1}_{n=0}x(2n)W_N^{2kn} + \sum\limits^{\frac{N}{2}-1}_{n=0}x(2n+1)W_N^{(2n+1)k}</script><p>将一个N点的FFT分解为两个FFT，一个为奇数项的FFT，另一个为偶数项的FFT。对于$W_N^{nk}$而言，考虑以下变化：</p>
+<script type="math/tex; mode=display">
+W_N^{2nk} = e^{-\frac{2\pi \times 2nk}{N}j} = e^{-\frac{2\pi \times nk}{\frac{N}{2}}j} = W_{\frac{N}{2}}^{nk}</script><p>带入上式，有以下：</p>
+<script type="math/tex; mode=display">
+X[k] =\sum\limits^{\frac{N}{2}-1}_{n=0}x(2n)W_N^{2kn} + W_N^k\sum\limits^{\frac{N}{2}-1}_{n=0}x(2n+1)W_N^{2nk} = \sum\limits^{\frac{N}{2}-1}_{n=0}x(2n)W_{\frac{N}{2}}^{kn} +W_N^k \sum\limits^{\frac{N}{2}-1}_{n=0}x(2n+1)W_{\frac{N}{2}}^{nk}</script><p>取$FFT<em>1(k) = \sum\limits^{\frac{N}{2}-1}</em>{n=0}x(2n)W<em>{\frac{N}{2}}^{kn} $和$FFT_2(k) = \sum\limits^{\frac{N}{2}-1}</em>{n=0}x(2n+1)W_{\frac{N}{2}}^{nk}$分别是两个长度为$\frac{N}{2}$的FFT运算，有：</p>
+<script type="math/tex; mode=display">
+X[k] = FFT_1(k) +W_N^k\times FFT_2(k)</script><p>上述有$n &lt; \frac{N}{2}$，考虑后半段结果，有：</p>
+<script type="math/tex; mode=display">
+FFT_1(k+\frac{N}{2}) =\sum\limits^{\frac{N}{2}-1}_{n=0}x(2n)W_{\frac{N}{2}}^{n(k+\frac{N}{2})} = \sum\limits^{\frac{N}{2}-1}_{n=0}x(2n)W_{\frac{N}{2}}^{nk+\frac{Nk}{2}} = \sum\limits^{\frac{N}{2}-1}_{n=0}x(2n)W_{\frac{N}{2}}^{kn} = FFT_1(k)</script><p>同理有$FFT_2(k+\frac{N}{2}) = FFT_2(k)$，因此当$n \geq \frac{N}{2}$时，考虑$W_N$的周期性，有：</p>
+<script type="math/tex; mode=display">
+X[k] = FFT_1(k) + W_N^{k+\frac{N}{2}}\times FFT_2(k) =FFT_1(k) - W_N^k\times FFT_2(k)</script><p>综上所述对于一个N点的FFT运算，有</p>
+<script type="math/tex; mode=display">
+X[k] = \begin{cases} FFT_1(k) +W_N^k\times FFT_2(k) & k < \frac{N}{2} \\
+ FFT_1(k-\frac{N}{2}) -W_N^k\times FFT_2(k-\frac{N}{2}) & k \geq \frac{N}{2} \end{cases}</script><p>其中，$FFT_1$为对偶数序列的$\frac{N}{2}$点FFT；$FFT_2$为对应奇数序列的$\frac{N}{2}$点FFT。该操作将一个N点FFT分解为两个$\frac{N}{2}$点的FFT。</p>
+<h2 id="蝶形运算"><a href="#蝶形运算" class="headerlink" title="蝶形运算"></a>蝶形运算</h2><p>蝶形运算为一个二输入二输出的运算，公式如下所示：</p>
+<script type="math/tex; mode=display">
+Y_1 = X_1 + W \times X_2 \\
+Y_2 = X_1 - W \times X_2</script><p>其中$X_1,X_2$为两个输入；$Y_1,Y_2$为两个输出；W为权值，均为复数。蝶形运算可以用于映射基2FFT，首先考虑2点FFT，两点FFT公式如下所示：</p>
+<script type="math/tex; mode=display">
+X[0] = x(0)\times W_2^0 + x(1) \times W_2^0 = x(0) + W_2^0 \times x(1) \\
+X[1] = x(0)\times W_2^0 + x(1) \times W_2^1 = x(0) - W_2^0 \times x(1)</script><p>因此可以使用一个蝶形运算实现，权值为$W_2^k$，现考虑一个4点FFT，首先将其分解为2个两点FFT，分解的公式为</p>
+<script type="math/tex; mode=display">
+X[k] = \begin{cases} FFT_1(k) +W_N^k\times FFT_2(k) & k < \frac{N}{2} \\
+ FFT_1(k-\frac{N}{2}) -W_N^k\times FFT_2(k-\frac{N}{2}) & k \geq \frac{N}{2} \end{cases}</script><p>分解步骤也可以用蝶形运算实现，因此整体运算如下图所示：</p>
+<img src="/2019/07/09/%E5%9F%BA2FFT%E5%8E%9F%E7%90%86/fft4.png" class="">
+<p>更多点数的FFT可以类似的进行，即不断分解为长度为一半的奇偶序列的FFT变换分层实现。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">月见樽</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.yuejianzun.xyz/2019/07/09/%E5%9F%BA2FFT%E5%8E%9F%E7%90%86/">http://www.yuejianzun.xyz/2019/07/09/%E5%9F%BA2FFT%E5%8E%9F%E7%90%86/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.yuejianzun.xyz" target="_blank">月见樽'blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Verilog/">Verilog</a><a class="post-meta__tags" href="/tags/%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86/">数字信号处理</a></div><div class="post_share"><div class="social-share" data-image="/img/1.PNG" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2019/07/22/EIE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E6%98%A0%E5%B0%84/"><img class="prev-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">EIE结构与算法映射</div></div></a></div><div class="next-post pull-right"><a href="/2019/05/28/%E6%B5%AE%E7%82%B9%E6%95%B0%E5%A4%84%E7%90%86/"><img class="next-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">浮点数处理</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2018/08/18/P2P接口串行FIR设计/" title="P2P接口串行FIR设计"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-08-18</div><div class="title">P2P接口串行FIR设计</div></div></a></div><div><a href="/2017/09/06/ROM乘法器/" title="ROM乘法器"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-09-06</div><div class="title">ROM乘法器</div></div></a></div><div><a href="/2018/11/14/booth乘法器/" title="booth乘法器"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-11-14</div><div class="title">booth乘法器</div></div></a></div><div><a href="/2017/09/13/不恢复余数除法器/" title="不恢复余数除法器"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-09-13</div><div class="title">不恢复余数除法器</div></div></a></div><div><a href="/2017/09/06/全并行流水线移位相加乘法器/" title="全并行流水移位相加乘法器"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-09-06</div><div class="title">全并行流水移位相加乘法器</div></div></a></div><div><a href="/2017/09/06/分时复用的移位相加乘法器/" title="分时复用的移位相加乘法器"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-09-06</div><div class="title">分时复用的移位相加乘法器</div></div></a></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/had.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">月见樽</div><div class="author-info__description">日隐月现，潜龙在渊</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/qiankun214"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#FFT%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="toc-number">1.</span> <span class="toc-text">FFT前置知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#FT%E5%92%8CDFT"><span class="toc-number">1.1.</span> <span class="toc-text">FT和DFT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DFT%E6%94%B9%E8%BF%9B%EF%BC%88%E5%89%8A%E5%87%8F%E8%AE%A1%E7%AE%97%E9%87%8F%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">DFT改进（削减计算量）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#FFT"><span class="toc-number">2.</span> <span class="toc-text">FFT</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA2FFT"><span class="toc-number">2.1.</span> <span class="toc-text">基2FFT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%9D%B6%E5%BD%A2%E8%BF%90%E7%AE%97"><span class="toc-number">2.2.</span> <span class="toc-text">蝶形运算</span></a></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/09/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%EF%BC%89/" title="网络学习笔记2——信号与系统">网络学习笔记2——信号与系统</a><time datetime="2020-11-09T15:51:13.000Z" title="发表于 2020-11-09 23:51:13">2020-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/" title="网络学习笔记1——协议分层">网络学习笔记1——协议分层</a><time datetime="2020-11-06T15:51:13.000Z" title="发表于 2020-11-06 23:51:13">2020-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/" title="高级综合工具StratusHLS学习笔记(4)">高级综合工具StratusHLS学习笔记(4)</a><time datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/" title="高级综合工具StratusHLS学习笔记(3)">高级综合工具StratusHLS学习笔记(3)</a><time datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/" title="高级综合工具StratusHLS学习笔记(2)">高级综合工具StratusHLS学习笔记(2)</a><time datetime="2020-07-19T15:51:13.000Z" title="发表于 2020-07-19 23:51:13">2020-07-19</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 月见樽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

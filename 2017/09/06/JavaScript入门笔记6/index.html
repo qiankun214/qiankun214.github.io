@@ -1,0 +1,203 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>JavaScript入门笔记6 | 月见樽'blog</title><meta name="keywords" content="JavaScript"><meta name="author" content="月见樽"><meta name="copyright" content="月见樽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="标准对象正则对象正则表达式是一种处理文本信息的神器，在JavaScript中可以方便的使用正则对象对文本进行处理。JavaScript中声明正则对象可以使用var name &#x3D; &#x2F;...&#x2F;和var name &#x3D; new RegExp(&quot;...&quot;)，第二种方法个人是不推荐的，要处理一系列的文本转义，正则表达式定以后可以使用.test()方法检验是否有匹配和.exec()方法分组1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript入门笔记6">
+<meta property="og:url" content="http://www.yuejianzun.xyz/2017/09/06/JavaScript%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B06/index.html">
+<meta property="og:site_name" content="月见樽&#39;blog">
+<meta property="og:description" content="标准对象正则对象正则表达式是一种处理文本信息的神器，在JavaScript中可以方便的使用正则对象对文本进行处理。JavaScript中声明正则对象可以使用var name &#x3D; &#x2F;...&#x2F;和var name &#x3D; new RegExp(&quot;...&quot;)，第二种方法个人是不推荐的，要处理一系列的文本转义，正则表达式定以后可以使用.test()方法检验是否有匹配和.exec()方法分组1">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.yuejianzun.xyz/img/1.PNG">
+<meta property="article:published_time" content="2017-09-06T04:30:50.000Z">
+<meta property="article:modified_time" content="2020-11-27T16:47:57.096Z">
+<meta property="article:author" content="月见樽">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yuejianzun.xyz/img/1.PNG"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.yuejianzun.xyz/2017/09/06/JavaScript%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B06/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-11-28 00:47:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/had.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/1.PNG)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">月见樽'blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">JavaScript入门笔记6</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2017-09-06T04:30:50.000Z" title="发表于 2017-09-06 12:30:50">2017-09-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-27T16:47:57.096Z" title="更新于 2020-11-28 00:47:57">2020-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/JavaScript%E5%AD%A6%E4%B9%A0/">JavaScript学习</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="标准对象"><a href="#标准对象" class="headerlink" title="标准对象"></a>标准对象</h1><h3 id="正则对象"><a href="#正则对象" class="headerlink" title="正则对象"></a>正则对象</h3><p>正则表达式是一种处理文本信息的神器，在JavaScript中可以方便的使用正则对象对文本进行处理。JavaScript中声明正则对象可以使用<code>var name = /.../</code>和<code>var name = new RegExp(&quot;...&quot;)</code>，第二种方法个人是不推荐的，要处理一系列的文本转义，正则表达式定以后可以使用<code>.test()</code>方法检验是否有匹配和<code>.exec()</code>方法分组<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var re_test &#x3D; &#x2F;\w+@\w+\.\w+&#x2F;</span><br><span class="line">console.log(re_test) &#x2F;&#x2F;&#x2F;\w+@\w+\.\w+&#x2F;</span><br><span class="line">console.log(re_test.test(&quot;avbd@163.com&quot;)) &#x2F;&#x2F;true</span><br><span class="line">console.log(re_test.test(&quot;adfasd&quot;)) &#x2F;&#x2F;false</span><br><span class="line"></span><br><span class="line">var group_test &#x3D; &#x2F;(\w+)@(\w+)\.\w+&#x2F;</span><br><span class="line">console.log(group_test.exec(&quot;avbd@163.com&quot;)) </span><br><span class="line">&#x2F;&#x2F;[ &#39;avbd@163.com&#39;, &#39;avbd&#39;, &#39;163&#39;, index: 0, input: &#39;avbd@163.com&#39; ]</span><br></pre></td></tr></table></figure><br>另外，在正则结尾后的<code>/</code>处可以加一些参数，比如加g就是启用全局匹配，调用<code>.exec()</code>会像迭代器一样逐个返回匹配到的值。当匹配完所有值后将返回<code>null</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var global_test &#x3D; &#x2F;\w+&#x2F;g</span><br><span class="line">console.log(global_test.exec(&quot;avbd@163.com&quot;))</span><br><span class="line">&#x2F;&#x2F;[ &#39;avbd&#39;, index: 0, input: &#39;avbd@163.com&#39; ]</span><br><span class="line">console.log(global_test.exec(&quot;avbd@163.com&quot;))</span><br><span class="line">&#x2F;&#x2F;[ &#39;163&#39;, index: 5, input: &#39;avbd@163.com&#39; ]</span><br><span class="line">console.log(global_test.exec(&quot;avbd@163.com&quot;))</span><br><span class="line">&#x2F;&#x2F;[ &#39;com&#39;, index: 9, input: &#39;avbd@163.com&#39; ]</span><br><span class="line">console.log(global_test.exec(&quot;avbd@163.com&quot;))</span><br><span class="line">&#x2F;&#x2F;null</span><br></pre></td></tr></table></figure></p>
+<h3 id="JSON对象"><a href="#JSON对象" class="headerlink" title="JSON对象"></a>JSON对象</h3><p>json是一种超轻量级的数据传递格式，脱胎于JavaScript的对象，将按JSON格式完成的对象序列化成文本便可以在网络中传输，接收到文本后反序列化即可获得原数据<br>序列化使用<code>JSON.stringify()</code>方法，第一个参数为要序列化的object，第二个参数可以是一个列表，描述哪些属性被序列化（默认全部序列化），也可以是一个输入参数为<code>(key,value)</code>的函数，被序列化的内容是<code>key:value+</code>，<code>value+</code>是该函数的返回值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">var json_test &#x3D; &#123;</span><br><span class="line">	name:&quot;qian&quot;,</span><br><span class="line">	age:20,</span><br><span class="line">	skill:&quot;python&quot;</span><br><span class="line">&#125;</span><br><span class="line">json_string &#x3D; JSON.stringify(json_test)</span><br><span class="line">console.log(typeof(json_string),json_string)</span><br><span class="line">&#x2F;&#x2F;string &#123;&quot;name&quot;:&quot;qian&quot;,&quot;age&quot;:20,&quot;skill&quot;:&quot;python&quot;&#125;</span><br><span class="line">console.log(JSON.stringify(json_test,[&quot;name&quot;,&quot;age&quot;]))</span><br><span class="line">&#x2F;&#x2F;&#123;&quot;name&quot;:&quot;qian&quot;,&quot;age&quot;:20&#125;</span><br><span class="line">console.log(JSON.stringify(json_test, function(key,value) &#123;</span><br><span class="line">	if (key &#x3D;&#x3D; &quot;age&quot;) &#123;</span><br><span class="line">		return value - 1</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		return value</span><br><span class="line">	&#125;</span><br><span class="line">&#125;)) &#x2F;&#x2F;&#123;&quot;name&quot;:&quot;qian&quot;,&quot;age&quot;:19,&quot;skill&quot;:&quot;python&quot;&#125;</span><br></pre></td></tr></table></figure><br>反序列化使用<code>JSON.parse()</code>方法，输入参数为JSON文本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">json_return &#x3D; JSON.parse(json_string)</span><br><span class="line">console.log(typeof(json_return),json_return)</span><br></pre></td></tr></table></figure></p>
+<h1 id="面向对象编程"><a href="#面向对象编程" class="headerlink" title="面向对象编程"></a>面向对象编程</h1><h3 id="创建对象"><a href="#创建对象" class="headerlink" title="创建对象"></a>创建对象</h3><p>面向对象编程是目前编程语言的潮流，JavaScript的面向对象编程方法基于原型链而与C++和python的class-object方法不同。JavaScript可以通过一个对象创立另一个对象，或者通过构造函数创建变量<br>通过某个对象创建对象时，使用<code>Object.create()</code>方法，传入一个对象可依据传入的对象创建出一个平级的对象（而不是继承的），但是创建出的对象没有任何属性，仅保留了方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">test &#x3D; &#123;</span><br><span class="line">	name:&quot;javascript&quot;,</span><br><span class="line">	time:0,</span><br><span class="line">	use:function ()&#123;</span><br><span class="line">		this.time ++</span><br><span class="line">		return this.time</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var python &#x3D; Object.create(test)</span><br><span class="line">console.log(python) &#x2F;&#x2F;&#123;&#125;</span><br><span class="line">python.name &#x3D; &quot;python&quot;</span><br><span class="line">python.time &#x3D; 1</span><br><span class="line">console.log(python.use()) &#x2F;&#x2F;2</span><br></pre></td></tr></table></figure><br>另一种可以通过构造函数来创建对象，使用一个内部使用了<code>this</code>的函数并在函数内声明各种属性和方法，使用<code>new function</code>的方法调用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function createobject(name) &#123;</span><br><span class="line">	this.name &#x3D; name</span><br><span class="line">	this.time &#x3D; 0</span><br><span class="line">	this.use &#x3D; function () &#123;</span><br><span class="line">		this.time ++</span><br><span class="line">		return this.time</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">var golang &#x3D; new createobject(&quot;golang&quot;) </span><br><span class="line">console.log(golang) &#x2F;&#x2F;createobject &#123; name: &#39;golang&#39;, time: 0, use: [Function] &#125;</span><br><span class="line">console.log(golang.use()) &#x2F;&#x2F;1</span><br></pre></td></tr></table></figure></p>
+<h3 id="原型继承"><a href="#原型继承" class="headerlink" title="原型继承"></a>原型继承</h3><p>个人认为JavaScript最有意思的一点就是其原型继承的继承机制，由于JavaScript中没有类，因此继承是由对象到对象的。每个对象都有原型<code>.prototype</code>，该原型可以简单的和<code>class</code>类比，一个对象是由原型创建的，那么将一个对象的原型指向另一个对象就可以说是继承了。<br>但是如果使用直接使用<code>.prototype = objectname</code>的话，在子对象中添加方法的时候方法就会被添加到父对象中从而修改父类，这是不希望看到的，于是可以指定一个空的且与父对象原型相同的对象（父对象平级的空对象，将其<code>prototype</code>指向父对象的<code>prototype</code>），于是这个对象就具备了父对象的所有方法，但是属性仍是空的。<br>为了继承属性，需要在子对象的构造函数里使用<code>parentobject.call(this,...)</code>的方法。<code>call</code>将父对象的构造函数中的所有方法和对象的<code>this</code>改为指向子对象，于是父对象的方法和属性被子对象继承且原型链正确，子对象新的方法被定义在那个空对象中，不会改变父对象。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">function createobject(name) &#123;</span><br><span class="line">	this.x &#x3D; name</span><br><span class="line">	this.time &#x3D; 0</span><br><span class="line">	this.use &#x3D; function () &#123;</span><br><span class="line">		this.time ++</span><br><span class="line">		return this.time</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">var golang &#x3D; new createobject(&quot;golang&quot;)</span><br><span class="line">console.log(golang) &#x2F;&#x2F;createobject &#123; x: &#39;golang&#39;, time: 0, use: [Function] &#125;</span><br><span class="line"></span><br><span class="line">function inherit(parent,child) &#123;</span><br><span class="line">	function F() &#123;</span><br><span class="line">	&#125;</span><br><span class="line">	F.prototype &#x3D; parent</span><br><span class="line">	child.prototype &#x3D; F</span><br><span class="line">	child.prototype.constructor &#x3D; child</span><br><span class="line">&#125;</span><br><span class="line">function inherit_test(name) &#123;</span><br><span class="line">	createobject.call(this,name)</span><br><span class="line">&#125;</span><br><span class="line">inherit(createobject,inherit_test)</span><br><span class="line">test_object &#x3D; new inherit_test(&quot;a&quot;)</span><br><span class="line">console.log(test_object) &#x2F;&#x2F;inherit_test &#123; x: &#39;a&#39;, time: 0, use: [Function] &#125;</span><br></pre></td></tr></table></figure><br>以上的例子中，<code>F()</code>是空对象的构造方法，函数<code>inherit(parent,child)</code>封装了继承的原型链修改部分，子对象构造函数<code>inherit_test(name)</code>中的<code>createobject.call(this,name)</code>则拉取了父对象的所有方法和属性</p>
+<h3 id="类继承"><a href="#类继承" class="headerlink" title="类继承"></a>类继承</h3><p>没有类这一概念可以说是JavaScript的缺点，因为原型继承大大复杂了继承的实现成本，对对象本身的操作却没有数量级的提升，于是在新的JavaScript语法中，<code>class</code>被引进<br>类的声明使用<code>class 类名 &#123;方法&#125;</code>，有一个特殊的方法叫<code>constructor()</code>，这是类的构造函数，和Python的<code>__init__</code>类似，属性可以在该方法中使用<code>this.属性名 = 值</code>声明。调用类生成对象时与使用构造函数生成类一样，使用<code>var var_name = new class_name</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class TestClass &#123;</span><br><span class="line">	constructor(name) &#123;</span><br><span class="line">		this.name &#x3D; name</span><br><span class="line">		this.usetime &#x3D; 0</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	useonetime() &#123;</span><br><span class="line">		this.usetime ++</span><br><span class="line">		console.log(this.usetime)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">var a &#x3D; new TestClass(&quot;javascript&quot;)</span><br><span class="line">console.log(a) &#x2F;&#x2F;TestClass &#123; name: &#39;javascript&#39;, usetime: 0 &#125;</span><br><span class="line">a.useonetime() &#x2F;&#x2F;1</span><br></pre></td></tr></table></figure><br>类的引入方便了继承的实现，在class中实现继承只需要两个操作</p>
+<ul>
+<li>在声明类时使用<code>class 类名 extends 父类名 &#123;&#125;</code>即可</li>
+<li>在构造函数中使用<code>super()</code>调用父类的构造函数<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class TestIherit extends TestClass &#123;</span><br><span class="line">	constructor(name,data) &#123;</span><br><span class="line">		super(name)</span><br><span class="line">		this.data &#x3D; data</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	reportdata () &#123;</span><br><span class="line">		console.log(this.data)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">var b &#x3D; new TestIherit(&quot;python&quot;,10)</span><br><span class="line">console.log(b)</span><br><span class="line">&#x2F;&#x2F;TestIherit &#123; name: &#39;python&#39;, usetime: 0, data: 10 &#125;</span><br><span class="line">b.useonetime() &#x2F;&#x2F;1</span><br><span class="line">b.reportdata() &#x2F;&#x2F;10</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">月见樽</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.yuejianzun.xyz/2017/09/06/JavaScript%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B06/">http://www.yuejianzun.xyz/2017/09/06/JavaScript%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B06/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.yuejianzun.xyz" target="_blank">月见樽'blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/JavaScript/">JavaScript</a></div><div class="post_share"><div class="social-share" data-image="/img/1.PNG" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2017/09/06/%E5%9F%BA%E4%BA%8EPython%E7%9A%84Rosenblatt%E6%84%9F%E7%9F%A5%E5%99%A8%E6%A8%A1%E5%9E%8B/"><img class="prev-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">基于Python的Rosenblatt感知机模型</div></div></a></div><div class="next-post pull-right"><a href="/2017/09/06/JavaScript%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B05/"><img class="next-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">JavaScript入门笔记5</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2017/09/06/JavaScript入门笔记1/" title="JavaScript入门笔记1"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-09-06</div><div class="title">JavaScript入门笔记1</div></div></a></div><div><a href="/2017/09/06/JavaScript入门笔记2/" title="JavaScript入门笔记2"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-09-06</div><div class="title">JavaScript入门笔记2</div></div></a></div><div><a href="/2017/09/06/JavaScript入门笔记5/" title="JavaScript入门笔记5"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-09-06</div><div class="title">JavaScript入门笔记5</div></div></a></div><div><a href="/2017/09/06/JavaScript入门笔记4/" title="JavaScript入门笔记4"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-09-06</div><div class="title">JavaScript入门笔记4</div></div></a></div><div><a href="/2017/09/06/JavaScript入门笔记3/" title="JavaScript入门笔记3"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-09-06</div><div class="title">JavaScript入门笔记3</div></div></a></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/had.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">月见樽</div><div class="author-info__description">日隐月现，潜龙在渊</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/qiankun214"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.</span> <span class="toc-text">标准对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%AD%A3%E5%88%99%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.0.1.</span> <span class="toc-text">正则对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JSON%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.0.2.</span> <span class="toc-text">JSON对象</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B"><span class="toc-number">2.</span> <span class="toc-text">面向对象编程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1"><span class="toc-number">2.0.1.</span> <span class="toc-text">创建对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E5%9E%8B%E7%BB%A7%E6%89%BF"><span class="toc-number">2.0.2.</span> <span class="toc-text">原型继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E7%BB%A7%E6%89%BF"><span class="toc-number">2.0.3.</span> <span class="toc-text">类继承</span></a></li></ol></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/09/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%EF%BC%89/" title="网络学习笔记2——信号与系统">网络学习笔记2——信号与系统</a><time datetime="2020-11-09T15:51:13.000Z" title="发表于 2020-11-09 23:51:13">2020-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/" title="网络学习笔记1——协议分层">网络学习笔记1——协议分层</a><time datetime="2020-11-06T15:51:13.000Z" title="发表于 2020-11-06 23:51:13">2020-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/" title="高级综合工具StratusHLS学习笔记(4)">高级综合工具StratusHLS学习笔记(4)</a><time datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/" title="高级综合工具StratusHLS学习笔记(3)">高级综合工具StratusHLS学习笔记(3)</a><time datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/" title="高级综合工具StratusHLS学习笔记(2)">高级综合工具StratusHLS学习笔记(2)</a><time datetime="2020-07-19T15:51:13.000Z" title="发表于 2020-07-19 23:51:13">2020-07-19</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 月见樽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

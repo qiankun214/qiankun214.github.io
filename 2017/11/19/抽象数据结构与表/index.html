@@ -1,0 +1,221 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>抽象数据结构与表 | 月见樽'blog</title><meta name="keywords" content="golang,算法"><meta name="author" content="月见樽"><meta name="copyright" content="月见樽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="抽象数据结构抽象数据结构（ADT）是一些操作的集合，集合了一些必要且重用性高的操作，这些操作在一个项目中只被编写一次。抽象数据结构只定义操作的存在，并不定义操作的实现 表概念表是一种基础的数据结构，是一系列逻辑上”顺序”的数据（顺序指具有连续的数值索引）。例如$A{0},A{1},A_{2}$就是一个表，数据具有连续索引1,2,3。此外，还有前驱元和后继元的概念：  前驱元：某个元素之前的元素被称">
+<meta property="og:type" content="article">
+<meta property="og:title" content="抽象数据结构与表">
+<meta property="og:url" content="http://www.yuejianzun.xyz/2017/11/19/%E6%8A%BD%E8%B1%A1%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E8%A1%A8/index.html">
+<meta property="og:site_name" content="月见樽&#39;blog">
+<meta property="og:description" content="抽象数据结构抽象数据结构（ADT）是一些操作的集合，集合了一些必要且重用性高的操作，这些操作在一个项目中只被编写一次。抽象数据结构只定义操作的存在，并不定义操作的实现 表概念表是一种基础的数据结构，是一系列逻辑上”顺序”的数据（顺序指具有连续的数值索引）。例如$A{0},A{1},A_{2}$就是一个表，数据具有连续索引1,2,3。此外，还有前驱元和后继元的概念：  前驱元：某个元素之前的元素被称">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.yuejianzun.xyz/img/1.PNG">
+<meta property="article:published_time" content="2017-11-19T06:40:29.000Z">
+<meta property="article:modified_time" content="2020-11-27T16:47:57.233Z">
+<meta property="article:author" content="月见樽">
+<meta property="article:tag" content="golang">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yuejianzun.xyz/img/1.PNG"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.yuejianzun.xyz/2017/11/19/%E6%8A%BD%E8%B1%A1%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E8%A1%A8/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-11-28 00:47:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/had.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/1.PNG)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">月见樽'blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">抽象数据结构与表</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2017-11-19T06:40:29.000Z" title="发表于 2017-11-19 14:40:29">2017-11-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-27T16:47:57.233Z" title="更新于 2020-11-28 00:47:57">2020-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/">算法学习</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">822</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="抽象数据结构"><a href="#抽象数据结构" class="headerlink" title="抽象数据结构"></a>抽象数据结构</h1><p>抽象数据结构（ADT）是一些操作的集合，集合了一些必要且重用性高的操作，这些操作在一个项目中只被编写一次。抽象数据结构只定义操作的存在，并不定义操作的实现</p>
+<h1 id="表"><a href="#表" class="headerlink" title="表"></a>表</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>表是一种基础的数据结构，是一系列逻辑上”顺序”的数据（顺序指具有连续的数值索引）。例如$A<em>{0},A</em>{1},A_{2}$就是一个表，数据具有连续索引1,2,3。此外，还有前驱元和后继元的概念：</p>
+<ul>
+<li>前驱元：某个元素之前的元素被称为该元素的前驱元（不定义第一个元素的前驱元）</li>
+<li>后继元：某个元素之后的元素被称为该元素的后继元（不定义最后一个元素的后继元）</li>
+</ul>
+<h2 id="表的实现方法"><a href="#表的实现方法" class="headerlink" title="表的实现方法"></a>表的实现方法</h2><ul>
+<li>数组实现：查找快，插入与删除慢，大小固定，内存中一般连续</li>
+<li>链表实现：查找较慢，插入与删除相对较快，大小可变，内存中一般不连续</li>
+</ul>
+<h2 id="表需要的方法"><a href="#表需要的方法" class="headerlink" title="表需要的方法"></a>表需要的方法</h2><ul>
+<li>is_empty：判断是否为空表</li>
+<li>is_last：判断是否为结尾</li>
+</ul>
+<ul>
+<li>find：根据值获得在表中的节点（find_previous：获得前驱元）</li>
+<li>visit：根据位置获得值（find）</li>
+<li>delete：删除元素</li>
+<li>insert：插入元素</li>
+</ul>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="接口与结构体"><a href="#接口与结构体" class="headerlink" title="接口与结构体"></a>接口与结构体</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//表中数据类型</span></span><br><span class="line"><span class="keyword">type</span> table_data <span class="keyword">struct</span> &#123;</span><br><span class="line">	data <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//链表节点类型</span></span><br><span class="line"><span class="keyword">type</span> table_node <span class="keyword">struct</span> &#123;</span><br><span class="line">	data table_data</span><br><span class="line">	next *table_node</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//方法接口</span></span><br><span class="line"><span class="keyword">type</span> table_adt <span class="keyword">interface</span> &#123;</span><br><span class="line">	is_empty() <span class="keyword">bool</span></span><br><span class="line">	is_last(node table_node) <span class="keyword">bool</span></span><br><span class="line">	size() <span class="keyword">int</span></span><br><span class="line">	find(data table_data) *table_node</span><br><span class="line">	find_previous(data table_data) *table_node</span><br><span class="line">	find_last() *table_node</span><br><span class="line">	visit(num <span class="keyword">int</span>) *table_node</span><br><span class="line">	<span class="built_in">delete</span>(data table_data)</span><br><span class="line">	insert(data table_data, previous *table_node)</span><br><span class="line">	<span class="built_in">append</span>(data table_data)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//链表结构体</span></span><br><span class="line"><span class="keyword">type</span> link_table <span class="keyword">struct</span> &#123;</span><br><span class="line">	head   table_node</span><br><span class="line">	length <span class="keyword">int</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="方法的实现"><a href="#方法的实现" class="headerlink" title="方法的实现"></a>方法的实现</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(table *link_table)</span> <span class="title">is_empty</span><span class="params">()</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> table.head.next == <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(table *link_table)</span> <span class="title">is_last</span><span class="params">(node table_node)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> node.next == <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(table *link_table)</span> <span class="title">find</span><span class="params">(data table_data)</span> *<span class="title">table_node</span></span> &#123;</span><br><span class="line">	node := table.head.next</span><br><span class="line">	<span class="keyword">for</span> (node != <span class="literal">nil</span>) &amp;&amp; (node.data != data) &#123;</span><br><span class="line">		<span class="comment">// fmt.Println(node.data, data, (node.data != data))</span></span><br><span class="line">		node = node.next</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> node</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(table *link_table)</span> <span class="title">find_previous</span><span class="params">(data table_data)</span> *<span class="title">table_node</span></span> &#123;</span><br><span class="line">	node := &amp;table.head</span><br><span class="line">	<span class="keyword">for</span> (node.next.data != data) &amp;&amp; (node.next != <span class="literal">nil</span>) &#123;</span><br><span class="line">		node = node.next</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> node</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(table *link_table)</span> <span class="title">find_last</span><span class="params">()</span> *<span class="title">table_node</span></span> &#123;</span><br><span class="line">	node := &amp;table.head</span><br><span class="line">	<span class="keyword">for</span> node.next != <span class="literal">nil</span> &#123;</span><br><span class="line">		node = node.next</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> node</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(table *link_table)</span> <span class="title">visit</span><span class="params">(num <span class="keyword">int</span>)</span> *<span class="title">table_node</span></span> &#123;</span><br><span class="line">	node := table.head.next</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; num; i++ &#123;</span><br><span class="line">		node = node.next</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> node</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(table *link_table)</span> <span class="title">delete</span><span class="params">(data table_data)</span></span> &#123;</span><br><span class="line">	previous := table.find_previous(data)</span><br><span class="line">	<span class="keyword">if</span> previous != <span class="literal">nil</span> &#123;</span><br><span class="line">		previous.next = previous.next.next</span><br><span class="line">		previous.next.next = <span class="literal">nil</span></span><br><span class="line">	&#125;</span><br><span class="line">	table.length -= <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(table *link_table)</span> <span class="title">insert</span><span class="params">(data table_data, previous *table_node)</span></span> &#123;</span><br><span class="line">	node := &amp;table_node&#123;data, previous.next&#125;</span><br><span class="line">	previous.next = node</span><br><span class="line">	table.length += <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(table *link_table)</span> <span class="title">append</span><span class="params">(data table_data)</span></span> &#123;</span><br><span class="line">	last := table.find_last()</span><br><span class="line">	table.insert(data, last)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(table *link_table)</span> <span class="title">size</span><span class="params">()</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> table.length</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//构造函数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">new_link_table</span><span class="params">()</span> *<span class="title">link_table</span></span> &#123;</span><br><span class="line">	head := table_node&#123;table_data&#123;&#125;, <span class="literal">nil</span>&#125;</span><br><span class="line">	<span class="keyword">return</span> &amp;link_table&#123;head, <span class="number">0</span>&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="go笔记"><a href="#go笔记" class="headerlink" title="go笔记"></a>go笔记</h3><ul>
+<li>go语言的面向对象使用struct实现，方法和属性分开定义</li>
+<li>方法的定义是<code>func (a *b) name () [return_type] &#123;&#125;</code>其中<code>(a *b)</code>表示该函数是哪个类型的方法，调用过程中，<code>.</code>运算符将运算符前的变量赋给a，类似于Python中的<code>self</code>和C++中的<code>this</code>指针</li>
+<li>接口与C++中接口类似，可用于实现多态，另外如果使用接口访问”对象”，可以保护对象的属性和未在接口中声明的方法，实现类似私有方法的功能</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">月见樽</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.yuejianzun.xyz/2017/11/19/%E6%8A%BD%E8%B1%A1%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E8%A1%A8/">http://www.yuejianzun.xyz/2017/11/19/%E6%8A%BD%E8%B1%A1%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E8%A1%A8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.yuejianzun.xyz" target="_blank">月见樽'blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/golang/">golang</a><a class="post-meta__tags" href="/tags/%E7%AE%97%E6%B3%95/">算法</a></div><div class="post_share"><div class="social-share" data-image="/img/1.PNG" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2017/11/19/%E5%9F%BA%E4%BA%8Esklearn%E7%9A%84%E9%9B%86%E6%88%90%E5%88%86%E7%B1%BB%E5%99%A8/"><img class="prev-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">基于sklearn的集成分类器</div></div></a></div><div class="next-post pull-right"><a href="/2017/11/16/logN%E5%A4%8D%E6%9D%82%E5%BA%A6%E7%AE%97%E6%B3%95%E4%B8%8E%E4%B8%80%E4%BA%9B%E7%A4%BA%E4%BE%8B/"><img class="next-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">logN复杂度算法与一些示例</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2017/12/25/AVL二叉查找树/" title="AVL二叉查找树"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-12-25</div><div class="title">AVL二叉查找树</div></div></a></div><div><a href="/2017/11/16/logN复杂度算法与一些示例/" title="logN复杂度算法与一些示例"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-11-16</div><div class="title">logN复杂度算法与一些示例</div></div></a></div><div><a href="/2017/12/14/二叉查找树/" title="二叉查找树"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-12-14</div><div class="title">二叉查找树</div></div></a></div><div><a href="/2018/01/16/分离链接的散列/" title="分离链接的散列"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-01-16</div><div class="title">分离链接的散列</div></div></a></div><div><a href="/2018/03/15/基于优先堆的调度队列/" title="基于优先堆的调度队列"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-03-15</div><div class="title">基于优先堆的调度队列</div></div></a></div><div><a href="/2018/02/28/基本2D优先堆/" title="基本2D优先堆"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-02-28</div><div class="title">基本2D优先堆</div></div></a></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/had.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">月见樽</div><div class="author-info__description">日隐月现，潜龙在渊</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/qiankun214"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8A%BD%E8%B1%A1%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">抽象数据结构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%A8"><span class="toc-number">2.</span> <span class="toc-text">表</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-number">2.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A8%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95"><span class="toc-number">2.2.</span> <span class="toc-text">表的实现方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A1%A8%E9%9C%80%E8%A6%81%E7%9A%84%E6%96%B9%E6%B3%95"><span class="toc-number">2.3.</span> <span class="toc-text">表需要的方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.4.</span> <span class="toc-text">实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E4%B8%8E%E7%BB%93%E6%9E%84%E4%BD%93"><span class="toc-number">2.4.1.</span> <span class="toc-text">接口与结构体</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%B3%95%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.4.2.</span> <span class="toc-text">方法的实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#go%E7%AC%94%E8%AE%B0"><span class="toc-number">2.4.3.</span> <span class="toc-text">go笔记</span></a></li></ol></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/09/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%EF%BC%89/" title="网络学习笔记2——信号与系统">网络学习笔记2——信号与系统</a><time datetime="2020-11-09T15:51:13.000Z" title="发表于 2020-11-09 23:51:13">2020-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/" title="网络学习笔记1——协议分层">网络学习笔记1——协议分层</a><time datetime="2020-11-06T15:51:13.000Z" title="发表于 2020-11-06 23:51:13">2020-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/" title="高级综合工具StratusHLS学习笔记(4)">高级综合工具StratusHLS学习笔记(4)</a><time datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/" title="高级综合工具StratusHLS学习笔记(3)">高级综合工具StratusHLS学习笔记(3)</a><time datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/" title="高级综合工具StratusHLS学习笔记(2)">高级综合工具StratusHLS学习笔记(2)</a><time datetime="2020-07-19T15:51:13.000Z" title="发表于 2020-07-19 23:51:13">2020-07-19</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 月见樽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AVL二叉查找树 | 月见樽'blog</title><meta name="keywords" content="golang,算法"><meta name="author" content="月见樽"><meta name="copyright" content="月见樽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="AVL二叉查找树AVL二叉查找树是一种特殊的二叉查找树，其规定  每个节点的左子树和右子树的高度差最多是1  AVL调整算法AVL树插入一个新的节点到某个节点下破坏AVL树的要求时，对于破坏条件的第一个节点a（最靠近底部&#x2F;深度最深的节点），具有四种情况：  插入a的左儿子节点的左子树 插入a的左儿子节点的右子树 插入a的右儿子节点的左子树 插入a的右儿子节点的右子树  其中，第一种和第四种可以看成">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AVL二叉查找树">
+<meta property="og:url" content="http://www.yuejianzun.xyz/2017/12/25/AVL%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91/index.html">
+<meta property="og:site_name" content="月见樽&#39;blog">
+<meta property="og:description" content="AVL二叉查找树AVL二叉查找树是一种特殊的二叉查找树，其规定  每个节点的左子树和右子树的高度差最多是1  AVL调整算法AVL树插入一个新的节点到某个节点下破坏AVL树的要求时，对于破坏条件的第一个节点a（最靠近底部&#x2F;深度最深的节点），具有四种情况：  插入a的左儿子节点的左子树 插入a的左儿子节点的右子树 插入a的右儿子节点的左子树 插入a的右儿子节点的右子树  其中，第一种和第四种可以看成">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.yuejianzun.xyz/img/1.PNG">
+<meta property="article:published_time" content="2017-12-25T12:41:25.000Z">
+<meta property="article:modified_time" content="2020-11-27T16:47:57.048Z">
+<meta property="article:author" content="月见樽">
+<meta property="article:tag" content="golang">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yuejianzun.xyz/img/1.PNG"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.yuejianzun.xyz/2017/12/25/AVL%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-11-28 00:47:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/had.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/1.PNG)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">月见樽'blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">AVL二叉查找树</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2017-12-25T12:41:25.000Z" title="发表于 2017-12-25 20:41:25">2017-12-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-27T16:47:57.048Z" title="更新于 2020-11-28 00:47:57">2020-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/">算法学习</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">697</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="AVL二叉查找树"><a href="#AVL二叉查找树" class="headerlink" title="AVL二叉查找树"></a>AVL二叉查找树</h1><p>AVL二叉查找树是一种特殊的二叉查找树，其规定</p>
+<blockquote>
+<p>每个节点的左子树和右子树的高度差最多是1</p>
+</blockquote>
+<h2 id="AVL调整算法"><a href="#AVL调整算法" class="headerlink" title="AVL调整算法"></a>AVL调整算法</h2><p>AVL树插入一个新的节点到某个节点下破坏AVL树的要求时，对于破坏条件的第一个节点a（最靠近底部/深度最深的节点），具有四种情况：</p>
+<ul>
+<li>插入a的左儿子节点的左子树</li>
+<li>插入a的左儿子节点的右子树</li>
+<li>插入a的右儿子节点的左子树</li>
+<li>插入a的右儿子节点的右子树</li>
+</ul>
+<p>其中，第一种和第四种可以看成一种情况的镜像，均是插入外侧；第二种和第三种可以看成另一种情况的镜像，均是插入内侧。这两种情况分别对应两种不同调整方法——单旋转和双旋转。其核心思想都相同，都是尽量将违规子树的父节点的位置尽量向上提。</p>
+<h3 id="单旋转调整"><a href="#单旋转调整" class="headerlink" title="单旋转调整"></a>单旋转调整</h3><p>考虑入下左图所示的情况，假设X与Z的深度相同且，整棵树符合AVL条件：</p>
+<img src="/2017/12/25/AVL%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91/simple.png" class="">
+<p>若插入一个小于b的值，则X的深度将+1，从a节点来看，左子树的深度就比右子树大2，不符合条件。调整的方法如右图所示，以下是调整的合理性：</p>
+<ul>
+<li>查找树条件：X子树存储的数据小于b，Z子树存储的数据大于a，Y子树存储的数据范围时(b,a)，且a&gt;b，由此看出转换后的数依然是一颗查找树。</li>
+<li>AVL条件：X深度比Z深1，但Z的位置要比X低1，因此a节点开始的树满足AVL条件。a树原来的深度为max{X+2,Y+2,Z+1}，现在a树的深度是max{X+1,Y+2,Z+2}。由于原树满足AVL条件，则Y的深度不会比原来X的深度深，所以深度分别为X1+2，X2+1，其中X2=X1+1，所以a节点深度不变，不影响上层AVL结构。</li>
+</ul>
+<p>由此，只要将b提为树根，a放到b的右子树，再将Y挂到a的左子树就可以完成调整</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>待调整指针</th>
+<th>调整前</th>
+<th>调整后</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>树根指针</td>
+<td>a</td>
+<td>b</td>
+</tr>
+<tr>
+<td>b左儿子（不变）</td>
+<td>X</td>
+<td>X</td>
+</tr>
+<tr>
+<td>b右儿子</td>
+<td>Y</td>
+<td>a</td>
+</tr>
+<tr>
+<td>a左儿子</td>
+<td>b</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>a右儿子（不变）</td>
+<td>Z</td>
+<td>Z</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="双旋转"><a href="#双旋转" class="headerlink" title="双旋转"></a>双旋转</h3><p>考虑下左图情况</p>
+<img src="/2017/12/25/AVL%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91/double.png" class="">
+<p>设左图为一颗AVL树，X,Y的深度比W,Z浅1（X,Y深度相等，W,Z深度相等），假若在X或Y中插入一个节点，在a节点的AVL条件将不同，需要使用双旋转调整，调整成右图的样子，合理性如下：</p>
+<ul>
+<li>查找树条件：对于W中的w，有w\<b；对于X中的x，有b\<x\<c；对于Y中的y，有c\<y\<a；对于Z中的z，有z\>a。且有b\&lt;c\&lt;a。在右侧数中以上均成立</li>
+<li>AVL条件：c的子树深度为1+max{W,X}，右侧深度为1+max{Y,Z}，W,X,Y,Z中有三个相同，另一个比其他都要浅1，则a的AVL条件成立。双旋转处理后c树深度不变，因此不影响上层的AVL条件</li>
+</ul>
+<p>调整情况如下</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>待调整指针</th>
+<th>调整前</th>
+<th>调整后</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>树根节点</td>
+<td>a</td>
+<td>c</td>
+</tr>
+<tr>
+<td>a左儿子</td>
+<td>b</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>a右儿子（不变）</td>
+<td>Z</td>
+<td>Z</td>
+</tr>
+<tr>
+<td>b左儿子（不变）</td>
+<td>W</td>
+<td>W</td>
+</tr>
+<tr>
+<td>b右儿子</td>
+<td>c</td>
+<td>X</td>
+</tr>
+<tr>
+<td>c左儿子</td>
+<td>X</td>
+<td>b</td>
+</tr>
+<tr>
+<td>c右儿子</td>
+<td>Y</td>
+<td>a</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>同时，双旋转可以看成b-c和c-a之间的两次单旋转：</p>
+<img src="/2017/12/25/AVL%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91/d_to_s.png" class="">
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><h3 id="结构体"><a href="#结构体" class="headerlink" title="结构体"></a>结构体</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> tree_data <span class="keyword">struct</span> &#123;</span><br><span class="line">	data <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> tree_node <span class="keyword">struct</span> &#123;</span><br><span class="line">	num    <span class="keyword">int</span></span><br><span class="line">	height <span class="keyword">int</span></span><br><span class="line">	data   tree_data</span><br><span class="line">	parent *tree_node</span><br><span class="line">	left   *tree_node</span><br><span class="line">	right  *tree_node</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">New_tree_node</span><span class="params">(num <span class="keyword">int</span>, data tree_data, parent *tree_node)</span> *<span class="title">tree_node</span></span> &#123;</span><br><span class="line">	node := tree_node&#123;&#125;</span><br><span class="line">	node.num = num</span><br><span class="line">	node.data = data</span><br><span class="line">	node.height = <span class="number">0</span></span><br><span class="line">	node.left = <span class="literal">nil</span></span><br><span class="line">	node.right = <span class="literal">nil</span></span><br><span class="line">	node.parent = parent</span><br><span class="line">	<span class="keyword">return</span> &amp;node</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="插入方法"><a href="#插入方法" class="headerlink" title="插入方法"></a>插入方法</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *tree_node)</span> <span class="title">Insert</span><span class="params">(num <span class="keyword">int</span>, data tree_data)</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> num &gt; t.num &#123;</span><br><span class="line">		<span class="keyword">if</span> t.right != <span class="literal">nil</span> &#123;</span><br><span class="line">			t.right.Insert(num, data)</span><br><span class="line">          	 <span class="comment">//调整算法，向右子树插入，只能是右侧深度破坏条件</span></span><br><span class="line">			<span class="keyword">if</span> t.GetLenght(t.right) &gt; t.GetLenght(t.left)+<span class="number">1</span> &#123;</span><br><span class="line">				<span class="keyword">if</span> num &gt; t.right.num &#123;</span><br><span class="line">                  	  <span class="comment">//当待插入的数大于右侧标签，为插入右节点的右子树，单旋转</span></span><br><span class="line">					t.RightSimpleRotate()</span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                  	  <span class="comment">//当待插入的数小于右侧标签，为插入右节点的左子树，双旋转</span></span><br><span class="line">					t.RightDoubleRotate()</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          	 <span class="comment">//新建节点不会导致条件破坏</span></span><br><span class="line">			t.right = New_tree_node(num, data, t)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span> num &lt; t.num &#123;</span><br><span class="line">		<span class="keyword">if</span> t.left != <span class="literal">nil</span> &#123;</span><br><span class="line">			t.left.Insert(num, data)</span><br><span class="line">          	 <span class="comment">//调整算法，向左子树插入，只能是左侧深度破坏条件</span></span><br><span class="line">			<span class="keyword">if</span> t.GetLenght(t.left) &gt; t.GetLenght(t.right)+<span class="number">1</span> &#123;</span><br><span class="line">				<span class="keyword">if</span> num &lt; t.left.num &#123;</span><br><span class="line">                  	  <span class="comment">//当待插入的数小于左侧标签，为插入左节点的左子树，单旋转</span></span><br><span class="line">					t.LeftSimpleRotate()</span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                  	  <span class="comment">//当待插入的数大于左侧标签，为插入左节点的右子树，双旋转</span></span><br><span class="line">					t.LeftDoubleRotate()</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          	 <span class="comment">//新建节点不会导致条件破坏</span></span><br><span class="line">			t.left = New_tree_node(num, data, t)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		t.data = data</span><br><span class="line">	&#125;</span><br><span class="line">	t.compute_height()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="单旋转方法"><a href="#单旋转方法" class="headerlink" title="单旋转方法"></a>单旋转方法</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *tree_node)</span> <span class="title">LeftSimpleRotate</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> t.parent.left == t &#123;</span><br><span class="line">		t.parent.left = t.left</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		t.parent.right = t.left</span><br><span class="line">	&#125;</span><br><span class="line">	temp := t.left.right</span><br><span class="line">	t.left.right = t</span><br><span class="line">	t.left.parent = t.parent</span><br><span class="line"></span><br><span class="line">	t.parent = t.left</span><br><span class="line">	t.left = temp</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *tree_node)</span> <span class="title">RightSimpleRotate</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> t.parent.left == t &#123;</span><br><span class="line">		t.parent.left = t.right</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		t.parent.right = t.right</span><br><span class="line">	&#125;</span><br><span class="line">	temp := t.right.left</span><br><span class="line">	t.right.left = t</span><br><span class="line">	t.right.parent = t.parent</span><br><span class="line"></span><br><span class="line">	t.parent = t.right</span><br><span class="line">	t.right = temp</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="双旋转-1"><a href="#双旋转-1" class="headerlink" title="双旋转"></a>双旋转</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *tree_node)</span> <span class="title">LeftDoubleRotate</span><span class="params">()</span></span> &#123;</span><br><span class="line">	t.left.RightSimpleRotate()</span><br><span class="line">	t.LeftSimpleRotate()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *tree_node)</span> <span class="title">RightDoubleRotate</span><span class="params">()</span></span> &#123;</span><br><span class="line">	t.right.LeftSimpleRotate()</span><br><span class="line">	t.RightSimpleRotate()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="其他方法"><a href="#其他方法" class="headerlink" title="其他方法"></a>其他方法</h3><h4 id="计算深度"><a href="#计算深度" class="headerlink" title="计算深度"></a>计算深度</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *tree_node)</span> <span class="title">compute_height</span><span class="params">()</span></span> &#123;</span><br><span class="line">	t.height = <span class="keyword">int</span>(math.Max(<span class="keyword">float64</span>(t.GetLenght(t.left)), <span class="keyword">float64</span>(t.GetLenght(t.right)))) + <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="获得深度"><a href="#获得深度" class="headerlink" title="获得深度"></a>获得深度</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *tree_node)</span> <span class="title">GetLenght</span><span class="params">(node *tree_node)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> node == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> node.height</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *tree_node)</span> <span class="title">Visit</span><span class="params">(indent <span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">	fmt.Println(indent, t.num, t.GetLenght(t.left), t.GetLenght(t.right))</span><br><span class="line">	<span class="keyword">if</span> t.left != <span class="literal">nil</span> &#123;</span><br><span class="line">		t.left.Visit(indent + <span class="string">&quot;  &quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> t.right != <span class="literal">nil</span> &#123;</span><br><span class="line">		t.right.Visit(indent + <span class="string">&quot;  &quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">月见樽</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.yuejianzun.xyz/2017/12/25/AVL%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91/">http://www.yuejianzun.xyz/2017/12/25/AVL%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.yuejianzun.xyz" target="_blank">月见樽'blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/golang/">golang</a><a class="post-meta__tags" href="/tags/%E7%AE%97%E6%B3%95/">算法</a></div><div class="post_share"><div class="social-share" data-image="/img/1.PNG" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2018/01/06/%E5%9F%BA%E4%BA%8Esklearn%E7%9A%84%E6%96%87%E6%9C%AC%E7%89%B9%E5%BE%81%E6%8A%BD%E5%8F%96/"><img class="prev-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">基于sklearn的文本特征抽取</div></div></a></div><div class="next-post pull-right"><a href="/2017/12/18/%E6%9C%89%E5%9F%BA%E7%A1%80mxnet%E5%92%8Cgluon%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/"><img class="next-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">有基础mxnet和gluon快速入门</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2017/11/16/logN复杂度算法与一些示例/" title="logN复杂度算法与一些示例"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-11-16</div><div class="title">logN复杂度算法与一些示例</div></div></a></div><div><a href="/2017/12/14/二叉查找树/" title="二叉查找树"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-12-14</div><div class="title">二叉查找树</div></div></a></div><div><a href="/2018/01/16/分离链接的散列/" title="分离链接的散列"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-01-16</div><div class="title">分离链接的散列</div></div></a></div><div><a href="/2018/03/15/基于优先堆的调度队列/" title="基于优先堆的调度队列"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-03-15</div><div class="title">基于优先堆的调度队列</div></div></a></div><div><a href="/2018/02/28/基本2D优先堆/" title="基本2D优先堆"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-02-28</div><div class="title">基本2D优先堆</div></div></a></div><div><a href="/2018/03/27/左式堆/" title="左式堆"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-03-27</div><div class="title">左式堆</div></div></a></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/had.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">月见樽</div><div class="author-info__description">日隐月现，潜龙在渊</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/qiankun214"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#AVL%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91"><span class="toc-number">1.</span> <span class="toc-text">AVL二叉查找树</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#AVL%E8%B0%83%E6%95%B4%E7%AE%97%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text">AVL调整算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E6%97%8B%E8%BD%AC%E8%B0%83%E6%95%B4"><span class="toc-number">1.1.1.</span> <span class="toc-text">单旋转调整</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E6%97%8B%E8%BD%AC"><span class="toc-number">1.1.2.</span> <span class="toc-text">双旋转</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.2.</span> <span class="toc-text">代码实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E6%9E%84%E4%BD%93"><span class="toc-number">1.2.1.</span> <span class="toc-text">结构体</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.2.</span> <span class="toc-text">构造函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.3.</span> <span class="toc-text">插入方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8D%95%E6%97%8B%E8%BD%AC%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.4.</span> <span class="toc-text">单旋转方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8C%E6%97%8B%E8%BD%AC-1"><span class="toc-number">1.2.5.</span> <span class="toc-text">双旋转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.6.</span> <span class="toc-text">其他方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%B7%B1%E5%BA%A6"><span class="toc-number">1.2.6.1.</span> <span class="toc-text">计算深度</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%8E%B7%E5%BE%97%E6%B7%B1%E5%BA%A6"><span class="toc-number">1.2.6.2.</span> <span class="toc-text">获得深度</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%81%8D%E5%8E%86"><span class="toc-number">1.2.6.3.</span> <span class="toc-text">遍历</span></a></li></ol></li></ol></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/09/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%EF%BC%89/" title="网络学习笔记2——信号与系统">网络学习笔记2——信号与系统</a><time datetime="2020-11-09T15:51:13.000Z" title="发表于 2020-11-09 23:51:13">2020-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/" title="网络学习笔记1——协议分层">网络学习笔记1——协议分层</a><time datetime="2020-11-06T15:51:13.000Z" title="发表于 2020-11-06 23:51:13">2020-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/" title="高级综合工具StratusHLS学习笔记(4)">高级综合工具StratusHLS学习笔记(4)</a><time datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/" title="高级综合工具StratusHLS学习笔记(3)">高级综合工具StratusHLS学习笔记(3)</a><time datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/" title="高级综合工具StratusHLS学习笔记(2)">高级综合工具StratusHLS学习笔记(2)</a><time datetime="2020-07-19T15:51:13.000Z" title="发表于 2020-07-19 23:51:13">2020-07-19</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 月见樽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>有基础mxnet和gluon快速入门 | 月见樽'blog</title><meta name="keywords" content="NeuralNetwork,Python"><meta name="author" content="月见樽"><meta name="copyright" content="月见樽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="1234import numpy as npimport mxnet as mximport logginglogging.getLogger().setLevel(logging.DEBUG)  # logging to stdout mxnet基本数据结构ndarrayndarray是mxnet中最基本的数据结构，ndarray和mxnet的关系与tensor和pytorch的关系类似。该数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="有基础mxnet和gluon快速入门">
+<meta property="og:url" content="http://www.yuejianzun.xyz/2017/12/18/%E6%9C%89%E5%9F%BA%E7%A1%80mxnet%E5%92%8Cgluon%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="月见樽&#39;blog">
+<meta property="og:description" content="1234import numpy as npimport mxnet as mximport logginglogging.getLogger().setLevel(logging.DEBUG)  # logging to stdout mxnet基本数据结构ndarrayndarray是mxnet中最基本的数据结构，ndarray和mxnet的关系与tensor和pytorch的关系类似。该数据">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.yuejianzun.xyz/img/1.PNG">
+<meta property="article:published_time" content="2017-12-18T14:26:01.000Z">
+<meta property="article:modified_time" content="2020-11-27T16:47:57.246Z">
+<meta property="article:author" content="月见樽">
+<meta property="article:tag" content="NeuralNetwork">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yuejianzun.xyz/img/1.PNG"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.yuejianzun.xyz/2017/12/18/%E6%9C%89%E5%9F%BA%E7%A1%80mxnet%E5%92%8Cgluon%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-11-28 00:47:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/had.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/1.PNG)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">月见樽'blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">有基础mxnet和gluon快速入门</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2017-12-18T14:26:01.000Z" title="发表于 2017-12-18 22:26:01">2017-12-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-27T16:47:57.246Z" title="更新于 2020-11-28 00:47:57">2020-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>13分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> mxnet <span class="keyword">as</span> mx</span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line">logging.getLogger().setLevel(logging.DEBUG)  <span class="comment"># logging to stdout</span></span><br></pre></td></tr></table></figure>
+<h1 id="mxnet基本数据结构"><a href="#mxnet基本数据结构" class="headerlink" title="mxnet基本数据结构"></a>mxnet基本数据结构</h1><h2 id="ndarray"><a href="#ndarray" class="headerlink" title="ndarray"></a>ndarray</h2><p>ndarray是mxnet中最基本的数据结构，ndarray和mxnet的关系与tensor和pytorch的关系类似。该数据结构可以看成numpy的一种变体，基本上numpy的操作ndarray都可以实现。与ndarray相关的部分是<code>mxnet.nd.</code>，关于ndarray操作的API可查看官方<a target="_blank" rel="noopener" href="https://mxnet.incubator.apache.org/api/python/ndarray/ndarray.html">API文档</a></p>
+<h3 id="ndarray操作"><a href="#ndarray操作" class="headerlink" title="ndarray操作"></a>ndarray操作</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = mx.nd.random.normal(shape=(<span class="number">4</span>,<span class="number">3</span>))</span><br><span class="line">b = mx.nd.ones((<span class="number">4</span>,<span class="number">3</span>))</span><br><span class="line">print(a)</span><br><span class="line">print(b)</span><br><span class="line">print(a + b)</span><br></pre></td></tr></table></figure>
+<pre><code>[[ 0.23107234  0.30030754 -0.32433936]
+ [ 1.04932904  0.7368623  -0.0097888 ]
+ [ 0.46656415  1.72023427  0.87809837]
+ [-1.07333779 -0.86925656 -0.26717702]]
+&lt;NDArray 4x3 @cpu(0)&gt;
+
+[[ 1.  1.  1.]
+ [ 1.  1.  1.]
+ [ 1.  1.  1.]
+ [ 1.  1.  1.]]
+&lt;NDArray 4x3 @cpu(0)&gt;
+
+[[ 1.23107231  1.30030751  0.67566061]
+ [ 2.04932904  1.7368623   0.99021119]
+ [ 1.46656418  2.72023439  1.87809837]
+ [-0.07333779  0.13074344  0.73282301]]
+&lt;NDArray 4x3 @cpu(0)&gt;
+</code></pre><h3 id="ndarray与numpy相互转换"><a href="#ndarray与numpy相互转换" class="headerlink" title="ndarray与numpy相互转换"></a>ndarray与numpy相互转换</h3><ul>
+<li><code>mxnet.nd.array()</code>传入一个numpy矩阵可以将其转换为ndarray</li>
+<li>使用<code>ndarray.asnumpy()</code>方法将ndarray转为numpy矩阵</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a = np.random.randn(<span class="number">2</span>,<span class="number">3</span>)</span><br><span class="line">print(a,<span class="built_in">type</span>(a))</span><br><span class="line">b = mx.nd.array(a)</span><br><span class="line">print(b,<span class="built_in">type</span>(b))</span><br><span class="line">b = b.asnumpy()</span><br><span class="line">print(b,<span class="built_in">type</span>(b))</span><br></pre></td></tr></table></figure>
+<pre><code>[[ 0.85512384 -0.58311797 -1.41627038]
+ [-0.56862628  1.15431958  0.13168715]] &lt;class &#39;numpy.ndarray&#39;&gt;
+
+[[ 0.85512382 -0.58311796 -1.41627038]
+ [-0.56862628  1.15431952  0.13168715]]
+&lt;NDArray 2x3 @cpu(0)&gt; &lt;class &#39;mxnet.ndarray.ndarray.NDArray&#39;&gt;
+[[ 0.85512382 -0.58311796 -1.41627038]
+ [-0.56862628  1.15431952  0.13168715]] &lt;class &#39;numpy.ndarray&#39;&gt;
+</code></pre><h2 id="symbol"><a href="#symbol" class="headerlink" title="symbol"></a>symbol</h2><p>symbol是另一个重要的概念，可以理解为符号，就像我们平时使用的代数符号x，y，z一样。一个简单的类比，一个函数$f(x) = x^{2}$，符号x就是symbol，而具体x的值就是ndarray，关于symbol的是<code>mxnet.sym.</code>，具体可参照官方<a target="_blank" rel="noopener" href="https://mxnet.incubator.apache.org/api/python/symbol/symbol.html">API文档</a></p>
+<h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3><ul>
+<li>使用<code>mxnet.sym.Variable()</code>传入名称可建立一个symbol</li>
+<li>使用<code>mxnet.viz.plot_network(symbol=)</code>传入symbol可以绘制运算图</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = mx.sym.Variable(<span class="string">&#x27;a&#x27;</span>)</span><br><span class="line">b = mx.sym.Variable(<span class="string">&#x27;b&#x27;</span>)</span><br><span class="line">c = mx.sym.add_n(a,b,name=<span class="string">&quot;c&quot;</span>)</span><br><span class="line">mx.viz.plot_network(symbol=c)</span><br></pre></td></tr></table></figure>
+<img src="/2017/12/18/%E6%9C%89%E5%9F%BA%E7%A1%80mxnet%E5%92%8Cgluon%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/output_6_0.png" class="">
+<h3 id="带入ndarray"><a href="#带入ndarray" class="headerlink" title="带入ndarray"></a>带入ndarray</h3><p>使用<code>mxnet.sym.bind()</code>方法可以获得一个带入操作数的对象，再使用<code>forward()</code>方法可运算出数值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x = c.bind(ctx=mx.cpu(),args=&#123;<span class="string">&quot;a&quot;</span>: mx.nd.ones(<span class="number">5</span>),<span class="string">&quot;b&quot;</span>:mx.nd.ones(<span class="number">5</span>)&#125;)</span><br><span class="line">result = x.forward()</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+<pre><code>[
+[ 2.  2.  2.  2.  2.]
+&lt;NDArray 5 @cpu(0)&gt;]
+</code></pre><h1 id="mxnet的数据载入"><a href="#mxnet的数据载入" class="headerlink" title="mxnet的数据载入"></a>mxnet的数据载入</h1><p>深度学习中数据的载入方式非常重要，mxnet提供了<code>mxnet.io.</code>的一系列dataiter用于处理数据载入，详细可参照<a target="_blank" rel="noopener" href="https://mxnet.incubator.apache.org/api/python/io/io.html">官方API文档</a>。同时，动态图接口gluon也提供了<code>mxnet.gluon.data.</code>系列的dataiter用于数据载入,详细可参照<a target="_blank" rel="noopener" href="https://mxnet.incubator.apache.org/api/python/gluon/data.html">官方API文档</a></p>
+<h2 id="mxnet-io数据载入"><a href="#mxnet-io数据载入" class="headerlink" title="mxnet.io数据载入"></a>mxnet.io数据载入</h2><p><code>mxnet.io</code>的数据载入核心是<code>mxnet.io.DataIter</code>类及其派生类，例如ndarray的iter：<code>NDArrayIter</code></p>
+<ul>
+<li>参数<code>data=</code>：传入一个(名称-数据)的数据dict</li>
+<li>参数<code>label=</code>：传入一个(名称-标签)的标签dict</li>
+<li>参数<code>batch_size=</code>：传入batch大小</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dataset = mx.io.NDArrayIter(data=&#123;<span class="string">&#x27;data&#x27;</span>:mx.nd.ones((<span class="number">10</span>,<span class="number">5</span>))&#125;,label=&#123;<span class="string">&#x27;label&#x27;</span>:mx.nd.arange(<span class="number">10</span>)&#125;,batch_size=<span class="number">5</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> dataset:</span><br><span class="line">    print(i)</span><br><span class="line">    print(i.data,<span class="built_in">type</span>(i.data[<span class="number">0</span>]))</span><br><span class="line">    print(i.label,<span class="built_in">type</span>(i.label[<span class="number">0</span>]))</span><br></pre></td></tr></table></figure>
+<pre><code>DataBatch: data shapes: [(5, 5)] label shapes: [(5,)]
+[
+[[ 1.  1.  1.  1.  1.]
+ [ 1.  1.  1.  1.  1.]
+ [ 1.  1.  1.  1.  1.]
+ [ 1.  1.  1.  1.  1.]
+ [ 1.  1.  1.  1.  1.]]
+&lt;NDArray 5x5 @cpu(0)&gt;] &lt;class &#39;mxnet.ndarray.ndarray.NDArray&#39;&gt;
+[
+[ 0.  1.  2.  3.  4.]
+&lt;NDArray 5 @cpu(0)&gt;] &lt;class &#39;mxnet.ndarray.ndarray.NDArray&#39;&gt;
+DataBatch: data shapes: [(5, 5)] label shapes: [(5,)]
+[
+[[ 1.  1.  1.  1.  1.]
+ [ 1.  1.  1.  1.  1.]
+ [ 1.  1.  1.  1.  1.]
+ [ 1.  1.  1.  1.  1.]
+ [ 1.  1.  1.  1.  1.]]
+&lt;NDArray 5x5 @cpu(0)&gt;] &lt;class &#39;mxnet.ndarray.ndarray.NDArray&#39;&gt;
+[
+[ 5.  6.  7.  8.  9.]
+&lt;NDArray 5 @cpu(0)&gt;] &lt;class &#39;mxnet.ndarray.ndarray.NDArray&#39;&gt;
+</code></pre><h2 id="gluon-data数据载入"><a href="#gluon-data数据载入" class="headerlink" title="gluon.data数据载入"></a>gluon.data数据载入</h2><p>gluon的数据API几乎与pytorch相同，均是<code>Dataset</code>+<code>DataLoader</code>的方式：</p>
+<ul>
+<li>Dataset：存储数据，使用时需要继承该基类并重载<code>__len__(self)</code>和<code>__getitem__(self,idx)</code>方法</li>
+<li>DataLoader：将Dataset变成能产生batch的可迭代对象</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dataset = mx.gluon.data.ArrayDataset(mx.nd.ones((<span class="number">10</span>,<span class="number">5</span>)),mx.nd.arange(<span class="number">10</span>))</span><br><span class="line">loader = mx.gluon.data.DataLoader(dataset,batch_size=<span class="number">5</span>)</span><br><span class="line"><span class="keyword">for</span> i,data <span class="keyword">in</span> <span class="built_in">enumerate</span>(loader):</span><br><span class="line">    print(i)</span><br><span class="line">    print(data)</span><br></pre></td></tr></table></figure>
+<pre><code>0
+[
+[[ 1.  1.  1.  1.  1.]
+ [ 1.  1.  1.  1.  1.]
+ [ 1.  1.  1.  1.  1.]
+ [ 1.  1.  1.  1.  1.]
+ [ 1.  1.  1.  1.  1.]]
+&lt;NDArray 5x5 @cpu(0)&gt;, 
+[ 0.  1.  2.  3.  4.]
+&lt;NDArray 5 @cpu(0)&gt;]
+1
+[
+[[ 1.  1.  1.  1.  1.]
+ [ 1.  1.  1.  1.  1.]
+ [ 1.  1.  1.  1.  1.]
+ [ 1.  1.  1.  1.  1.]
+ [ 1.  1.  1.  1.  1.]]
+&lt;NDArray 5x5 @cpu(0)&gt;, 
+[ 5.  6.  7.  8.  9.]
+&lt;NDArray 5 @cpu(0)&gt;]
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestSet</span>(<span class="params">mx.gluon.data.Dataset</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.x = mx.nd.zeros((<span class="number">10</span>,<span class="number">5</span>))</span><br><span class="line">        self.y = mx.nd.arange(<span class="number">10</span>)</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span>(<span class="params">self,i</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.x[i],self.y[i]</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__len__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">10</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i,data <span class="keyword">in</span> <span class="built_in">enumerate</span>(mx.gluon.data.DataLoader(TestSet(),batch_size=<span class="number">5</span>)):</span><br><span class="line">    print(data)</span><br></pre></td></tr></table></figure>
+<pre><code>[
+[[ 0.  0.  0.  0.  0.]
+ [ 0.  0.  0.  0.  0.]
+ [ 0.  0.  0.  0.  0.]
+ [ 0.  0.  0.  0.  0.]
+ [ 0.  0.  0.  0.  0.]]
+&lt;NDArray 5x5 @cpu(0)&gt;, 
+[[ 0.]
+ [ 1.]
+ [ 2.]
+ [ 3.]
+ [ 4.]]
+&lt;NDArray 5x1 @cpu(0)&gt;]
+[
+[[ 0.  0.  0.  0.  0.]
+ [ 0.  0.  0.  0.  0.]
+ [ 0.  0.  0.  0.  0.]
+ [ 0.  0.  0.  0.  0.]
+ [ 0.  0.  0.  0.  0.]]
+&lt;NDArray 5x5 @cpu(0)&gt;, 
+[[ 5.]
+ [ 6.]
+ [ 7.]
+ [ 8.]
+ [ 9.]]
+&lt;NDArray 5x1 @cpu(0)&gt;]
+</code></pre><h1 id="网络搭建"><a href="#网络搭建" class="headerlink" title="网络搭建"></a>网络搭建</h1><h2 id="mxnet网络搭建"><a href="#mxnet网络搭建" class="headerlink" title="mxnet网络搭建"></a>mxnet网络搭建</h2><p>mxnet网络搭建类似于TensorFlow，使用symbol搭建出网络，再用一个module封装</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">data = mx.sym.Variable(<span class="string">&#x27;data&#x27;</span>)</span><br><span class="line"><span class="comment"># layer1</span></span><br><span class="line">conv1 = mx.sym.Convolution(data=data, kernel=(<span class="number">5</span>,<span class="number">5</span>), num_filter=<span class="number">32</span>,name=<span class="string">&quot;conv1&quot;</span>)</span><br><span class="line">relu1 = mx.sym.Activation(data=conv1,act_type=<span class="string">&quot;relu&quot;</span>,name=<span class="string">&quot;relu1&quot;</span>)</span><br><span class="line">pool1 = mx.sym.Pooling(data=relu1,pool_type=<span class="string">&quot;max&quot;</span>,kernel=(<span class="number">2</span>,<span class="number">2</span>),stride=(<span class="number">2</span>,<span class="number">2</span>),name=<span class="string">&quot;pool1&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># layer2</span></span><br><span class="line">conv2 = mx.sym.Convolution(data=pool1, kernel=(<span class="number">3</span>,<span class="number">3</span>), num_filter=<span class="number">64</span>,name=<span class="string">&quot;conv2&quot;</span>)</span><br><span class="line">relu2 = mx.sym.Activation(data=conv2,act_type=<span class="string">&quot;relu&quot;</span>,name=<span class="string">&quot;relu2&quot;</span>)</span><br><span class="line">pool2 = mx.sym.Pooling(data=relu2,pool_type=<span class="string">&quot;max&quot;</span>,kernel=(<span class="number">2</span>,<span class="number">2</span>),stride=(<span class="number">2</span>,<span class="number">2</span>),name=<span class="string">&quot;pool2&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># layer3</span></span><br><span class="line">fc1 = mx.symbol.FullyConnected(data=mx.sym.flatten(pool2), num_hidden=<span class="number">256</span>,name=<span class="string">&quot;fc1&quot;</span>)</span><br><span class="line">relu3 = mx.sym.Activation(data=fc1, act_type=<span class="string">&quot;relu&quot;</span>,name=<span class="string">&quot;relu3&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># layer4</span></span><br><span class="line">fc2 = mx.symbol.FullyConnected(data=relu3, num_hidden=<span class="number">10</span>,name=<span class="string">&quot;fc2&quot;</span>)</span><br><span class="line">out = mx.sym.SoftmaxOutput(data=fc2, label=mx.sym.Variable(<span class="string">&quot;label&quot;</span>),name=<span class="string">&#x27;softmax&#x27;</span>)</span><br><span class="line"></span><br><span class="line">mxnet_model = mx.mod.Module(symbol=out,label_names=[<span class="string">&quot;label&quot;</span>],context=mx.gpu())</span><br><span class="line">mx.viz.plot_network(symbol=out)</span><br></pre></td></tr></table></figure>
+<img src="/2017/12/18/%E6%9C%89%E5%9F%BA%E7%A1%80mxnet%E5%92%8Cgluon%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/output_15_0.png" class="">
+<h2 id="Gluon模型搭建"><a href="#Gluon模型搭建" class="headerlink" title="Gluon模型搭建"></a>Gluon模型搭建</h2><p>Gluon模型搭建与pytorch类似，通过继承一个<code>mx.gluon.Block</code>或使用<code>mx.gluon.nn.Sequential()</code>来实现</p>
+<h3 id="一般搭建方法"><a href="#一般搭建方法" class="headerlink" title="一般搭建方法"></a>一般搭建方法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MLP</span>(<span class="params">mx.gluon.Block</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, **kwargs</span>):</span></span><br><span class="line">        <span class="built_in">super</span>(MLP, self).__init__(**kwargs)</span><br><span class="line">        <span class="keyword">with</span> self.name_scope():</span><br><span class="line">            self.dense0 = mx.gluon.nn.Dense(<span class="number">256</span>)</span><br><span class="line">            self.dense1 = mx.gluon.nn.Dense(<span class="number">64</span>)</span><br><span class="line">            self.dense2 = mx.gluon.nn.Dense(<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">forward</span>(<span class="params">self, x</span>):</span></span><br><span class="line">        x = mx.nd.relu(self.dense0(x))</span><br><span class="line">        x = mx.nd.relu(self.dense1(x))</span><br><span class="line">        x = self.dense2(x)</span><br><span class="line">        <span class="keyword">return</span> x</span><br><span class="line">gluon_model = MLP()</span><br><span class="line">print(gluon_model)</span><br><span class="line"><span class="comment"># mx.viz.plot_network(symbol=gluon_model)</span></span><br></pre></td></tr></table></figure>
+<pre><code>MLP(
+  (dense0): Dense(None -&gt; 256, linear)
+  (dense2): Dense(None -&gt; 10, linear)
+  (dense1): Dense(None -&gt; 64, linear)
+)
+</code></pre><h3 id="快速搭建方法"><a href="#快速搭建方法" class="headerlink" title="快速搭建方法"></a>快速搭建方法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">gluon_model2 = mx.gluon.nn.Sequential()</span><br><span class="line"><span class="keyword">with</span> gluon_model2.name_scope():</span><br><span class="line">    gluon_model2.add(mx.gluon.nn.Dense(<span class="number">256</span>,activation=<span class="string">&quot;relu&quot;</span>))</span><br><span class="line">    gluon_model2.add(mx.gluon.nn.Dense(<span class="number">64</span>,activation=<span class="string">&quot;relu&quot;</span>))</span><br><span class="line">    gluon_model2.add(mx.gluon.nn.Dense(<span class="number">10</span>,activation=<span class="string">&quot;relu&quot;</span>))</span><br><span class="line">print(gluon_model2)</span><br></pre></td></tr></table></figure>
+<pre><code>Sequential(
+  (0): Dense(None -&gt; 256, Activation(relu))
+  (1): Dense(None -&gt; 64, Activation(relu))
+  (2): Dense(None -&gt; 10, Activation(relu))
+)
+</code></pre><h1 id="模型训练"><a href="#模型训练" class="headerlink" title="模型训练"></a>模型训练</h1><h2 id="mxnet模型训练"><a href="#mxnet模型训练" class="headerlink" title="mxnet模型训练"></a>mxnet模型训练</h2><p>mxnet提供了两套不同层次上的训练封装，一般使用最方便的顶层封装<code>fit()</code>即可</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mnist = mx.test_utils.get_mnist()</span><br><span class="line">train_iter = mx.io.NDArrayIter(mnist[<span class="string">&#x27;train_data&#x27;</span>], mnist[<span class="string">&#x27;train_label&#x27;</span>], batch_size=<span class="number">100</span>, data_name=<span class="string">&#x27;data&#x27;</span>,label_name=<span class="string">&#x27;label&#x27;</span>,shuffle=<span class="literal">True</span>)</span><br><span class="line">val_iter = mx.io.NDArrayIter(mnist[<span class="string">&#x27;test_data&#x27;</span>], mnist[<span class="string">&#x27;test_label&#x27;</span>], batch_size=<span class="number">100</span>,data_name=<span class="string">&#x27;data&#x27;</span>,label_name=<span class="string">&#x27;label&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>INFO:root:train-labels-idx1-ubyte.gz exists, skipping download
+INFO:root:train-images-idx3-ubyte.gz exists, skipping download
+INFO:root:t10k-labels-idx1-ubyte.gz exists, skipping download
+INFO:root:t10k-images-idx3-ubyte.gz exists, skipping download
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mxnet_model.fit(train_iter,  <span class="comment"># train data</span></span><br><span class="line">              eval_data=val_iter,  <span class="comment"># validation data</span></span><br><span class="line">              optimizer=<span class="string">&#x27;adam&#x27;</span>,  <span class="comment"># use SGD to train</span></span><br><span class="line">              optimizer_params=&#123;<span class="string">&#x27;learning_rate&#x27;</span>:<span class="number">0.01</span>&#125;,  <span class="comment"># use fixed learning rate</span></span><br><span class="line">              eval_metric=<span class="string">&#x27;acc&#x27;</span>,  <span class="comment"># report accuracy during training</span></span><br><span class="line">              batch_end_callback = mx.callback.Speedometer(<span class="number">100</span>, <span class="number">200</span>), <span class="comment"># output progress for each 100 data batches</span></span><br><span class="line">              num_epoch=<span class="number">3</span>)  <span class="comment"># train for at most 3 dataset passes</span></span><br></pre></td></tr></table></figure>
+<pre><code>INFO:root:Epoch[0] Batch [200]    Speed: 5239.83 samples/sec    accuracy=0.890348
+INFO:root:Epoch[0] Batch [400]    Speed: 5135.49 samples/sec    accuracy=0.971450
+INFO:root:Epoch[0] Train-accuracy=0.977236
+INFO:root:Epoch[0] Time cost=11.520
+INFO:root:Epoch[0] Validation-accuracy=0.980300
+INFO:root:Epoch[1] Batch [200]    Speed: 5336.36 samples/sec    accuracy=0.979453
+INFO:root:Epoch[1] Batch [400]    Speed: 5312.22 samples/sec    accuracy=0.982550
+INFO:root:Epoch[1] Train-accuracy=0.984724
+INFO:root:Epoch[1] Time cost=11.704
+INFO:root:Epoch[1] Validation-accuracy=0.980500
+INFO:root:Epoch[2] Batch [200]    Speed: 5522.89 samples/sec    accuracy=0.982388
+INFO:root:Epoch[2] Batch [400]    Speed: 5562.08 samples/sec    accuracy=0.984550
+INFO:root:Epoch[2] Train-accuracy=0.985075
+INFO:root:Epoch[2] Time cost=10.860
+INFO:root:Epoch[2] Validation-accuracy=0.978000
+</code></pre><h2 id="gluon模型训练"><a href="#gluon模型训练" class="headerlink" title="gluon模型训练"></a>gluon模型训练</h2><p>gluon的模型训练包括：</p>
+<ol>
+<li>初始化模型参数</li>
+<li>定义代价函数和优化器</li>
+<li>计算前向传播</li>
+<li>反向传播计算梯度</li>
+<li>调用优化器优化模型</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">transform</span>(<span class="params">data, label</span>):</span></span><br><span class="line">    <span class="keyword">return</span> data.astype(np.float32)/<span class="number">255</span>, label.astype(np.float32)</span><br><span class="line">gluon_train_data = mx.gluon.data.DataLoader(mx.gluon.data.vision.MNIST(train=<span class="literal">True</span>, transform=transform),</span><br><span class="line">                                      <span class="number">100</span>, shuffle=<span class="literal">True</span>)</span><br><span class="line">gluon_test_data = mx.gluon.data.DataLoader(mx.gluon.data.vision.MNIST(train=<span class="literal">False</span>, transform=transform),</span><br><span class="line">                                     <span class="number">100</span>, shuffle=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gluon_model.collect_params().initialize(mx.init.Normal(sigma=<span class="number">.1</span>), ctx=mx.gpu())</span><br><span class="line">softmax_cross_entropy = mx.gluon.loss.SoftmaxCrossEntropyLoss()</span><br><span class="line">trainer = mx.gluon.Trainer(gluon_model.collect_params(), <span class="string">&#x27;sgd&#x27;</span>, &#123;<span class="string">&#x27;learning_rate&#x27;</span>: <span class="number">.1</span>&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>):</span><br><span class="line">    <span class="keyword">for</span> i,(data,label) <span class="keyword">in</span> <span class="built_in">enumerate</span>(gluon_train_data):</span><br><span class="line">        data = data.as_in_context(mx.gpu()).reshape((-<span class="number">1</span>, <span class="number">784</span>))</span><br><span class="line">        label = label.as_in_context(mx.gpu())</span><br><span class="line">        <span class="keyword">with</span> mx.autograd.record():</span><br><span class="line">            outputs = gluon_model(data)</span><br><span class="line">            loss = softmax_cross_entropy(outputs,label)</span><br><span class="line">        loss.backward()</span><br><span class="line">        trainer.step(data.shape[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">if</span> i % <span class="number">100</span> == <span class="number">1</span>:</span><br><span class="line">            print(loss.mean().asnumpy()[<span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+<pre><code>2.3196
+0.280345
+0.268811
+0.419094
+0.260873
+0.252575
+0.162117
+0.247361
+0.169366
+0.184899
+0.0986493
+0.251358
+</code></pre><h1 id="准确率计算"><a href="#准确率计算" class="headerlink" title="准确率计算"></a>准确率计算</h1><h2 id="mxnet模型准确率计算"><a href="#mxnet模型准确率计算" class="headerlink" title="mxnet模型准确率计算"></a>mxnet模型准确率计算</h2><p>mxnet的模型提供<code>score()</code>方法用于计算指标，用法与sklearn类似，除了用该API，也可以使用ndarray搭建评估函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">acc = mx.metric.Accuracy()</span><br><span class="line">mxnet_model.score(val_iter,acc)</span><br><span class="line">print(acc)</span><br></pre></td></tr></table></figure>
+<pre><code>EvalMetric: &#123;&#39;accuracy&#39;: 0.97799999999999998&#125;
+</code></pre><h2 id="gluon模型准确率计算"><a href="#gluon模型准确率计算" class="headerlink" title="gluon模型准确率计算"></a>gluon模型准确率计算</h2><p>gluon官方教程中没有使用提供好的准确率计算方法，需要使用mxnet函数的<code>metric.Accuracy()</code>搭建</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">evaluate_accuracy</span>():</span></span><br><span class="line">    acc = mx.metric.Accuracy()</span><br><span class="line">    <span class="keyword">for</span> i, (data, label) <span class="keyword">in</span> <span class="built_in">enumerate</span>(gluon_test_data):</span><br><span class="line">        data = data.as_in_context(mx.gpu()).reshape((-<span class="number">1</span>, <span class="number">784</span>))</span><br><span class="line">        label = label.as_in_context(mx.gpu())</span><br><span class="line">        output = gluon_model(data)</span><br><span class="line">        predictions = mx.nd.argmax(output, axis=<span class="number">1</span>)</span><br><span class="line">        acc.update(preds=predictions, labels=label)</span><br><span class="line">    <span class="keyword">return</span> acc.get()[<span class="number">1</span>]</span><br><span class="line">evaluate_accuracy()</span><br></pre></td></tr></table></figure>
+<pre><code>0.95079999999999998
+</code></pre><h1 id="模型保存与载入"><a href="#模型保存与载入" class="headerlink" title="模型保存与载入"></a>模型保存与载入</h1><h2 id="mxnet"><a href="#mxnet" class="headerlink" title="mxnet"></a>mxnet</h2><h3 id="mxnet保存模型"><a href="#mxnet保存模型" class="headerlink" title="mxnet保存模型"></a>mxnet保存模型</h3><ul>
+<li>mxnet在fit中使用<code>mx.callback.module_checkpoint()</code>作为fit参数<code>epoch_end_callback</code>可以在训练中保存模型</li>
+<li>训练完成后可以使用<code>module.save_checkpoint()</code>保存模型</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mxnet_model.save_checkpoint(<span class="string">&quot;mxnet_&quot;</span>,<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<pre><code>INFO:root:Saved checkpoint to &quot;mxnet_-0003.params&quot;
+</code></pre><h3 id="mxnet载入模型"><a href="#mxnet载入模型" class="headerlink" title="mxnet载入模型"></a>mxnet载入模型</h3><p>使用<code>mx.model.load_checkpoint()</code>和<code>mx.model.set_params</code>载入模型</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># mxnet_model2 = mx.mod.Module(symbol=out,label_names=[&quot;label&quot;],context=mx.gpu())</span></span><br><span class="line">sym, arg_params, aux_params = mx.model.load_checkpoint(<span class="string">&quot;mxnet_&quot;</span>, <span class="number">3</span>)</span><br><span class="line">mxnet_model2 = mx.mod.Module(symbol=sym,label_names=[<span class="string">&quot;label&quot;</span>],context=mx.gpu())</span><br><span class="line">mxnet_model2.bind(data_shapes=train_iter.provide_data, label_shapes=train_iter.provide_label)</span><br><span class="line">mxnet_model2.set_params(arg_params,aux_params)</span><br><span class="line">mxnet_model2.score(val_iter,acc)</span><br><span class="line">print(acc)</span><br></pre></td></tr></table></figure>
+<pre><code>EvalMetric: &#123;&#39;accuracy&#39;: 0.97799999999999998&#125;
+</code></pre><h2 id="gluon"><a href="#gluon" class="headerlink" title="gluon"></a>gluon</h2><h3 id="gluon保存模型"><a href="#gluon保存模型" class="headerlink" title="gluon保存模型"></a>gluon保存模型</h3><p>使用<code>gluon.Block.save_params()</code>可以保存模型</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gluon_model.save_params(<span class="string">&quot;gluon_model&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="gluon载入模型"><a href="#gluon载入模型" class="headerlink" title="gluon载入模型"></a>gluon载入模型</h3><p>使用<code>gluon.Block.load_params()</code>可以载入模型参数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">gluon_model2.load_params(<span class="string">&quot;gluon_model&quot;</span>,ctx=mx.gpu())</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">evaluate_accuracy</span>():</span></span><br><span class="line">    acc = mx.metric.Accuracy()</span><br><span class="line">    <span class="keyword">for</span> i, (data, label) <span class="keyword">in</span> <span class="built_in">enumerate</span>(gluon_test_data):</span><br><span class="line">        data = data.as_in_context(mx.gpu()).reshape((-<span class="number">1</span>, <span class="number">784</span>))</span><br><span class="line">        label = label.as_in_context(mx.gpu())</span><br><span class="line">        output = gluon_model2(data)</span><br><span class="line">        predictions = mx.nd.argmax(output, axis=<span class="number">1</span>)</span><br><span class="line">        acc.update(preds=predictions, labels=label)</span><br><span class="line">    <span class="keyword">return</span> acc.get()[<span class="number">1</span>]</span><br><span class="line">evaluate_accuracy()</span><br></pre></td></tr></table></figure>
+<pre><code>0.95079999999999998
+</code></pre></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">月见樽</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.yuejianzun.xyz/2017/12/18/%E6%9C%89%E5%9F%BA%E7%A1%80mxnet%E5%92%8Cgluon%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/">http://www.yuejianzun.xyz/2017/12/18/%E6%9C%89%E5%9F%BA%E7%A1%80mxnet%E5%92%8Cgluon%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.yuejianzun.xyz" target="_blank">月见樽'blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/NeuralNetwork/">NeuralNetwork</a><a class="post-meta__tags" href="/tags/Python/">Python</a></div><div class="post_share"><div class="social-share" data-image="/img/1.PNG" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2017/12/25/AVL%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91/"><img class="prev-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">AVL二叉查找树</div></div></a></div><div class="next-post pull-right"><a href="/2017/12/17/Python%E7%A1%AC%E4%BB%B6%E5%BB%BA%E6%A8%A1%E2%80%94%E2%80%94%E9%93%BE%E8%A1%A8FIFO%E7%AE%A1%E7%90%86%E5%99%A8/"><img class="next-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Python硬件建模——链表FIFO管理器</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2018/02/21/CNN的反向传播/" title="CNN的反向传播"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-02-21</div><div class="title">CNN的反向传播</div></div></a></div><div><a href="/2018/03/11/CapsNet学习笔记/" title="CapsNet学习笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-03-11</div><div class="title">CapsNet学习笔记</div></div></a></div><div><a href="/2019/05/05/Octave卷积学习笔记/" title="Octave卷积学习笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-05-05</div><div class="title">Octave卷积学习笔记</div></div></a></div><div><a href="/2017/10/13/Pytorch构造MLP中的dropout与批标准化/" title="Pytorch构造MLP中的dropout与批标准化"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-10-13</div><div class="title">Pytorch构造MLP中的dropout与批标准化</div></div></a></div><div><a href="/2018/01/31/基于MXnet的RNN简要剖析/" title="基于MXnet的RNN简要剖析"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-01-31</div><div class="title">基于MXnet的RNN简要剖析</div></div></a></div><div><a href="/2017/09/06/基于Python的Rosenblatt感知器模型/" title="基于Python的Rosenblatt感知机模型"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-09-06</div><div class="title">基于Python的Rosenblatt感知机模型</div></div></a></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/had.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">月见樽</div><div class="author-info__description">日隐月现，潜龙在渊</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/qiankun214"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#mxnet%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">mxnet基本数据结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ndarray"><span class="toc-number">1.1.</span> <span class="toc-text">ndarray</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ndarray%E6%93%8D%E4%BD%9C"><span class="toc-number">1.1.1.</span> <span class="toc-text">ndarray操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ndarray%E4%B8%8Enumpy%E7%9B%B8%E4%BA%92%E8%BD%AC%E6%8D%A2"><span class="toc-number">1.1.2.</span> <span class="toc-text">ndarray与numpy相互转换</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#symbol"><span class="toc-number">1.2.</span> <span class="toc-text">symbol</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="toc-number">1.2.1.</span> <span class="toc-text">基本操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%A6%E5%85%A5ndarray"><span class="toc-number">1.2.2.</span> <span class="toc-text">带入ndarray</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#mxnet%E7%9A%84%E6%95%B0%E6%8D%AE%E8%BD%BD%E5%85%A5"><span class="toc-number">2.</span> <span class="toc-text">mxnet的数据载入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#mxnet-io%E6%95%B0%E6%8D%AE%E8%BD%BD%E5%85%A5"><span class="toc-number">2.1.</span> <span class="toc-text">mxnet.io数据载入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gluon-data%E6%95%B0%E6%8D%AE%E8%BD%BD%E5%85%A5"><span class="toc-number">2.2.</span> <span class="toc-text">gluon.data数据载入</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E6%90%AD%E5%BB%BA"><span class="toc-number">3.</span> <span class="toc-text">网络搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#mxnet%E7%BD%91%E7%BB%9C%E6%90%AD%E5%BB%BA"><span class="toc-number">3.1.</span> <span class="toc-text">mxnet网络搭建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Gluon%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA"><span class="toc-number">3.2.</span> <span class="toc-text">Gluon模型搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E8%88%AC%E6%90%AD%E5%BB%BA%E6%96%B9%E6%B3%95"><span class="toc-number">3.2.1.</span> <span class="toc-text">一般搭建方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E6%90%AD%E5%BB%BA%E6%96%B9%E6%B3%95"><span class="toc-number">3.2.2.</span> <span class="toc-text">快速搭建方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83"><span class="toc-number">4.</span> <span class="toc-text">模型训练</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#mxnet%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83"><span class="toc-number">4.1.</span> <span class="toc-text">mxnet模型训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gluon%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83"><span class="toc-number">4.2.</span> <span class="toc-text">gluon模型训练</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%87%86%E7%A1%AE%E7%8E%87%E8%AE%A1%E7%AE%97"><span class="toc-number">5.</span> <span class="toc-text">准确率计算</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#mxnet%E6%A8%A1%E5%9E%8B%E5%87%86%E7%A1%AE%E7%8E%87%E8%AE%A1%E7%AE%97"><span class="toc-number">5.1.</span> <span class="toc-text">mxnet模型准确率计算</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gluon%E6%A8%A1%E5%9E%8B%E5%87%86%E7%A1%AE%E7%8E%87%E8%AE%A1%E7%AE%97"><span class="toc-number">5.2.</span> <span class="toc-text">gluon模型准确率计算</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E4%BF%9D%E5%AD%98%E4%B8%8E%E8%BD%BD%E5%85%A5"><span class="toc-number">6.</span> <span class="toc-text">模型保存与载入</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#mxnet"><span class="toc-number">6.1.</span> <span class="toc-text">mxnet</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#mxnet%E4%BF%9D%E5%AD%98%E6%A8%A1%E5%9E%8B"><span class="toc-number">6.1.1.</span> <span class="toc-text">mxnet保存模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mxnet%E8%BD%BD%E5%85%A5%E6%A8%A1%E5%9E%8B"><span class="toc-number">6.1.2.</span> <span class="toc-text">mxnet载入模型</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gluon"><span class="toc-number">6.2.</span> <span class="toc-text">gluon</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#gluon%E4%BF%9D%E5%AD%98%E6%A8%A1%E5%9E%8B"><span class="toc-number">6.2.1.</span> <span class="toc-text">gluon保存模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gluon%E8%BD%BD%E5%85%A5%E6%A8%A1%E5%9E%8B"><span class="toc-number">6.2.2.</span> <span class="toc-text">gluon载入模型</span></a></li></ol></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/09/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%EF%BC%89/" title="网络学习笔记2——信号与系统">网络学习笔记2——信号与系统</a><time datetime="2020-11-09T15:51:13.000Z" title="发表于 2020-11-09 23:51:13">2020-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/" title="网络学习笔记1——协议分层">网络学习笔记1——协议分层</a><time datetime="2020-11-06T15:51:13.000Z" title="发表于 2020-11-06 23:51:13">2020-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/" title="高级综合工具StratusHLS学习笔记(4)">高级综合工具StratusHLS学习笔记(4)</a><time datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/" title="高级综合工具StratusHLS学习笔记(3)">高级综合工具StratusHLS学习笔记(3)</a><time datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/" title="高级综合工具StratusHLS学习笔记(2)">高级综合工具StratusHLS学习笔记(2)</a><time datetime="2020-07-19T15:51:13.000Z" title="发表于 2020-07-19 23:51:13">2020-07-19</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 月见樽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

@@ -1,0 +1,873 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>存储器体系结构学习笔记 | 月见樽'blog</title><meta name="keywords" content="计算机体系结构"><meta name="author" content="月见樽"><meta name="copyright" content="月见樽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="存储器性能评价指标存储器停顿周期数存储器的性能直接影响到CPU的性能评价，定义存储器停顿周期数为CPU等待存储器访问而停顿的时钟周期数，由此有CPU执行时间有：  CPU执行时间&#x3D;(CPU时钟周期数+存储器停顿时钟周期数) \times 时钟周期时间因此需要存储器停顿时钟周期数越小越好，对于这一变量有公式如下：  存储器停顿周期数 &#x3D; 缺失数量 \times 缺失代价 &#x3D; 指令数 \times \">
+<meta property="og:type" content="article">
+<meta property="og:title" content="存储器体系结构学习笔记">
+<meta property="og:url" content="http://www.yuejianzun.xyz/2020/01/05/%E5%AD%98%E5%82%A8%E5%99%A8%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="月见樽&#39;blog">
+<meta property="og:description" content="存储器性能评价指标存储器停顿周期数存储器的性能直接影响到CPU的性能评价，定义存储器停顿周期数为CPU等待存储器访问而停顿的时钟周期数，由此有CPU执行时间有：  CPU执行时间&#x3D;(CPU时钟周期数+存储器停顿时钟周期数) \times 时钟周期时间因此需要存储器停顿时钟周期数越小越好，对于这一变量有公式如下：  存储器停顿周期数 &#x3D; 缺失数量 \times 缺失代价 &#x3D; 指令数 \times \">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.yuejianzun.xyz/img/1.PNG">
+<meta property="article:published_time" content="2020-01-05T06:28:16.000Z">
+<meta property="article:modified_time" content="2020-11-27T16:47:57.228Z">
+<meta property="article:author" content="月见樽">
+<meta property="article:tag" content="计算机体系结构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yuejianzun.xyz/img/1.PNG"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.yuejianzun.xyz/2020/01/05/%E5%AD%98%E5%82%A8%E5%99%A8%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-11-28 00:47:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/had.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/1.PNG)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">月见樽'blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">存储器体系结构学习笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-01-05T06:28:16.000Z" title="发表于 2020-01-05 14:28:16">2020-01-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-27T16:47:57.228Z" title="更新于 2020-11-28 00:47:57">2020-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1/">硬件设计</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">10.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>32分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="存储器性能评价指标"><a href="#存储器性能评价指标" class="headerlink" title="存储器性能评价指标"></a>存储器性能评价指标</h1><h2 id="存储器停顿周期数"><a href="#存储器停顿周期数" class="headerlink" title="存储器停顿周期数"></a>存储器停顿周期数</h2><p>存储器的性能直接影响到CPU的性能评价，定义存储器停顿周期数为CPU等待存储器访问而停顿的时钟周期数，由此有CPU执行时间有：</p>
+<script type="math/tex; mode=display">
+CPU执行时间=(CPU时钟周期数+存储器停顿时钟周期数) \times 时钟周期时间</script><p>因此需要存储器停顿时钟周期数越小越好，对于这一变量有公式如下：</p>
+<script type="math/tex; mode=display">
+存储器停顿周期数 = 缺失数量 \times 缺失代价 = 指令数 \times \frac{产生缺失指令数量}{指令数} \times 缺失代价 \\ = 指令数 \times \frac{存储器访问指令数}{指令总数} \times 缺失率 \times 缺失代价</script><p>其中，缺失率表示存储器访问指令中会产生cache缺失的百分比；缺失代价表示发生cache缺失后为了解决缺失需要消耗的平均时钟周期数。另一种度量指标与时钟周期无关，即为每条指令的平均缺失数：</p>
+<script type="math/tex; mode=display">
+平均缺失数=\frac{产生访存缺失的指令数}{指令总数} = 缺失率 \times \frac{存储器访问指令数}{指令总数}</script><p>上述公式与缺失代价无关，缺失率的定义与上文相同</p>
+<h2 id="存储器平均访问时间"><a href="#存储器平均访问时间" class="headerlink" title="存储器平均访问时间"></a>存储器平均访问时间</h2><p>缓存性能比较好的度量为存储器平均访问时间，即对于每次存储器访问而言需要的平均时间，公式如下：</p>
+<script type="math/tex; mode=display">
+存储器平均访问时间 = 命中时间 + 缺失时间 \times 缺失代价</script><p>需要注意的是这一指标仅针对存储器访问指令，因此这是一个间接度量，考虑以下情况：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>数据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>16KB指令缓存缺失数（每千条指令）</td>
+<td>3.82</td>
+</tr>
+<tr>
+<td>16KB数据缓存缺失数（每千条指令）</td>
+<td>40.9</td>
+</tr>
+<tr>
+<td>32KB统一缓存缺失数（每千条指令）</td>
+<td>43.3</td>
+</tr>
+<tr>
+<td>统一缓存数据访问额外需要时钟周期数</td>
+<td>1</td>
+</tr>
+<tr>
+<td>存储器访问中指令引用占比</td>
+<td>74%</td>
+</tr>
+<tr>
+<td>命中周期数/缺失代价</td>
+<td>1/100</td>
+</tr>
+<tr>
+<td>指令中数据传输指令占比</td>
+<td>36%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>需要注意的是，缺失数指的是对于所有指令而言产生存储器缺失的次数，而缺失率为相对于所有存储器访问产生缺失的比例。对于16KB的指令缓存，每条指令都会产生一次指令访问，缺失率为：</p>
+<script type="math/tex; mode=display">
+缺失率_{指令} = \frac{3.82}{1000 \times 1} = 0.004</script><p>对于16KB的数据缓存，有36%的指令会产生一次存储器访问，因此有：</p>
+<script type="math/tex; mode=display">
+缺失率_{数据} = \frac{40.9 }{0.36 \times 1000} = 0.114</script><p>有74%的存储器访问为指令访问，因此总体的缺失率为：</p>
+<script type="math/tex; mode=display">
+缺失率_{分裂} = 0.74 \times 0.004 + 0.26 \times 0.114 = 0.0326</script><p>考虑存储器平均访问时间，有：</p>
+<script type="math/tex; mode=display">
+存储器平均访问时间_{分裂} = 0.74 \times (1+0.004 \times 200) + 0.26 \times (1 + 0.114\times 200) = 7.52</script><p>对于32KB统一缓存而言，1000条指令一共产生1000次指令访存，其中36%的指令会产生数据访存，如下所示：</p>
+<script type="math/tex; mode=display">
+缺失率_{统一} = \frac{43.3}{1000 + 1000 \times 0.36} = 0.0318</script><p>对于统一缓存而言，数据访存指令会产生两种存储器访问，一次指令访问和一次数据访问，而统一缓存仅有端口，因此数据访问需要等待一个时钟周期，因此存储器平均访问时间：</p>
+<script type="math/tex; mode=display">
+存储器平均访问时间_{统一} = 0.74 \times (1+0.0318 \times 200) + 0.26 \times (1 + 1 + 0.0318 \times 200) = 7.62</script><h2 id="对CPU性能影响"><a href="#对CPU性能影响" class="headerlink" title="对CPU性能影响"></a>对CPU性能影响</h2><p>对于CPU性能而言，有以下公式：</p>
+<script type="math/tex; mode=display">
+CPU执行时间=(CPU时钟周期数+存储器停顿时钟周期数) \times 时钟周期时间</script><p>一般认为缓存命中时间作为CPU执行时钟周期数的一个部分，考虑一个以下参数的缓存：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>数值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CPU执行周期数</td>
+<td>1</td>
+</tr>
+<tr>
+<td>缺失代价</td>
+<td>200</td>
+</tr>
+<tr>
+<td>平均缺失率</td>
+<td>2%</td>
+</tr>
+<tr>
+<td>每条指令的存储器引用数</td>
+<td>1.5</td>
+</tr>
+<tr>
+<td>平均缓存缺失数（千条指令）</td>
+<td>30</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>对于以上参数，每千条指令产生的存储访问数为$1000 \times 1.5 = 150$，存储器访问的缺失率为2%，即千条指令产生的存储器缺失数量为$150 \times 2\%=30$，与给出的平均缓存缺失数一致。使用缺失数计算CPU执行时间：</p>
+<script type="math/tex; mode=display">
+CPU执行时间 = IC \times (1 + \frac{存储器停顿周期数}{IC}) \times 时钟周期 \\= IC \times (1 + \frac{停顿数}{IC} \times 缺失代价) \times 时钟周期 = IC \times (1+\frac{30}{1000} \times 200) \times 时钟周期 \\ = 7 \times IC \times 时钟周期</script><p>上述分析均对于顺序存储器而言，其每次存储器缺失都会暴露为缺失代价。对于乱序处理器而言，其存储器缺失可能被乱序执行的其他指令掩盖，即有：</p>
+<script type="math/tex; mode=display">
+存储器停顿周期 = 缺失数 \times (总缺失代价 - 重叠缺失延迟)</script><p>对于乱序执行的CPU而言，分析比较复杂，若一个时钟周期该CPU没有提交最大可能数目的指令，则认为该CPU发生的了存储器访问缺失。</p>
+<h1 id="存储器层次结构"><a href="#存储器层次结构" class="headerlink" title="存储器层次结构"></a>存储器层次结构</h1><p>存储器之间的关于存储器层次结构，需要解决以下四个问题：</p>
+<ul>
+<li>块的放置：一个块可以放在这一级的什么位置</li>
+<li>块的识别：如何找到放置在这一级中的一个块</li>
+<li>块的替换：在缺失时应当替换哪个块</li>
+<li>块的写入：写入时发生什么</li>
+</ul>
+<h2 id="块的放置"><a href="#块的放置" class="headerlink" title="块的放置"></a>块的放置</h2><p>首先定义<strong>组</strong>的概念，一个组是存储器中的一段连续空间，可以容纳多个（整数个）块。取一个存储器中组的数量为m，每个组可以容纳的块的数量为n，有以下关系：</p>
+<script type="math/tex; mode=display">
+存储器容量 = m \times n \times 块大小</script><p>任何来自某个地址的块只能被放置在一个特定的组中，这种方法被称为组相联，一个组中可以容纳n个块，即为n-路组相联。块首先被映射到组，组编号为：</p>
+<script type="math/tex; mode=display">
+组编号 = 块地址 \% m</script><p>随后，这个块可以被放置在这个组中的任意块地址位置。即对于一个块地址为A的块而言，对应的组编号为$G = A\%m$，其可以被放置在这个编号为G的组中的任意有效的块起始地址位置。如下图所示：</p>
+<img src="/2020/01/05/%E5%AD%98%E5%82%A8%E5%99%A8%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ch2_cache_group.png" class="">
+<p>对于组相联，有两种特殊情况：</p>
+<ul>
+<li>直接映射：每个块只能存储在一个固定的位置，有$存储地址=块地址 \% m$，可认为时n=1的1-组相联</li>
+<li>全相联：一个块可以放置在任意位置，可认为时m=1的n-路组相联（缓存中仅有一个组）</li>
+</ul>
+<h2 id="块的识别"><a href="#块的识别" class="headerlink" title="块的识别"></a>块的识别</h2><p>块的识别通过标签识别实现，每个存储器中的块对应一个标签，标签中包括一部分地址信息和有效性信号。对于一个块中的一个数据而言，其地址分为以下几个部分：</p>
+<ul>
+<li>标志部分：地址的高位部分，判断块时需要比对的部分</li>
+<li>索引部分：地址的中间部分，标记这个块若存在于存储器中，应当存在于哪个组中，这个部分不用于判断</li>
+<li>块偏移：地址的低位部分，标记这个数据相对于块起始地址的偏移量</li>
+</ul>
+<p>识别块时，首先根据索引部分查找到对应的组，再对比组内所有块的标志部分和要查找的块的标签部分是否相同，同时判断有效性。若标志部分相同且有效，则这个块为待识别的块，否则无识别的块，过程如下所示：</p>
+<img src="/2020/01/05/%E5%AD%98%E5%82%A8%E5%99%A8%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ch2_cache_hit.png" class="">
+<p>首先提供查找地址，根据其中的索引查找到可能保存这个块的组，随后比对组内的所有标志和有效位，当有有效位置高且标志匹配的块，则命中，查找到该块。对于要查找的数据，根据偏移量从块中获取数据。</p>
+<h2 id="块的替换"><a href="#块的替换" class="headerlink" title="块的替换"></a>块的替换</h2><p>当块发生缺失且对应的组中没有空闲的位置时，需要从已有的块中选择一个丢弃，块的替换算法决定丢弃哪个块，替换算法有以下几种：</p>
+<ul>
+<li>随机：随机选择一个块丢弃</li>
+<li>最近最少使用（LRU）：丢弃掉未使用时间最久的块</li>
+<li>先入先出（FIFO）：丢弃掉进入存储器最久的块</li>
+</ul>
+<p>最近最少使用算法的记录比较困难，常见的替换方法为伪LRU算法，为每一个块设置一个bit。每次对一个块的访问会使这个bit置位为1，当一次访问后所有的bit均为高时，所有bit拉低，仅当前访问的块对应的bit拉高。当需要替换块时，随机从该bit为低的块中选择一个替换</p>
+<h2 id="块的写入"><a href="#块的写入" class="headerlink" title="块的写入"></a>块的写入</h2><p> 块的写入和读取最大的差别在于读取操作可以“任意进行”，因为对任何空间的读取不会对该该空间中的数据产生影响，而写入操作必须“精准执行”，因为写入操作对存储空间中的数据产生影响。对于这一级存储器中任何一个块的写入会产生一致性问题，即当前级的数据与上一级的数据不同，为了解决这一问题，有两种解决方法：</p>
+<ul>
+<li>直写：写入这一级存储的同时写入上一级存储</li>
+<li>写回：仅写入这一级存储，当被写入的块被替换时写回上一级存储器</li>
+</ul>
+<p>直写策略容易实现，能保证数据的一致性，这上一级存储器中的数据永远时清洁的（即一致的），缺点是时间消耗大。而写回策略延迟低，但是实现复杂。当写回上一级存储器时，往往先将块放入写入缓冲器以减小延迟。另外，当需要对一个地址进行写入时，可能这个地址对应的块不在这一级存储器中，有两种策略：</p>
+<ul>
+<li>写入分派：首先执行命中操作，将块调入缓存，再进行写入</li>
+<li>无写入分派：不将对应块调入，直接写入上一级存储器，直写策略下常常使用</li>
+</ul>
+<h2 id="举例：Opteron缓存"><a href="#举例：Opteron缓存" class="headerlink" title="举例：Opteron缓存"></a>举例：Opteron缓存</h2><p>AMD的Opteron处理器缓存组织方式如下图所示</p>
+<p> <img src="存储器体系结构学习笔记/opteron_cache.png" alt=""></p>
+<p>进入缓存的地址位宽为40bit，该缓存的容量为64KB，块大小为64B，使用两路组相联缓存。即由上可知，组内偏移量为6bit，缓存内共$\frac{64KB}{64}=1024$个块，使用两路组相联即有$\frac{1024}{2} = 512$个组，由此组索引位宽为9bit，地址位宽40bit，因此标志位宽为$48-9-6=25$bit。</p>
+<p>该缓存使用最少替代（LRU）策略和写回/写入分派策略，对于一次缓存访问过程，过程如下：</p>
+<ol>
+<li>CPU给出40bit物理地址，分为标记、索引和偏移量三个部分（对应图中标号1）</li>
+<li>根据索引部分找到可能存放这个块的组，读取组中两个块中的标记部分（对应图中标号2）</li>
+<li>将两个标记与地址的标志部分比较，同时检查有效位是否为拉高：若有一个标记有效且与地址的标记相同，则缓存命中，使用二选一选择器将对应的数据数据输出；否则缓存未命中，需要进行访问低级存储器获取这个块（对应图中标志3）</li>
+<li>若缓存未命中，则根据最少替代策略选择一个块，并将这个块送入牺牲块缓冲区，再由牺牲块缓冲区写回低级存储器，同时从低级存储器调入需要访问的块（对应图中标志4）</li>
+</ol>
+<p>由于这一缓存使用LRU和写回策略，因此对于每一个块，除了有效位以外，还需要设置LRU位和脏位设置标记，脏位用于表示该块是否与低级存储器中的块相同。当每次访问（无论读写）这个块时，都需要根据LRU算法对LRU位进行设置；当写一个块时，就将脏位拉高，因为只要块被写入，就认为其与低级缓存不同。</p>
+<h1 id="缓存性能优化"><a href="#缓存性能优化" class="headerlink" title="缓存性能优化"></a>缓存性能优化</h1><h2 id="缺失模型"><a href="#缺失模型" class="headerlink" title="缺失模型"></a>缺失模型</h2><p>对于缓存优化，首先根据缺失类型将其分为3类：</p>
+<ul>
+<li>强制缺失：第一次访问一个块时，这个块一定不在内存中，产生缺失成为强制缺失</li>
+<li>容量缺失：缓存无法容纳所有的块，当缓存容量满后，再载入块时必然放弃原有的块，再次访问由于容量不足被放弃的块产生的缺失为容量缺失</li>
+<li>冲突缺失：对于组相联结构，每个组中的块有限，当一个组满且另一个属于这个组的块被调入时，组中的某个块必然被放弃，再次访问由于块内冲突被放弃的块产生的缺失为冲突缺失</li>
+</ul>
+<h2 id="优化原理"><a href="#优化原理" class="headerlink" title="优化原理"></a>优化原理</h2><p>优化目标为缩短存储器平均访问时间，有公式：</p>
+<script type="math/tex; mode=display">
+存储器平均访问时间 = 命中时间+缺失率\times 缺失代价</script><p>因此缩短存储器平均访问时间，有以下几种优化方法：</p>
+<ul>
+<li>缩短命中时间：索引时避免地址转换、提前读取</li>
+<li>降低缺失率：使用较大的块、较大的缓存和较高的关联度</li>
+<li>降低缺失代价：多级缓存、使读取操作设定高于写入操作</li>
+</ul>
+<h2 id="基础优化方法"><a href="#基础优化方法" class="headerlink" title="基础优化方法"></a>基础优化方法</h2><p>下图是优化方法及其影响的汇总表</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>命中时间</th>
+<th>缺失代价</th>
+<th>缺失率</th>
+<th>硬件复杂度</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>增大块大小</td>
+<td>无影响</td>
+<td>增大</td>
+<td>降低</td>
+<td>无影响</td>
+<td>需要合理设计大小</td>
+</tr>
+<tr>
+<td>较大缓存大小</td>
+<td>延长</td>
+<td>无影响</td>
+<td>降低</td>
+<td>增加</td>
+<td>广泛应用</td>
+</tr>
+<tr>
+<td>提高组相联度</td>
+<td>延长</td>
+<td>无影响</td>
+<td>降低</td>
+<td>增加</td>
+<td>广泛应用</td>
+</tr>
+<tr>
+<td>多级缓存</td>
+<td>无影响</td>
+<td>降低</td>
+<td>无影响</td>
+<td>大幅度增加</td>
+<td>广泛应用</td>
+</tr>
+<tr>
+<td>提高读取缺失优先级</td>
+<td>无影响</td>
+<td>降低</td>
+<td>无影响</td>
+<td>增加</td>
+<td>广泛应用</td>
+</tr>
+<tr>
+<td>使用虚拟地址</td>
+<td>降低</td>
+<td>无影响</td>
+<td>无影响</td>
+<td>增加</td>
+<td>广泛应用</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="增加块大小"><a href="#增加块大小" class="headerlink" title="增加块大小"></a>增加块大小</h3><p>由于空间局域性原理（一个被用到的数据附近的数据可能被用到），增大块大小可以减少强制缺失，由此降低缺失率。但是较大的块会增加缺失代价，即一个块的尺寸变大，产生访问缺失时，需要花费更多的时钟周期从低级存储器中获取这个较大的块。因此选取块的大小需要综合考虑这两个因素。对于一个16K存储器，缺失率、缺失代价与块大小有以下表所示的关系：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>块大小</th>
+<th>缺失率</th>
+<th>缺失代价</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>32</td>
+<td>1.35%</td>
+<td>$80+32 \times \frac{2}{16} = 84$</td>
+</tr>
+<tr>
+<td>64</td>
+<td>1.06%</td>
+<td>$80 + 64 \times \frac{2}{16} = 88$</td>
+</tr>
+<tr>
+<td>128</td>
+<td>1.02%</td>
+<td>$80 + 128 \times \frac{2}{16} = 96$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>缺失代价为无论块大小，都首先消耗80个时钟周期，随后每2个时钟周期载入16个数据。由存储器平均访问时间的公式，假设命中时间为1个时钟周期，有：</p>
+<script type="math/tex; mode=display">
+存储器平均访问时间_{32} = 1 + 0.0135 \times 84 = 2.134 \\
+存储器平均访问时间_{64} = 1 + 0.0106 \times 88 = 1.933 \\
+存储器平均访问时间_{128} = 1+0.0102 \times 96 = 1.979</script><p>由上，尺寸为64的块最适合该系统。选取块的大小需要考虑低级存储器的带宽，这一参数决定缺失代价相对于块大小的上升速度。对于高带宽的系统而言，可以选择较大的块，因为此时缺失代价的上升速度低于缺失率的下降速度。</p>
+<h3 id="增大缓存大小"><a href="#增大缓存大小" class="headerlink" title="增大缓存大小"></a>增大缓存大小</h3><p>增大缓存大小可以减小容量缺失进而降低缺失率，但对应的可能增加命中时间和硬件复杂度</p>
+<h3 id="提高组相联度"><a href="#提高组相联度" class="headerlink" title="提高组相联度"></a>提高组相联度</h3><p>提高组相联度可以降低冲突缺失进而降低缺失率，对于组相联度有以下两条经验公式：</p>
+<ul>
+<li>对于降低冲突缺失率而言，八路组相联的效果基本等同于全相联</li>
+<li>2:1经验规律：大小为N的直接映射缓存与大小为N/2的2路组相联缓存大致具有相同的缺失率</li>
+</ul>
+<p>对应的，提高组相联度会使硬件的命中部分变得复杂，提高了命中时间。</p>
+<h3 id="使用多级缓存"><a href="#使用多级缓存" class="headerlink" title="使用多级缓存"></a>使用多级缓存</h3><p>多级缓存降低了缺失代价，二级缓存（L2）指再一级缓存（L1）和主存储器之间的缓存。当一级缓存发生缺失时，访问二级缓存查找数据；若二级缓存缺失，则由二级缓存到主存中找到数据。使用二级缓存后有：</p>
+<script type="math/tex; mode=display">
+缺失代价_{L1} = 存储器平局访问时间_{L2} = 命中时间_{L2} + 缺失率_{L2} \times 缺失代价_{L2}</script><p>代入一级缓存的存储器平均访问时间公式有：</p>
+<script type="math/tex; mode=display">
+存储器平局访问时间_{L1} = 命中时间_{L1} + 缺失率_{L1} \times (命中时间_{L2} + 缺失率_{L2} \times 缺失代价_{L2})</script><p>由于使用了二级缓存，对缺失率的定义细化如下：</p>
+<ul>
+<li>局部缺失率：$\frac{缓存中的产生的缺失数}{对该缓存进行存储器访问的总数}$，即对于L1缓存为$缺失率<em>{L1}$，对L2缓存为$缺失率</em>{L2}$</li>
+<li>全局缺失率：$\frac{该缓存中产生的缺失数}{处理访问缓存总数}$，对于L1缓存为$缺失率<em>{L1}$，对L2缓存为$缺失率</em>{L1} \times 缺失率_{L2}$</li>
+</ul>
+<p>对于二级缓存，停顿周期参数如下所示：</p>
+<script type="math/tex; mode=display">
+每条指令平均存储器停顿周期 = 缺失数_{L1} \times 缺失代价_{L1} + 缺失数_{L2} \times 缺失代价_{L2}</script><p>即对于一条指令而言，若产生缺失，则要么这一数据在L2缓存中，要么这一数据在L2缓存也缺失。对于第一种情况，这一指令的缺失仅计入$缺失数<em>{L1}$中；对于第二种情况，这一指令的缺失同时计入$缺失数</em>{L1}$和$缺失数_{L2}$。现在考虑一个以下参数的缓存系统：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>数据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>第一级缓存缺失（千次引用）</td>
+<td>40</td>
+</tr>
+<tr>
+<td>第二级缓存缺失（千次引用）</td>
+<td>20</td>
+</tr>
+<tr>
+<td>每条指令存储引用数</td>
+<td>1.5</td>
+</tr>
+<tr>
+<td>L1命中时间</td>
+<td>1</td>
+</tr>
+<tr>
+<td>L2命中时间</td>
+<td>10</td>
+</tr>
+<tr>
+<td>L2缺失代价</td>
+<td>200</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>有缺失率如下所示：</p>
+<script type="math/tex; mode=display">
+全局缺失率_{L1} = 局部缺失率_{L1} = \frac{40}{1000} = 4\% \\
+局部缺失率_{L2} = \frac{20}{40} = 50\% \\
+全局缺失率_{L2} = \frac{20}{1000} = 2\%</script><p>由此计算存储器平均访问时间：</p>
+<script type="math/tex; mode=display">
+存储器平局访问时间 = 1 + 0.04 \times (10 + 0.5 \times 200) = 5.4个时钟周期</script><p>若要计算每条指令的平均停顿时间，首先要计算缺失数：</p>
+<script type="math/tex; mode=display">
+缺失数_{L1} = \frac{40}{\frac{1000}{1.5}} = 0.06 \\
+缺失数_{L2} = \frac{20}{\frac{1000}{1.5}} = 0.03</script><p>随后根据缺失代价和缺失数计算每条指令的平均停顿时间：</p>
+<script type="math/tex; mode=display">
+每条指令平均停顿时间 = 缺失数_{L1} \times 缺失代价_{L1} + 缺失数_{L2} \times 缺失代价_{L2} \\
+= 0.06 \times 10 + 0.03 \times 200 = 6.6</script><p>对于两个指标，有如下关系：</p>
+<script type="math/tex; mode=display">
+(存储器平均访问时间 - 命中时间) \times 每条指令存储访问数量 = (5.4- 1)\times 1.5 = 6.6 = 每条指令平均停顿时间</script><p>对于二级缓存的设计，有两个需要注意的点：</p>
+<ul>
+<li>第二级缓存如果足够大（远大于一级缓存），则二级缓存的局部缺失率与全局缺失率非常相似</li>
+<li>二级缓存的主要评价指标是缓存全局缺失率</li>
+</ul>
+<p>对于二级缓存而言，首先需要考虑的是容量问题，一般来说二级缓存的容量应当略大于一级缓存；随后二级缓存使用组相联可以有效提高缺失代价；最后需要根据实际情况选择多级包含和多级互斥的策略：</p>
+<ul>
+<li>多级包含：二级缓存需要包含一级缓存中包含的所有块，实现简单，但是需要在多级之间使用相同的块大小，可能降低缓存的性能</li>
+<li>多级互斥：一级缓存中的块一定不会出现在二级缓存中，一级缓存从二级缓存中调入块的过程复杂化为一二级缓存块的交换，优点是仅需要二级缓存略大于一级缓存</li>
+</ul>
+<h3 id="提高读取缺失优先级"><a href="#提高读取缺失优先级" class="headerlink" title="提高读取缺失优先级"></a>提高读取缺失优先级</h3><p>考虑缓存向存储器写入的情况，一般使用一个写缓冲区，当进行写入时，首先将数据写入写缓冲区中，此时认为写入完成，之后再由写缓冲区将数据写回主存。此时会有一个问题，即写缓冲块中可能有某次读请求需要的数据的最新副本（已经执行写入指令但尚未写入到主存中），具有两种解决方法：</p>
+<ul>
+<li>等待：每次读请求都等待写缓冲区清空再读取，实现简单，效率很低</li>
+<li>访问：每次读请求首先从写缓冲区查找数据，再执行缓存命中，为目前的通用方法</li>
+</ul>
+<p>为了降低产生缺失的缺失代价，可以设置读取优先级高于写入优先级。若读取优先级未高于写入优先级，若当写缓冲区正在写入主存时产生读取缺失，首先需要等待写入完成再进行块读取，即：</p>
+<script type="math/tex; mode=display">
+缺失代价 = 写入时间 + 块读取时间</script><p>若读缺失优先级高于写入缺失，无论写缓冲区是否执行写入，读缺失都会立刻处理（若有写操作则打断），缺失代价即直接为块读取时间。</p>
+<h3 id="使用虚拟地址"><a href="#使用虚拟地址" class="headerlink" title="使用虚拟地址"></a>使用虚拟地址</h3><p>虚拟地址为操作系统分配个每个进程的存储空间的地址。对于使用物理地址的缓存，则首先需要将CPU给出的虚拟地址转换为物理地址，然后使用物理地址对缓存进行命中。这样操作的缓存设计简单，但命中过程中涉及虚拟和物理地址的转换，因此延长了命中时间，即：</p>
+<script type="math/tex; mode=display">
+虚拟地址命中时间 = 地址转换时间 + 物理地址命中时间</script><p>为了降低命中时间，可以使用基于虚拟地址的缓存，即缓存中使用虚拟地址。但使用虚拟地址会产生一系列问题：</p>
+<ul>
+<li>保护问题：虚拟地址转为物理地址时需要检查页级保护，解决方法为在缺失时从主存中复制保护信息保存到缓存中，每次访问都进行检查</li>
+<li>切换进程：每个进程都有自己的虚拟地址空间，可能出现两个进程的相同虚拟地址对应不同的物理地址，因此每次切换进程是需要刷新缓存，产生大量的强制缺失。解决方法是在标签中添加PID（进程识别标识符）字段，标记这个缓存的块属于哪一个进程，命中时进行检查。</li>
+<li>别名地址：对于一个进程，可能给一个物理地址赋予多个不同的虚拟地址，因此可能出现一个物理块在缓存中有多个副本，若对一个副本进行写入，则会出现多个块不一致的问题。解决方法是别名消去，即要求每个缓存块必须拥有一个独一无二的物理地址。其中一种方案是检查所有块，例如一个两路组相联的64KB缓存（地址位宽16bit），块尺寸为4KB（偏移量地址12bit），标签位宽为3bit（16-12-1），则当发生缺失时，检查所有可能的块地址共八个，若有匹配，则使其无效。</li>
+<li>I/O交换：I/O一般使用物理地址，映射到虚拟地址涉及地址转换</li>
+</ul>
+<p>一种折中的方案是仍然使用物理地址，但是当命中开始时直接使用块内偏移地址进行数据访问，同时并行的执行虚拟地址向物理地址的转换（虚拟地址和物理地址的块内偏移量相同），匹配使用物理地址匹配；即使用数据访问和地址转换并行掩盖地址转换时间。</p>
+<h2 id="高级优化方法"><a href="#高级优化方法" class="headerlink" title="高级优化方法"></a>高级优化方法</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>命中时间</th>
+<th>带宽</th>
+<th>缺失代价</th>
+<th>缺失率</th>
+<th>硬件复杂度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>使用小而简单的L1缓存</td>
+<td>降低</td>
+<td>-</td>
+<td>-</td>
+<td>增大</td>
+<td>-</td>
+</tr>
+<tr>
+<td>路预测</td>
+<td>降低</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>略微增加</td>
+</tr>
+<tr>
+<td>缓存访问流水化</td>
+<td>延长</td>
+<td>增大</td>
+<td>-</td>
+<td>-</td>
+<td>略微增加</td>
+</tr>
+<tr>
+<td>无阻塞缓存</td>
+<td>-</td>
+<td>增大</td>
+<td>降低</td>
+<td>-</td>
+<td>大幅度增加</td>
+</tr>
+<tr>
+<td>分组缓存</td>
+<td>-</td>
+<td>增大</td>
+<td>-</td>
+<td>-</td>
+<td>略微增加</td>
+</tr>
+<tr>
+<td>关键字优先与提前启动</td>
+<td>-</td>
+<td>-</td>
+<td>降低</td>
+<td>-</td>
+<td>增加</td>
+</tr>
+<tr>
+<td>合并写缓冲区</td>
+<td>-</td>
+<td>-</td>
+<td>降低</td>
+<td>-</td>
+<td>略微增加</td>
+</tr>
+<tr>
+<td>编译器优化</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>降低</td>
+<td>-</td>
+</tr>
+<tr>
+<td></td>
+<td>-</td>
+<td>-</td>
+<td>降低</td>
+<td>降低</td>
+<td>大幅度增加</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="使用小而简单的L1缓存"><a href="#使用小而简单的L1缓存" class="headerlink" title="使用小而简单的L1缓存"></a>使用小而简单的L1缓存</h3><p>使用小而简单的L1缓存主要用于降低命中时间，命中时间包括以下三个部分：</p>
+<ul>
+<li>使用地址中的索引字段确定组地址</li>
+<li>读取组中的多个标记与地址中的标记字段进行比较</li>
+<li>设置多路选择器选择正确的数据项</li>
+</ul>
+<p>若增大L1缓存的大小，则会增长第一个部分的时间，因此不会考虑大量增加L1缓存的大小。但是会考虑增加L1缓存的组相联度，原因如下所示：</p>
+<ul>
+<li>很多处理器访问缓存需要两个时钟周期，因此对命中时间不敏感</li>
+<li>引入多线程后，冲突缺失增加，提高组相联度对于降低冲突缺失更友好</li>
+</ul>
+<h3 id="路预测"><a href="#路预测" class="headerlink" title="路预测"></a>路预测</h3><p>路预测也是降低命中时间的一种方法，其在缓存中保存一些额外的位，用于预测下一次缓存访问这个组时可能调用的块，即将设置多路选择器和比较标记并行执行。若预测结果与比较结果相同，则节省了设置多路器的时间；若预测结果与比较结果不同，则重新设置多路选择器，无性能损失。</p>
+<h3 id="缓存访问流水化"><a href="#缓存访问流水化" class="headerlink" title="缓存访问流水化"></a>缓存访问流水化</h3><p>该方法也为了降低命中时间，其将命中时间分散到多个时钟周期中，缩短了时钟周期并提高了带宽（时钟周期提高），但是增加了发出载入指令到获取到数据的时钟周期数，增加了分支预测错误代价。</p>
+<h3 id="无阻塞缓存"><a href="#无阻塞缓存" class="headerlink" title="无阻塞缓存"></a>无阻塞缓存</h3><p>无阻塞缓存指在产生缓存缺失后仍然允许进行缓存命中操作。对于阻塞缓存而言，若访问地址A产生缺失，则需要等待缺失处理完成并获取到对应数据DA后才能进行地址B的访问；对于无阻塞缓存，访问地址A产生缺失后，仍可以立刻对地址B进行访问，若地址B未缺失，可以立刻提供对应数据DB。这种方式可以将缺失代价用后续缓存访问掩盖，降低了缺失代价。</p>
+<h3 id="多组缓存"><a href="#多组缓存" class="headerlink" title="多组缓存"></a>多组缓存</h3><p>将一整块缓存分为多组，不同组之间可以并行访问，提高了缓存的带宽</p>
+<h3 id="关键字优先与提前启动"><a href="#关键字优先与提前启动" class="headerlink" title="关键字优先与提前启动"></a>关键字优先与提前启动</h3><p>这种优化用于降低缺失代价，即对于某个地址的访问缺失后，传统的流程是将这个地址所属的块整个调入缓存后再提供数据，这两种优化方法的操作方式如下所示：</p>
+<ul>
+<li>关键字优先：从需要提取的地址开始将块载入，当提取到CPU请求的数据后立刻将其返回给CPU，随后块中剩下的数据以回卷的方式读入缓存</li>
+<li>提前启动：仍然从块的起始地址开始载入块，当提取到CPU请求的数据后立刻将其返回给CPU，随后继续载入块</li>
+</ul>
+<p>这两种方法的核心思想都是通过尽快获取CPU请求的数据，随后再考虑块的载入的方法降低缺失代价</p>
+<h3 id="合并写缓冲区"><a href="#合并写缓冲区" class="headerlink" title="合并写缓冲区"></a>合并写缓冲区</h3><p>合并写缓冲区用于降低写操作产生的缺失代价，对于写操作而言，一般通过写缓冲区进行，当进行块的写回操作时，将数据写回写缓冲区，此时缓存认为写操作已经完成。若写缓冲区满，则写操作必须等待写缓冲区非满时才继续进行，此时产生写操作的时间代价。</p>
+<img src="/2020/01/05/%E5%AD%98%E5%82%A8%E5%99%A8%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/write_op.PNG" class="">
+<p>合并写缓冲区指在将数据写回写缓冲区时，查询写缓冲区已有的数据，若有相同地址的数据，直接覆盖；若有连续地址，可以将其合并为一个写操作，充分利用写带宽资源。如上图所示，上方为未执行写合并时的情况，连续的四个写访问将写缓冲区填满，引起写操作阻塞；下方为写合并的情况，将四个连续地址的写入合并，不仅充分利用了写缓冲区空间，还充分利用了写带宽。需要注意的是，对于某些对IO访问，不可使用写合并（写连续的控制和数据流），需要使用标记标明其不可合并。</p>
+<h3 id="编译器优化"><a href="#编译器优化" class="headerlink" title="编译器优化"></a>编译器优化</h3><p>不改变硬件而通过软件的优化充分利用数据的局部性以降低缺失率，其核心思想为尽量将连续访问的数据人工的置于一个数据块中，常见的优化有以下两种：</p>
+<ul>
+<li>循环交换：假设对于一个数组<code>a[100][200]</code>，按先y后x的顺序访问（<code>a[0][0]</code>，<code>a[1][0]</code>,….）下为每次步幅为200的访问，此时每次访问都可能产生依次缓存缺失。若按先x后y的顺序访问（<code>a[0][0]</code>，<code>a[0][1]</code>,…）则为每次步幅为1的访问，此时访问块开头的数据产生缓存缺失，块内的数据均不产生缺失，充分利用了数据局部性降低了缺失率</li>
+<li>分块：对于大型矩阵，将其分为若干个小矩阵（可以放进一个块中）循环处理可以降低缺失率，因为每次访问一个小矩阵仅产生依次缓存缺失</li>
+</ul>
+<h3 id="预取数据"><a href="#预取数据" class="headerlink" title="预取数据"></a>预取数据</h3><p>根据数据的局部性，一个数据被用到后，其附近的数据也很有可能被用到。以此为原理，可以使用数据预取的方式降低缺失率，数据预取有两种分类：</p>
+<ul>
+<li>硬件预取：使用硬件预取数据，额外设置一个数据读入缓冲区。当发生缺失需要调入一个块时，缺失的块调入缓存，将下一个块（缺失的块紧邻的下一个块）调入读入缓冲区。若下次发生缺失且缺失的就是读入缓冲区的块，则直接从读入缓冲区将其调入缓存；若不是读入缓冲区的块，则将读入缓冲区中的块置无效，重新从主存中读取块（也使用读缓冲区预取下一个块）</li>
+<li>软件预取：通过软件控制预取的过程（编译器在指令中将数据读入指令提前），此时需要编译器小心设计预取的时间，保证预取产生优化</li>
+</ul>
+<h1 id="虚拟存储器"><a href="#虚拟存储器" class="headerlink" title="虚拟存储器"></a>虚拟存储器</h1><p>虚拟存储器方案将物理存储器划分为块，分配给不同的进程，每个进程仅能访问属于自己的块，虚拟存储器用于自动的处理主存储器（内存）和辅助存储器（硬盘）两级存储结构。虚拟存储器提供虚拟地址，一个进程执行需要连续的虚拟地址空间，但这个连续的虚拟地址空间对应的物理地址可能是非连续的，甚至部分可能不在主存上，虚拟存储器用于自动的处理这些问题。虚拟地址和物理地址的对应关系如下所示：</p>
+<img src="/2020/01/05/%E5%AD%98%E5%82%A8%E5%99%A8%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/vaddr.PNG" class="">
+<p>虚拟存储器系统可根据划分方法分为三类：</p>
+<ul>
+<li>页式：使用大小固定的块</li>
+<li>段式：使用大小不固定的块</li>
+<li>段页式：一个段由多个大小固定的页组成，一个段包括的页数不固定（一定是整数）</li>
+</ul>
+<p>页和段的优缺点如下表所示：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>页</th>
+<th>段</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>信息长度</td>
+<td>1（地址）</td>
+<td>2（地址、长度）</td>
+</tr>
+<tr>
+<td>可见性</td>
+<td>不可见</td>
+<td>可见</td>
+</tr>
+<tr>
+<td>替换块</td>
+<td>容易</td>
+<td>复杂（需要查找一个可容纳该段的空余地址）</td>
+</tr>
+<tr>
+<td>磁盘通信</td>
+<td>高效（每次长度相同）</td>
+<td>不一定（小的段可能仅几个字节）</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="层次结构"><a href="#层次结构" class="headerlink" title="层次结构"></a>层次结构</h2><p>对于虚拟存储器，也需要考虑类似缓存的四个问题：放置、识别、替换和写入。需要注意的是，由于虚拟存储器管理的低级存储器为硬盘（磁盘或SSD），单位为页，因此缺失代价很大。所以在考虑上述问题时，优先考虑降低缺失率以提高性能：</p>
+<ul>
+<li>放置：为了降低缺失率，一般使用全相联的方式，即一个页或段可以放置在主存的任意位置</li>
+<li>识别：识别用页表或段表实现，即在主存中划分一部分区域，用于存储虚拟地址页号-物理起始地址的表。需要查找一个块时，需要访问两次主存：第一次访问页表获得其物理地址，第二次根据物理地址访问数据</li>
+<li>替换：为了将缺失率降低，因此采用替换最近最少使用块（LRU）的方式</li>
+<li>写入：考虑写入一个块需要消耗很多时钟周期，因此广泛使用写回的方式</li>
+</ul>
+<h2 id="快速地址变换（优化）"><a href="#快速地址变换（优化）" class="headerlink" title="快速地址变换（优化）"></a>快速地址变换（优化）</h2><p>对于使用虚拟地址的系统而言，使用虚拟地址获取数据需要执行两次内存访问：第一次访问分页表获得对应的物理地址；第二次访问物理地址获取数据。为了加速这一类似缓存命中的过程，使用快速地址变换技术，即引入变换旁视缓冲区（TLB）。TLB的组织方式类似缓存，区别在于数据局域不是一个数据块而是一个物理地址。TLB结构如下图所示：</p>
+<img src="/2020/01/05/%E5%AD%98%E5%82%A8%E5%99%A8%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/ch2_tlb.PNG" class="">
+<p>虚拟地址包括虚拟页号和页偏移量，与缓存中的数据块偏移量相同，虚拟地址和物理地址的偏移量相同，因此这个部分不需要包含在页表或TLB中。TLB中以虚拟页号为标记（key为虚拟页号），存储一些状态位和物理地址（value为物理地址）。执行变换时，首先将虚拟页号发给TLB的每一个表项，若标记匹配（虚拟页号与标记字段相同且有效位拉高），则TLB命中，将对应表项存储的物理地址和偏移量组合为物理地址。若不匹配，则根据页偏移量访问页表，将对应的物理地址调入TLB中在执行命中操作。</p>
+<h2 id="保护"><a href="#保护" class="headerlink" title="保护"></a>保护</h2><p>虚拟存储器一个功能是保护数据，即只让一个进程访问其对应的地址空间而不能访问其他地址空间，尤其是需要受保护的地址空间。首先每个进程具有其独有的分页表，使其仅能获取属于自己的页对应的物理地址，其次还有以下方式对内存进行保护：</p>
+<ul>
+<li>界限检查：在分页表或分段表中标明偏移量的上界，即提供的偏移量不可超过这个固定的值，阻止其访问超过上界的地址空间</li>
+<li>划分共享与保护空间：将地址空间划分为共享和独享两个部分，并使用不同的分页表，分页表中标记页的等级，仅有访问等级高于页的等级的访问才能进行</li>
+<li>调用门：在分页表中提供特殊的表项，其数据域中为物理地址而不为基地址，访问提供的偏移量被忽略。即强制对指定页的访问落到指定地址，即只能访问页中的指定地址。</li>
+</ul>
+<h2 id="虚拟存储器与缓存"><a href="#虚拟存储器与缓存" class="headerlink" title="虚拟存储器与缓存"></a>虚拟存储器与缓存</h2><p>对于同时具有虚拟存储器和缓存的系统，缓存具有多种选择方式，包括：</p>
+<ul>
+<li>逻辑索引+逻辑标记：按逻辑地址查找组，比对的标记（地址高位）为逻辑地址高位</li>
+<li>逻辑索引+物理标记：按逻辑地址查找组，比对的标记为物理地址高位</li>
+<li>物理索引+物理标记：按物理地址查找组，比对的标记位物理地址高位</li>
+</ul>
+<p>对于逻辑索引+逻辑标记这种组合，直接使用逻辑地址进行命中操作，若命中则直接获取数据，不存在物理地址变换步骤。对于物理索引+物理标记的组合，首先使用TLB进行地址变换操作，随后执行缓存命中操作。对于逻辑索引+物理标记的组合，访问的方式如下所示：</p>
+<img src="/2020/01/05/%E5%AD%98%E5%82%A8%E5%99%A8%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/cache_with_tlb.PNG" class="">
+<p>上图为一个TLB+二级缓存的系统，一级缓存为逻辑索引+物理地址，二级缓存为物理地址+物理缓存。访问过程首先CPU给出虚拟地址，以下两个步骤并行执行：</p>
+<ul>
+<li>缓存：根据逻辑地址中的索引字段（L1缓存索引）在L1缓存中查找到对应的组</li>
+<li>TLB：使用虚拟页编号进行地址变换，将其转为物理地址</li>
+</ul>
+<p>随后，使用TLB提供的物理地址与缓存对应组中的标志（物理标志）进行比较，若匹配，则缓存命中，向CPU提供数据。若不匹配，则L1缓存缺失，使用物理地址访问L2缓存进行命中操作。</p>
+<h2 id="举例：Opteron存储器管理"><a href="#举例：Opteron存储器管理" class="headerlink" title="举例：Opteron存储器管理"></a>举例：Opteron存储器管理</h2><p>Opteron虚拟存储器部分使用AMD64的虚拟存储器结构。AMD64中，64位虚拟地址被映射到52位物理地址，剩下的12位用于提供保护和使用信息。在Opteron中，使用48位虚拟地址和40位物理地址，AMD64中虚拟地址的高16位（16+48=64）为符号位扩展。AMD64为了管理64位页表使用了4级页表，Opteron中每个页表9位，偏移量12位，即有48=9+9+9+9+12，高一级页表中存储的是低一级页表的地址，如下所示：</p>
+<img src="/2020/01/05/%E5%AD%98%E5%82%A8%E5%99%A8%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/tlb_example.PNG" class="">
+<p>对于虚拟地址，首先根据高9位查询页映射表L4，获得对应页目录指针表的起始地址，再以38~30位为偏移量查询页目录指针表获取页目录表地址，依次类推查找到页表，获取对应的物理地址，和页偏移量组合产生物理地址。每个表中的表项中的数据都分为以下两个字段：</p>
+<ul>
+<li>数据：下一级表的物理地址</li>
+<li>保护和使用信息：数据的保护信息</li>
+</ul>
+<p>由于有四级页表，每个页表都有保护和使用信息，执行时服从最低级页表的保护和使用信息。为了实现快速地址变换，Opteron使用了4个TLB，两个用于指令访问两个用于数据访问。</p>
+<h1 id="举例：Cortex-A8与I7"><a href="#举例：Cortex-A8与I7" class="headerlink" title="举例：Cortex-A8与I7"></a>举例：Cortex-A8与I7</h1><h2 id="Cortex-A8缓存结构"><a href="#Cortex-A8缓存结构" class="headerlink" title="Cortex A8缓存结构"></a>Cortex A8缓存结构</h2><p>Cortex A8存储结构为一个两级缓存的结构：</p>
+<ul>
+<li>第一级缓存为缓存对（指令缓存和数据缓存分离），使用虚拟索引和物理标记。大小为16KB或32KB，块大小为64B，组织形式为四路组相联，使用路预测和随即替代算法。</li>
+<li>第二级缓存使用物理索引和物理标记，为8路组相联，大小为128KB~1MB，块大小为64B。</li>
+</ul>
+<p>虚拟地址和物理地址的转换使用TLB管理，TLB的容量为32项全相联，支持页面大小可变，替换算法为一种轮询算法，当发生TLB缺失时，使用硬件轮询主存页表进行处理。其整体操作方式与[虚拟存储器与缓存]中所述相同。</p>
+<h2 id="I7缓存结构"><a href="#I7缓存结构" class="headerlink" title="I7缓存结构"></a>I7缓存结构</h2><p>i7的缓存结构要远远比A8复杂，其具有三级缓存和两级TLB，三级缓存的信息如下所示：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>L1 I-cache</th>
+<th>L1 D-cache</th>
+<th>L2缓存</th>
+<th>L3缓存</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>大小</td>
+<td>32KB</td>
+<td>32KB</td>
+<td>256KB</td>
+<td>每个核心2MB</td>
+</tr>
+<tr>
+<td>相联度</td>
+<td>四路</td>
+<td>八路</td>
+<td>八路</td>
+<td>十六路</td>
+</tr>
+<tr>
+<td>访问延迟</td>
+<td>4个周期（流水）</td>
+<td>4个周期（流水）</td>
+<td>10个周期</td>
+<td>35个周期</td>
+</tr>
+<tr>
+<td>替代方法</td>
+<td>伪LRU</td>
+<td>伪LRU</td>
+<td>伪LRU</td>
+<td>带有序选择算法的伪LRU</td>
+</tr>
+<tr>
+<td>索引</td>
+<td>虚拟索引</td>
+<td>虚拟索引</td>
+<td>物理索引</td>
+<td>物理索引</td>
+</tr>
+<tr>
+<td></td>
+<td>物理标记</td>
+<td>物理标记</td>
+<td>物理标记</td>
+<td>物理标记</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>同时使用两级TLB，第一级TLB指令与数据分离，如下所示：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>I-TLB</th>
+<th>D-TLB</th>
+<th>TLB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>大小</td>
+<td>128</td>
+<td>64</td>
+<td>512</td>
+</tr>
+<tr>
+<td>相联度</td>
+<td>四路</td>
+<td>四路</td>
+<td>四路</td>
+</tr>
+<tr>
+<td>替换算法</td>
+<td>伪LRU</td>
+<td>伪LRU</td>
+<td>伪LRU</td>
+</tr>
+<tr>
+<td>访问延迟</td>
+<td>1个周期</td>
+<td>1个周期</td>
+<td>6个周期</td>
+</tr>
+<tr>
+<td></td>
+<td>7个周期</td>
+<td>7个周期</td>
+<td>访问页表，不确定</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>存储器的整体结构如下图所示：</p>
+<img src="/2020/01/05/%E5%AD%98%E5%82%A8%E5%99%A8%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/i7_memory.PNG" class="">
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">月见樽</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.yuejianzun.xyz/2020/01/05/%E5%AD%98%E5%82%A8%E5%99%A8%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">http://www.yuejianzun.xyz/2020/01/05/%E5%AD%98%E5%82%A8%E5%99%A8%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.yuejianzun.xyz" target="_blank">月见樽'blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/">计算机体系结构</a></div><div class="post_share"><div class="social-share" data-image="/img/1.PNG" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/07/09/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(1)/"><img class="prev-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">高级综合工具StratusHLS学习笔记(1)</div></div></a></div><div class="next-post pull-right"><a href="/2019/07/22/EIE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95%E6%98%A0%E5%B0%84/"><img class="next-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">EIE结构与算法映射</div></div></a></div></nav></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/had.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">月见樽</div><div class="author-info__description">日隐月现，潜龙在渊</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/qiankun214"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%99%A8%E6%80%A7%E8%83%BD%E8%AF%84%E4%BB%B7%E6%8C%87%E6%A0%87"><span class="toc-number">1.</span> <span class="toc-text">存储器性能评价指标</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%99%A8%E5%81%9C%E9%A1%BF%E5%91%A8%E6%9C%9F%E6%95%B0"><span class="toc-number">1.1.</span> <span class="toc-text">存储器停顿周期数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%99%A8%E5%B9%B3%E5%9D%87%E8%AE%BF%E9%97%AE%E6%97%B6%E9%97%B4"><span class="toc-number">1.2.</span> <span class="toc-text">存储器平均访问时间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9CPU%E6%80%A7%E8%83%BD%E5%BD%B1%E5%93%8D"><span class="toc-number">1.3.</span> <span class="toc-text">对CPU性能影响</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E5%99%A8%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">存储器层次结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9D%97%E7%9A%84%E6%94%BE%E7%BD%AE"><span class="toc-number">2.1.</span> <span class="toc-text">块的放置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9D%97%E7%9A%84%E8%AF%86%E5%88%AB"><span class="toc-number">2.2.</span> <span class="toc-text">块的识别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9D%97%E7%9A%84%E6%9B%BF%E6%8D%A2"><span class="toc-number">2.3.</span> <span class="toc-text">块的替换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9D%97%E7%9A%84%E5%86%99%E5%85%A5"><span class="toc-number">2.4.</span> <span class="toc-text">块的写入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BE%E4%BE%8B%EF%BC%9AOpteron%E7%BC%93%E5%AD%98"><span class="toc-number">2.5.</span> <span class="toc-text">举例：Opteron缓存</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96"><span class="toc-number">3.</span> <span class="toc-text">缓存性能优化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%BA%E5%A4%B1%E6%A8%A1%E5%9E%8B"><span class="toc-number">3.1.</span> <span class="toc-text">缺失模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BC%98%E5%8C%96%E5%8E%9F%E7%90%86"><span class="toc-number">3.2.</span> <span class="toc-text">优化原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95"><span class="toc-number">3.3.</span> <span class="toc-text">基础优化方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A2%9E%E5%8A%A0%E5%9D%97%E5%A4%A7%E5%B0%8F"><span class="toc-number">3.3.1.</span> <span class="toc-text">增加块大小</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A2%9E%E5%A4%A7%E7%BC%93%E5%AD%98%E5%A4%A7%E5%B0%8F"><span class="toc-number">3.3.2.</span> <span class="toc-text">增大缓存大小</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E9%AB%98%E7%BB%84%E7%9B%B8%E8%81%94%E5%BA%A6"><span class="toc-number">3.3.3.</span> <span class="toc-text">提高组相联度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%A4%9A%E7%BA%A7%E7%BC%93%E5%AD%98"><span class="toc-number">3.3.4.</span> <span class="toc-text">使用多级缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E9%AB%98%E8%AF%BB%E5%8F%96%E7%BC%BA%E5%A4%B1%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-number">3.3.5.</span> <span class="toc-text">提高读取缺失优先级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80"><span class="toc-number">3.3.6.</span> <span class="toc-text">使用虚拟地址</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95"><span class="toc-number">3.4.</span> <span class="toc-text">高级优化方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%B0%8F%E8%80%8C%E7%AE%80%E5%8D%95%E7%9A%84L1%E7%BC%93%E5%AD%98"><span class="toc-number">3.4.1.</span> <span class="toc-text">使用小而简单的L1缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E9%A2%84%E6%B5%8B"><span class="toc-number">3.4.2.</span> <span class="toc-text">路预测</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E8%AE%BF%E9%97%AE%E6%B5%81%E6%B0%B4%E5%8C%96"><span class="toc-number">3.4.3.</span> <span class="toc-text">缓存访问流水化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A0%E9%98%BB%E5%A1%9E%E7%BC%93%E5%AD%98"><span class="toc-number">3.4.4.</span> <span class="toc-text">无阻塞缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E7%BB%84%E7%BC%93%E5%AD%98"><span class="toc-number">3.4.5.</span> <span class="toc-text">多组缓存</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E5%AD%97%E4%BC%98%E5%85%88%E4%B8%8E%E6%8F%90%E5%89%8D%E5%90%AF%E5%8A%A8"><span class="toc-number">3.4.6.</span> <span class="toc-text">关键字优先与提前启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%88%E5%B9%B6%E5%86%99%E7%BC%93%E5%86%B2%E5%8C%BA"><span class="toc-number">3.4.7.</span> <span class="toc-text">合并写缓冲区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E5%99%A8%E4%BC%98%E5%8C%96"><span class="toc-number">3.4.8.</span> <span class="toc-text">编译器优化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%84%E5%8F%96%E6%95%B0%E6%8D%AE"><span class="toc-number">3.4.9.</span> <span class="toc-text">预取数据</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%AD%98%E5%82%A8%E5%99%A8"><span class="toc-number">4.</span> <span class="toc-text">虚拟存储器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84"><span class="toc-number">4.1.</span> <span class="toc-text">层次结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E5%9C%B0%E5%9D%80%E5%8F%98%E6%8D%A2%EF%BC%88%E4%BC%98%E5%8C%96%EF%BC%89"><span class="toc-number">4.2.</span> <span class="toc-text">快速地址变换（优化）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BF%9D%E6%8A%A4"><span class="toc-number">4.3.</span> <span class="toc-text">保护</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9A%E6%8B%9F%E5%AD%98%E5%82%A8%E5%99%A8%E4%B8%8E%E7%BC%93%E5%AD%98"><span class="toc-number">4.4.</span> <span class="toc-text">虚拟存储器与缓存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BE%E4%BE%8B%EF%BC%9AOpteron%E5%AD%98%E5%82%A8%E5%99%A8%E7%AE%A1%E7%90%86"><span class="toc-number">4.5.</span> <span class="toc-text">举例：Opteron存储器管理</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BE%E4%BE%8B%EF%BC%9ACortex-A8%E4%B8%8EI7"><span class="toc-number">5.</span> <span class="toc-text">举例：Cortex-A8与I7</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Cortex-A8%E7%BC%93%E5%AD%98%E7%BB%93%E6%9E%84"><span class="toc-number">5.1.</span> <span class="toc-text">Cortex A8缓存结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#I7%E7%BC%93%E5%AD%98%E7%BB%93%E6%9E%84"><span class="toc-number">5.2.</span> <span class="toc-text">I7缓存结构</span></a></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/09/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%EF%BC%89/" title="网络学习笔记2——信号与系统">网络学习笔记2——信号与系统</a><time datetime="2020-11-09T15:51:13.000Z" title="发表于 2020-11-09 23:51:13">2020-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/" title="网络学习笔记1——协议分层">网络学习笔记1——协议分层</a><time datetime="2020-11-06T15:51:13.000Z" title="发表于 2020-11-06 23:51:13">2020-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/" title="高级综合工具StratusHLS学习笔记(4)">高级综合工具StratusHLS学习笔记(4)</a><time datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/" title="高级综合工具StratusHLS学习笔记(3)">高级综合工具StratusHLS学习笔记(3)</a><time datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/" title="高级综合工具StratusHLS学习笔记(2)">高级综合工具StratusHLS学习笔记(2)</a><time datetime="2020-07-19T15:51:13.000Z" title="发表于 2020-07-19 23:51:13">2020-07-19</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 月见樽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

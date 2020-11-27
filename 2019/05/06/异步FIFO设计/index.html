@@ -1,0 +1,537 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>异步FIFO设计 | 月见樽'blog</title><meta name="keywords" content="Verilog,FIFO"><meta name="author" content="月见樽"><meta name="copyright" content="月见樽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="1.设计目标设计一个参数可配置的异步FIFO，要求：  FIFO深度从4开始在2的幂次方连续可配（4、8、16、……） 读写时钟域相位差、频率差任意（同步器参数可配）  2.参数列表    名称 默认值 说明     DEPTH_LOG 4 FIFO容量为$2^{DEPTH_LOG}$   DATA_WIDTH 8 数据位宽     3.端口3.1.端口列表3.1.1.系统端口    名称 类型">
+<meta property="og:type" content="article">
+<meta property="og:title" content="异步FIFO设计">
+<meta property="og:url" content="http://www.yuejianzun.xyz/2019/05/06/%E5%BC%82%E6%AD%A5FIFO%E8%AE%BE%E8%AE%A1/index.html">
+<meta property="og:site_name" content="月见樽&#39;blog">
+<meta property="og:description" content="1.设计目标设计一个参数可配置的异步FIFO，要求：  FIFO深度从4开始在2的幂次方连续可配（4、8、16、……） 读写时钟域相位差、频率差任意（同步器参数可配）  2.参数列表    名称 默认值 说明     DEPTH_LOG 4 FIFO容量为$2^{DEPTH_LOG}$   DATA_WIDTH 8 数据位宽     3.端口3.1.端口列表3.1.1.系统端口    名称 类型">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.yuejianzun.xyz/img/1.PNG">
+<meta property="article:published_time" content="2019-05-06T14:00:00.000Z">
+<meta property="article:modified_time" content="2020-11-27T16:47:57.231Z">
+<meta property="article:author" content="月见樽">
+<meta property="article:tag" content="Verilog">
+<meta property="article:tag" content="FIFO">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yuejianzun.xyz/img/1.PNG"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.yuejianzun.xyz/2019/05/06/%E5%BC%82%E6%AD%A5FIFO%E8%AE%BE%E8%AE%A1/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-11-28 00:47:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/had.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/1.PNG)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">月见樽'blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">异步FIFO设计</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2019-05-06T14:00:00.000Z" title="发表于 2019-05-06 22:00:00">2019-05-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-27T16:47:57.231Z" title="更新于 2020-11-28 00:47:57">2020-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1/">硬件设计</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.3k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="1-设计目标"><a href="#1-设计目标" class="headerlink" title="1.设计目标"></a>1.设计目标</h1><p>设计一个参数可配置的异步FIFO，要求：</p>
+<ul>
+<li>FIFO深度从4开始在2的幂次方连续可配（4、8、16、……）</li>
+<li>读写时钟域相位差、频率差任意（同步器参数可配）</li>
+</ul>
+<h1 id="2-参数列表"><a href="#2-参数列表" class="headerlink" title="2.参数列表"></a>2.参数列表</h1><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>默认值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DEPTH_LOG</td>
+<td>4</td>
+<td>FIFO容量为$2^{DEPTH_LOG}$</td>
+</tr>
+<tr>
+<td>DATA_WIDTH</td>
+<td>8</td>
+<td>数据位宽</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="3-端口"><a href="#3-端口" class="headerlink" title="3.端口"></a>3.端口</h1><h2 id="3-1-端口列表"><a href="#3-1-端口列表" class="headerlink" title="3.1.端口列表"></a>3.1.端口列表</h2><h3 id="3-1-1-系统端口"><a href="#3-1-1-系统端口" class="headerlink" title="3.1.1.系统端口"></a>3.1.1.系统端口</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>位宽</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>read_clk</td>
+<td>input</td>
+<td>1</td>
+<td>读时钟域时钟</td>
+</tr>
+<tr>
+<td>write_clk</td>
+<td>input</td>
+<td>1</td>
+<td>写时钟域时钟</td>
+</tr>
+<tr>
+<td>rst_n</td>
+<td>input</td>
+<td>1</td>
+<td>系统复位端口，低有效</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="3-1-2-读端口"><a href="#3-1-2-读端口" class="headerlink" title="3.1.2.读端口"></a>3.1.2.读端口</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>位宽</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>read_req</td>
+<td>input</td>
+<td>1</td>
+<td>读完成信号</td>
+</tr>
+<tr>
+<td>read_valid</td>
+<td>output</td>
+<td>1</td>
+<td>读数据有效信号</td>
+</tr>
+<tr>
+<td>read_data</td>
+<td>output</td>
+<td>DEPTH_LOG</td>
+<td>读数据</td>
+</tr>
+<tr>
+<td>fifo_empty</td>
+<td>output</td>
+<td>1</td>
+<td>FIFO空信号</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="3-1-3-写端口"><a href="#3-1-3-写端口" class="headerlink" title="3.1.3.写端口"></a>3.1.3.写端口</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>位宽</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>write_req</td>
+<td>input</td>
+<td>1</td>
+<td>写请求信号</td>
+</tr>
+<tr>
+<td>write_data</td>
+<td>input</td>
+<td>DEPTH_LOG</td>
+<td>写数据</td>
+</tr>
+<tr>
+<td>fifo_full</td>
+<td>output</td>
+<td>1</td>
+<td>FIFO满信号</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="3-2-端口时序"><a href="#3-2-端口时序" class="headerlink" title="3.2.端口时序"></a>3.2.端口时序</h2><h3 id="3-2-1-读端口时序"><a href="#3-2-1-读端口时序" class="headerlink" title="3.2.1.读端口时序"></a>3.2.1.读端口时序</h3><img src="/2019/05/06/%E5%BC%82%E6%AD%A5FIFO%E8%AE%BE%E8%AE%A1/read_port.png" class="">
+<p><code>read_req</code>信号拉高表示请求读数据，若此时FIFO非空（<code>fifo_empty</code>为低），FIFO将会将数据置于<code>read_data</code>上，同时拉高<code>read_valid</code>信号。即当<code>read_valid</code>有效时，对应的<code>read_data</code>上的数据有效。<code>fifo_empty</code>拉高表示FIFO已空，当前数据输出端口上的数据无意义， 再拉高<code>read_req</code>将不会改变<code>read_data</code>上的数据。</p>
+<h3 id="3-2-2-写端口时序"><a href="#3-2-2-写端口时序" class="headerlink" title="3.2.2.写端口时序"></a>3.2.2.写端口时序</h3><img src="/2019/05/06/%E5%BC%82%E6%AD%A5FIFO%E8%AE%BE%E8%AE%A1/write_port.png" class="">
+<p>写端口如上所示，当且仅当<code>write_req</code>信号高且<code>fifo_full</code>信号低时将<code>write_data</code>端口上的数据写入FIFO。</p>
+<h1 id="4-系统结构"><a href="#4-系统结构" class="headerlink" title="4.系统结构"></a>4.系统结构</h1><h2 id="4-1-结构框图"><a href="#4-1-结构框图" class="headerlink" title="4.1.结构框图"></a>4.1.结构框图</h2><img src="/2019/05/06/%E5%BC%82%E6%AD%A5FIFO%E8%AE%BE%E8%AE%A1/structure.png" class="">
+<p>系统整体结构如上所示，分为两个时钟域——读时钟域和写时钟域。每个时钟域结构相互镜像：</p>
+<ul>
+<li>读/写指针：二进制的读写指针，用于SRAM的读/写地址</li>
+<li>二进制到格雷码转换器：将读/写指针从二进制转为格雷码，用于传递到下一个时钟域或生产空\满信号</li>
+<li>空/满信号生成：比对读指针和写指针的格雷码，生成空和满信号</li>
+</ul>
+<p>其他还有跨时钟域的组件，分别为：</p>
+<ul>
+<li>双口SRAM：一个端口使用写时钟和写时钟域下的信号，另一个使用读时钟和读时钟域的信号</li>
+<li>同步器：两个同步器，分别将读指针同步到写时钟域和将写时钟同步到读时钟域</li>
+</ul>
+<h2 id="4-2-系统方法"><a href="#4-2-系统方法" class="headerlink" title="4.2.系统方法"></a>4.2.系统方法</h2><h3 id="4-2-1-二进制转格雷码"><a href="#4-2-1-二进制转格雷码" class="headerlink" title="4.2.1.二进制转格雷码"></a>4.2.1.二进制转格雷码</h3><p>假设二进制码为每位为$bin[n]$，对应的格雷码每位为$gray[n]$，共N位，转换算法为：</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+gray[N-1] = bin[N - 1]  \\
+gray[i] = bin[i] \ NOR \ bin[i+1] & i < N-1
+\end{cases}</script><p>例如二进制码<code>011</code>，共3位，则格雷码第2位为<code>0</code>，其他几位为<code>10</code>，对应格雷码为<code>010</code>，在具体实现时，可以参考下图的实现方法：</p>
+<img src="/2019/05/06/%E5%BC%82%E6%AD%A5FIFO%E8%AE%BE%E8%AE%A1/bin2gray.png" class="">
+<h3 id="4-2-2-格雷码判空判满"><a href="#4-2-2-格雷码判空判满" class="headerlink" title="4.2.2.格雷码判空判满"></a>4.2.2.格雷码判空判满</h3><p>对读指针和写指针有以下含义：</p>
+<ul>
+<li>读指针：指向当前正在读的地址</li>
+<li>写指针：指向下一次写入操作需要写入的地址</li>
+</ul>
+<p>二进制下，对于地址位宽为N的SRAM，可以使用位宽为N+1的地址——低N位为地址，MSB为标志位，用于标记满和空：</p>
+<ul>
+<li>当低N位相等，MSB不相等时：FIFO满（写指针领先读指针“一圈”）</li>
+<li>当低N为相等，MSB相等时：FIFO空（读指针“追上”写指针）</li>
+</ul>
+<p>转换到格雷码域，做相同判断，判空条件为两个指针相等，相等的二进制码对应格雷码相等，条件不变。对于判满，需要两个二进制仅有最高位不同，参考二进制转格雷码条件，判满条件如下：</p>
+<ul>
+<li>最高位不相等（格雷码MSB与二进制MSB相同）</li>
+<li>次高位不相等（次高位由二进制码的最高位和次高位异或，两指针二进制下最高位不同，次高位相同）</li>
+<li>其他位均相等（异或操作依赖的位数均相等）</li>
+</ul>
+<p>由于同步器的同步需要消耗时钟周期，因此：</p>
+<ul>
+<li>判满：在写时钟域下生成满信号，读指针通过同步器，为若干个时钟周期之前的读指针。若在FIFO满的情况下，读操作发生，读指针的变化延迟传递到写时钟域，在传递的若干个周期内状态为“假满”</li>
+<li>判空：在读时钟域下生成空信号，写指针通过同步器，为若干个时钟周期之前的写指针。若在FIFO空的情况下，写操作发生，写指针的变化延迟传递到读时钟域，在传递的若干个周期内状态为“假空”</li>
+</ul>
+<p>“假满”和“假空”状态均不影响异步FIFO的正常工作，仅为略微降低FIFO的工作效率</p>
+<h3 id="4-2-3-同步器"><a href="#4-2-3-同步器" class="headerlink" title="4.2.3.同步器"></a>4.2.3.同步器</h3><p>同步器是一种跨时钟域数据传输的方法，二级同步器结构如下所示：</p>
+<img src="/2019/05/06/%E5%BC%82%E6%AD%A5FIFO%E8%AE%BE%E8%AE%A1/synchronizer.png" class="">
+<p>从源时钟域下的源信号开始，依次通过多个时钟为目标时钟域时钟下的寄存器，即构成了多级同步器，寄存器的数量就是同步器的级数。一般的信号仅需要二级同步器，高速信号一般使用三级同步器。</p>
+<h1 id="5-实现细节"><a href="#5-实现细节" class="headerlink" title="5.实现细节"></a>5.实现细节</h1><h2 id="5-1-写FIFO部分"><a href="#5-1-写FIFO部分" class="headerlink" title="5.1.写FIFO部分"></a>5.1.写FIFO部分</h2><p>写FIFO部分包括以下几个组件：</p>
+<ul>
+<li>同步器：将读指针从读时钟域同步到写时钟域，使用两级同步器</li>
+<li>写指针：指示写入地址的指针，当满信号拉低且写请求拉高时加1</li>
+<li>写指针二进制转格雷码：将写指针从二进制转为格雷码，送到判满部分判满和向读时钟域的同步器</li>
+<li>满信号生成：当满足[4.2.2]的判满条件成立时，拉高满信号</li>
+</ul>
+<h3 id="5-1-1-需求"><a href="#5-1-1-需求" class="headerlink" title="5.1.1.需求"></a>5.1.1.需求</h3><p>写FIFO部分的需求如下：</p>
+<ul>
+<li>产生写SRAM的相关信号，包括写请求信号，写地址信号和写数据信号</li>
+<li>同步内部读指针，配合写指针生成满信号。将写指针传递到读部分。</li>
+</ul>
+<h3 id="5-1-2-端口"><a href="#5-1-2-端口" class="headerlink" title="5.1.2.端口"></a>5.1.2.端口</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>位宽</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>clk</td>
+<td>input</td>
+<td>1</td>
+<td>写部分时钟</td>
+</tr>
+<tr>
+<td>rst_n</td>
+<td>input</td>
+<td>1</td>
+<td>系统复位</td>
+</tr>
+<tr>
+<td>write_req</td>
+<td>input</td>
+<td>1</td>
+<td>写FIFO请求</td>
+</tr>
+<tr>
+<td>fifo_full</td>
+<td>output</td>
+<td>1</td>
+<td>FIFO满信号</td>
+</tr>
+<tr>
+<td>write_addr</td>
+<td>output</td>
+<td>DEPTH_LOG</td>
+<td>写存储器地址</td>
+</tr>
+<tr>
+<td>read_point_gray</td>
+<td>input</td>
+<td>DEPTH_LOG+1</td>
+<td>读指针格雷码，未同步</td>
+</tr>
+<tr>
+<td>write_point_gray</td>
+<td>output</td>
+<td>DEPTH_LOG+1</td>
+<td>写指针格雷码</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="5-1-3-实现"><a href="#5-1-3-实现" class="headerlink" title="5.1.3.实现"></a>5.1.3.实现</h3><img src="/2019/05/06/%E5%BC%82%E6%AD%A5FIFO%E8%AE%BE%E8%AE%A1/write_control.png" class="">
+<p>上图为<code>fifo_full</code>生成部分的结构图，为了保证保证<code>fifo_full</code>拉高的及时性，设置<code>next_write_point_gray</code>寄存器，指示下一个格雷码的写地址。当一次<code>is_write</code>拉高时，每个部件的功能如下所示：</p>
+<ul>
+<li><code>write_point</code>：自增1</li>
+<li><code>write_point_gray</code>：从<code>next_write_point_gray</code>获取与<code>write_point</code>同步的格雷码</li>
+<li><code>next_write_point_gray</code>：取现在write_point加2后对应的格雷码，获得与<code>write_point+1</code>同步的格雷码</li>
+</ul>
+<p>写产生FIFO满的波形如下所示：</p>
+<img src="/2019/05/06/%E5%BC%82%E6%AD%A5FIFO%E8%AE%BE%E8%AE%A1/full_gen.png" class="">
+<p>当一次写请求使FIFO满时，由于写请求发生，因此使用<code>next_write_point_gray</code>进行判满操作，此时该信号与<code>read_point_gray</code>相等，因此在下一个时钟周期<code>fifo_full</code>拉高（图中a,b-&gt;c），同时，<code>write_point</code>和<code>write_point_gray</code>均完成更新。下一个时钟周期，无写请求发生，因此使用<code>write_point_gray</code>进行判满操作，此时<code>write_point_gray</code>更新后与<code>read_point_gray</code>相等，保持fifo满状态（图中e,d-&gt;f）。</p>
+<p>对于数据部分，如下图所示：</p>
+<img src="/2019/05/06/%E5%BC%82%E6%AD%A5FIFO%E8%AE%BE%E8%AE%A1/write_data.png" class="">
+<p>该部分不包括在写控制模块中，系统输入的<code>write_data</code>端口直接连接到SRAM的写数据端口，写请求端口为<code>write_req</code>和<code>fifo_full</code>的组合逻辑与信号（<code>write_req &amp;&amp; !fifo_full</code>）</p>
+<h2 id="5-2-读FIFO部分"><a href="#5-2-读FIFO部分" class="headerlink" title="5.2.读FIFO部分"></a>5.2.读FIFO部分</h2><p>读FIFO部分包括以下几个组件：</p>
+<ul>
+<li>同步器：将写指针从写时钟域同步到读时钟域，使用两级同步器</li>
+<li>读指针：指示读取地址的指针，当空信号拉低且读请求拉高时加1</li>
+<li>读指针二进制转格雷码：将读指针从二进制转为格雷码，送到判空部分判空和向写时钟域的同步器</li>
+<li>空信号生成：当满足[4.2.2]的判空条件成立时，拉高空信号</li>
+</ul>
+<h3 id="5-2-1-需求"><a href="#5-2-1-需求" class="headerlink" title="5.2.1.需求"></a>5.2.1.需求</h3><p>读FIFO部分需要满足以下几个需求：</p>
+<ul>
+<li>产生读SRAM的相关信号，包括地址信号，数据有效信号</li>
+<li>同步内部写指针，配合读指针生成空信号。将读指针传递到读部分。</li>
+</ul>
+<h3 id="5-2-2-端口"><a href="#5-2-2-端口" class="headerlink" title="5.2.2.端口"></a>5.2.2.端口</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>位宽</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>clk</td>
+<td>input</td>
+<td>1</td>
+<td>读时钟信号</td>
+</tr>
+<tr>
+<td>rst_n</td>
+<td>input</td>
+<td>1</td>
+<td>系统复位信号，低有效</td>
+</tr>
+<tr>
+<td>read_req</td>
+<td>input</td>
+<td>1</td>
+<td>读请求信号</td>
+</tr>
+<tr>
+<td>fifo_empty</td>
+<td>output</td>
+<td>1</td>
+<td>FIFO空信号</td>
+</tr>
+<tr>
+<td>memory_read_addr</td>
+<td>output</td>
+<td>DEPTH_LOG</td>
+<td>SRAM的读地址信号</td>
+</tr>
+<tr>
+<td>read_point_gray</td>
+<td>output</td>
+<td>DEPTH_LOG+1</td>
+<td>读指针格雷码</td>
+</tr>
+<tr>
+<td>write_point_gray</td>
+<td>input</td>
+<td>DEPTH_LOG+1</td>
+<td>写指针格雷码，未同步</td>
+</tr>
+<tr>
+<td>read_valid</td>
+<td>output</td>
+<td>1</td>
+<td>读数据有效信号</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="5-2-3-实现"><a href="#5-2-3-实现" class="headerlink" title="5.2.3.实现"></a>5.2.3.实现</h3><p>实现的方式与写部分类似，<code>fifo_empty</code>信号和读指针生成如下所示：</p>
+<img src="/2019/05/06/%E5%BC%82%E6%AD%A5FIFO%E8%AE%BE%E8%AE%A1/read_control.png" class="">
+<p>主要部件的功能如下所示：</p>
+<ul>
+<li>read_point：读指针，产生读地址，每当读请求成立时自增1</li>
+<li>read_point_gray：读指针的格雷码，用于产生空逻辑和向写时钟域传递</li>
+<li>next_read_point_gray：下一个读指针的格雷码，用于空信号的及时性</li>
+</ul>
+<img src="/2019/05/06/%E5%BC%82%E6%AD%A5FIFO%E8%AE%BE%E8%AE%A1/read_data.png" class="">
+<p>读数据部分如上图所示，read_valid信号在<code>read_req &amp;&amp; !fifo_empty</code>为真时拉高，表示当前<code>read_data</code>上的数据有效。<code>read_data</code>为输出数据端口直接连接到SRAM的输出端口（SRAM输出端口自带寄存器）。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">月见樽</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.yuejianzun.xyz/2019/05/06/%E5%BC%82%E6%AD%A5FIFO%E8%AE%BE%E8%AE%A1/">http://www.yuejianzun.xyz/2019/05/06/%E5%BC%82%E6%AD%A5FIFO%E8%AE%BE%E8%AE%A1/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.yuejianzun.xyz" target="_blank">月见樽'blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Verilog/">Verilog</a><a class="post-meta__tags" href="/tags/FIFO/">FIFO</a></div><div class="post_share"><div class="social-share" data-image="/img/1.PNG" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2019/05/28/%E6%B5%AE%E7%82%B9%E6%95%B0%E5%A4%84%E7%90%86/"><img class="prev-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">浮点数处理</div></div></a></div><div class="next-post pull-right"><a href="/2019/05/05/Octave%E5%8D%B7%E7%A7%AF%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><img class="next-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Octave卷积学习笔记</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2017/09/30/APB总线协议/" title="APB总线协议"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-09-30</div><div class="title">APB总线协议</div></div></a></div><div><a href="/2018/04/18/AHB学习笔记/" title="AHB学习笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-04-18</div><div class="title">AHB学习笔记</div></div></a></div><div><a href="/2018/02/18/MIPS指令集与简单分析/" title="MIPS指令集与简单分析"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-02-18</div><div class="title">MIPS指令集与简单分析</div></div></a></div><div><a href="/2018/08/18/P2P接口串行FIR设计/" title="P2P接口串行FIR设计"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-08-18</div><div class="title">P2P接口串行FIR设计</div></div></a></div><div><a href="/2017/09/06/ROM乘法器/" title="ROM乘法器"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-09-06</div><div class="title">ROM乘法器</div></div></a></div><div><a href="/2018/11/14/booth乘法器/" title="booth乘法器"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-11-14</div><div class="title">booth乘法器</div></div></a></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/had.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">月见樽</div><div class="author-info__description">日隐月现，潜龙在渊</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/qiankun214"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E8%AE%BE%E8%AE%A1%E7%9B%AE%E6%A0%87"><span class="toc-number">1.</span> <span class="toc-text">1.设计目标</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%8F%82%E6%95%B0%E5%88%97%E8%A1%A8"><span class="toc-number">2.</span> <span class="toc-text">2.参数列表</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E7%AB%AF%E5%8F%A3"><span class="toc-number">3.</span> <span class="toc-text">3.端口</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E7%AB%AF%E5%8F%A3%E5%88%97%E8%A1%A8"><span class="toc-number">3.1.</span> <span class="toc-text">3.1.端口列表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-1-%E7%B3%BB%E7%BB%9F%E7%AB%AF%E5%8F%A3"><span class="toc-number">3.1.1.</span> <span class="toc-text">3.1.1.系统端口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-2-%E8%AF%BB%E7%AB%AF%E5%8F%A3"><span class="toc-number">3.1.2.</span> <span class="toc-text">3.1.2.读端口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-3-%E5%86%99%E7%AB%AF%E5%8F%A3"><span class="toc-number">3.1.3.</span> <span class="toc-text">3.1.3.写端口</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E7%AB%AF%E5%8F%A3%E6%97%B6%E5%BA%8F"><span class="toc-number">3.2.</span> <span class="toc-text">3.2.端口时序</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-1-%E8%AF%BB%E7%AB%AF%E5%8F%A3%E6%97%B6%E5%BA%8F"><span class="toc-number">3.2.1.</span> <span class="toc-text">3.2.1.读端口时序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-2-%E5%86%99%E7%AB%AF%E5%8F%A3%E6%97%B6%E5%BA%8F"><span class="toc-number">3.2.2.</span> <span class="toc-text">3.2.2.写端口时序</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84"><span class="toc-number">4.</span> <span class="toc-text">4.系统结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%E7%BB%93%E6%9E%84%E6%A1%86%E5%9B%BE"><span class="toc-number">4.1.</span> <span class="toc-text">4.1.结构框图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E7%B3%BB%E7%BB%9F%E6%96%B9%E6%B3%95"><span class="toc-number">4.2.</span> <span class="toc-text">4.2.系统方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-1-%E4%BA%8C%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%A0%BC%E9%9B%B7%E7%A0%81"><span class="toc-number">4.2.1.</span> <span class="toc-text">4.2.1.二进制转格雷码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-2-%E6%A0%BC%E9%9B%B7%E7%A0%81%E5%88%A4%E7%A9%BA%E5%88%A4%E6%BB%A1"><span class="toc-number">4.2.2.</span> <span class="toc-text">4.2.2.格雷码判空判满</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-3-%E5%90%8C%E6%AD%A5%E5%99%A8"><span class="toc-number">4.2.3.</span> <span class="toc-text">4.2.3.同步器</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E5%AE%9E%E7%8E%B0%E7%BB%86%E8%8A%82"><span class="toc-number">5.</span> <span class="toc-text">5.实现细节</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-1-%E5%86%99FIFO%E9%83%A8%E5%88%86"><span class="toc-number">5.1.</span> <span class="toc-text">5.1.写FIFO部分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-1-%E9%9C%80%E6%B1%82"><span class="toc-number">5.1.1.</span> <span class="toc-text">5.1.1.需求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-2-%E7%AB%AF%E5%8F%A3"><span class="toc-number">5.1.2.</span> <span class="toc-text">5.1.2.端口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-3-%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.1.3.</span> <span class="toc-text">5.1.3.实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-2-%E8%AF%BBFIFO%E9%83%A8%E5%88%86"><span class="toc-number">5.2.</span> <span class="toc-text">5.2.读FIFO部分</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-1-%E9%9C%80%E6%B1%82"><span class="toc-number">5.2.1.</span> <span class="toc-text">5.2.1.需求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-2-%E7%AB%AF%E5%8F%A3"><span class="toc-number">5.2.2.</span> <span class="toc-text">5.2.2.端口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-3-%E5%AE%9E%E7%8E%B0"><span class="toc-number">5.2.3.</span> <span class="toc-text">5.2.3.实现</span></a></li></ol></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/09/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%EF%BC%89/" title="网络学习笔记2——信号与系统">网络学习笔记2——信号与系统</a><time datetime="2020-11-09T15:51:13.000Z" title="发表于 2020-11-09 23:51:13">2020-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/" title="网络学习笔记1——协议分层">网络学习笔记1——协议分层</a><time datetime="2020-11-06T15:51:13.000Z" title="发表于 2020-11-06 23:51:13">2020-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/" title="高级综合工具StratusHLS学习笔记(4)">高级综合工具StratusHLS学习笔记(4)</a><time datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/" title="高级综合工具StratusHLS学习笔记(3)">高级综合工具StratusHLS学习笔记(3)</a><time datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/" title="高级综合工具StratusHLS学习笔记(2)">高级综合工具StratusHLS学习笔记(2)</a><time datetime="2020-07-19T15:51:13.000Z" title="发表于 2020-07-19 23:51:13">2020-07-19</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 月见樽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

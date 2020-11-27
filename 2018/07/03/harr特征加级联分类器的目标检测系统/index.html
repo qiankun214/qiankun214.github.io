@@ -1,0 +1,304 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>harr特征加级联分类器的目标检测系统 | 月见樽'blog</title><meta name="keywords" content="Python,Detection"><meta name="author" content="月见樽"><meta name="copyright" content="月见樽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="1.识别系统架构 以上是Harr特征+级联分类器的识别系统架构图，系统分为以下几个部分：  滑动框：固定大小的在原图上滑动的框，用于获取子图 Harr特征提取器：在子图上提取指定的四种Harr特征（获取的特征非常多） 级联分类器：基于选定的一些特征，进行分类，筛选出正例  对于该目标识别器，将目标检测问题转换为目标分类问题：滑动框在原图上滑动，识别部分识别每一个滑动子图，判断是否为需要识别的目标。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="harr特征加级联分类器的目标检测系统">
+<meta property="og:url" content="http://www.yuejianzun.xyz/2018/07/03/harr%E7%89%B9%E5%BE%81%E5%8A%A0%E7%BA%A7%E8%81%94%E5%88%86%E7%B1%BB%E5%99%A8%E7%9A%84%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="月见樽&#39;blog">
+<meta property="og:description" content="1.识别系统架构 以上是Harr特征+级联分类器的识别系统架构图，系统分为以下几个部分：  滑动框：固定大小的在原图上滑动的框，用于获取子图 Harr特征提取器：在子图上提取指定的四种Harr特征（获取的特征非常多） 级联分类器：基于选定的一些特征，进行分类，筛选出正例  对于该目标识别器，将目标检测问题转换为目标分类问题：滑动框在原图上滑动，识别部分识别每一个滑动子图，判断是否为需要识别的目标。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.yuejianzun.xyz/img/1.PNG">
+<meta property="article:published_time" content="2018-07-03T15:25:34.000Z">
+<meta property="article:modified_time" content="2020-11-27T16:47:57.067Z">
+<meta property="article:author" content="月见樽">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Detection">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yuejianzun.xyz/img/1.PNG"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.yuejianzun.xyz/2018/07/03/harr%E7%89%B9%E5%BE%81%E5%8A%A0%E7%BA%A7%E8%81%94%E5%88%86%E7%B1%BB%E5%99%A8%E7%9A%84%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-11-28 00:47:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/had.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/1.PNG)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">月见樽'blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">harr特征加级联分类器的目标检测系统</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2018-07-03T15:25:34.000Z" title="发表于 2018-07-03 23:25:34">2018-07-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-27T16:47:57.067Z" title="更新于 2020-11-28 00:47:57">2020-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%BC%A0%E7%BB%9F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">传统机器学习</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>10分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="1-识别系统架构"><a href="#1-识别系统架构" class="headerlink" title="1.识别系统架构"></a>1.识别系统架构</h1><img src="/2018/07/03/harr%E7%89%B9%E5%BE%81%E5%8A%A0%E7%BA%A7%E8%81%94%E5%88%86%E7%B1%BB%E5%99%A8%E7%9A%84%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F/harr_system.png" class="">
+<p>以上是Harr特征+级联分类器的识别系统架构图，系统分为以下几个部分：</p>
+<ul>
+<li>滑动框：固定大小的在原图上滑动的框，用于获取子图</li>
+<li>Harr特征提取器：在子图上提取指定的四种Harr特征（获取的特征非常多）</li>
+<li>级联分类器：基于选定的一些特征，进行分类，筛选出正例</li>
+</ul>
+<p>对于该目标识别器，将目标检测问题转换为目标分类问题：滑动框在原图上滑动，识别部分识别每一个滑动子图，判断是否为需要识别的目标。</p>
+<h2 id="1-1-Harr特征"><a href="#1-1-Harr特征" class="headerlink" title="1.1.Harr特征"></a>1.1.Harr特征</h2><p>Harr特征是一类非常简单的特征，如下图所示有四个框，这四个框的大小是可变的，使用黑色部分覆盖的像素之和减去白色部分覆盖的像素之和即为Harr特征：</p>
+<script type="math/tex; mode=display">
+Harr(x) = \sum pic_{black}(x) - \sum pic_{white}(x)</script><img src="/2018/07/03/harr%E7%89%B9%E5%BE%81%E5%8A%A0%E7%BA%A7%E8%81%94%E5%88%86%E7%B1%BB%E5%99%A8%E7%9A%84%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F/harr.png" class="">
+<p>例如以下图片示意：</p>
+<img src="/2018/07/03/harr%E7%89%B9%E5%BE%81%E5%8A%A0%E7%BA%A7%E8%81%94%E5%88%86%E7%B1%BB%E5%99%A8%E7%9A%84%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F/harr_example.png" class="">
+<p>取第一个4x4的区域数据计算第二种harr特征，被黑色覆盖的区域和为3，被白色区域覆盖的和为2，因此可获得基于第二种模板下滑动框的harr特征为3-2=1。对于基于某一个模板，一个候选框可取多个特征，例如对于24x24的滑动框，基于第一种模板（对角线模板），可以在2x2，3x3，…，24x24等多个尺寸取特征，对于2x2的特征而言，也可以在24x24的框内取23x23个特征，因此，每个滑动框的harr特征数量都是海量的，在原论文中，使用20x20的滑动框，每个滑动框有约18k个特征值。</p>
+<h2 id="1-2-级联分类器"><a href="#1-2-级联分类器" class="headerlink" title="1.2.级联分类器"></a>1.2.级联分类器</h2><p>由于Harr特征数量过多，已经几乎超过任何一种机器学习算法的输入特征数量极限（2001年），因此直接训练一个分类器是不现实的，于是使用多个弱分类器组成一个强分类器的方法训练。在本系统中，每一个弱分类器只针对一个单独的特征：</p>
+<script type="math/tex; mode=display">
+h_j(x) = \begin{cases}  
+1 & f_j(x) < \theta_j \\
+0 & other
+\end{cases}</script><p>该级联分类器使用AdaBoost方法训练，训练分类器的同时也筛选特征，最终分类器的级数与使用的特征数量相同（每个分类器只使用一个特征）。最终的分类器为：</p>
+<script type="math/tex; mode=display">
+h(x) = \begin{cases}
+1 & \sum_\limits{t=1}^{T}a_th_t(x) \geq \frac{1}{2}\sum\limits^T_{t=1}a_t \\
+0 & other
+\end{cases}</script><p>T为级联分类器的数量，同时也是选择特征的数量，级联分类器不使用的特征在计算Harr特征时可以不计算以减少计算量；$a_t$为单个分类器的权重，在训练过程中得到。</p>
+<h1 id="2-训练方法"><a href="#2-训练方法" class="headerlink" title="2.训练方法"></a>2.训练方法</h1><p>需要训练的部分为级联分类器，由于每个弱分类器仅使用一个特征，因此每个弱分类器的参数为阈值$\theta_j$。训练算法如下图所示：</p>
+<img src="/2018/07/03/harr%E7%89%B9%E5%BE%81%E5%8A%A0%E7%BA%A7%E8%81%94%E5%88%86%E7%B1%BB%E5%99%A8%E7%9A%84%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F/harr_train.PNG" class="">
+<p>首先，初始化样本权值$w_{1,i} = \begin{cases}\frac{1}{2m} &amp; y_i = 0 \ \frac{1}{2l} &amp; y_i = 1\end{cases}$，其中$y_i$为当前样本的标签，1表示正例；m和l为反例和正例的数量。进入训练循环后，对于每次迭代：</p>
+<ol>
+<li>首先标准化样本权值$w<em>{t,i} = \cfrac{w</em>{t,i}}{\sum^n<em>{j=1}w</em>{t,j}}$</li>
+<li>根据每个特征训练弱分类器$h(x)$，训练过程中，代价函数与样本权值有关，代价函数为$\epsilon_j = \sum_iw_i|h_j(x_i)-y_i| $。</li>
+<li>所有特征对应的弱分类器训练完成后，选择代价函数最低的分类器和对应特征，同时该特征从待选则特征中移除。</li>
+<li>最后更新样本权值：$w<em>{t+1,i} = w</em>{t,i}\beta_t^{1-e_i}$，其中$e_i = \begin{cases}1 &amp; classifid \ correctly \ 0 &amp; otherwise \end{cases}$ ；$\beta_t = \cfrac{\epsilon_t }{1-\epsilon_t}$</li>
+</ol>
+<p>最终获得分类器$h(x)$和每个分类器的权值$a_t = log\cfrac{1}{\beta_t}$。</p>
+<h1 id="3-加速方法"><a href="#3-加速方法" class="headerlink" title="3.加速方法"></a>3.加速方法</h1><p>为了达到较快的检测速度，该系统分别对计算Harr特征和级联分类器提出了加速方案</p>
+<h2 id="3-1-积分图"><a href="#3-1-积分图" class="headerlink" title="3.1.积分图"></a>3.1.积分图</h2><p>积分图用于加速计算Harr特征，其方法是生成一个与原图片大小相同的图，使用以下公式：</p>
+<script type="math/tex; mode=display">
+ii(x) = \sum\limits_{x' \leq x,y' \leq y}{i(x',y')}</script><p>如下图所示，积分图的数据为以图片对应位置和图片左上角连线为对角线的矩形覆盖的所有像素的和。在按行生成计算图的过程中，每个位置的值可以由计算图上方的数据和这一行之前的累加与该位置的值相加得到，因此计算图的生成比较简单。</p>
+<img src="/2018/07/03/harr%E7%89%B9%E5%BE%81%E5%8A%A0%E7%BA%A7%E8%81%94%E5%88%86%E7%B1%BB%E5%99%A8%E7%9A%84%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F/harr_in.png" class="">
+<p>在计算harr特征时，需要计算大量的一定面积像素和，基于积分图，若要计算以下计算区域的和，仅需要计算：$A-B-C+D$即可，其中ABCD分别为积分图对应位置的值，因此任何一个矩形区域的求和都可以用3次加减法计算完成，有效的加速了Harr特征的提取速度。</p>
+<img src="/2018/07/03/harr%E7%89%B9%E5%BE%81%E5%8A%A0%E7%BA%A7%E8%81%94%E5%88%86%E7%B1%BB%E5%99%A8%E7%9A%84%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F/harr_compute_im.png" class="">
+<h2 id="3-2-级联计算"><a href="#3-2-级联计算" class="headerlink" title="3.2.级联计算"></a>3.2.级联计算</h2><p>在基本级联分类器需要计算全部所需要的Harr特征，尽管已经使用学习算法筛选过，特征数量仍然较多，基于大部分子图中没有需要识别的物品，提出了级联的方法：</p>
+<ul>
+<li>在训练筛选分类器时，不选择误差最小的分类器，而是选择最少的将正例划分为反例的分类器，即召回率最高的分类器。且下一次计算的样本集合为使用该分类器剔除反例的样本集合。</li>
+<li>运行时，顺序计算特征-分类，当样本被一个分类器识别为反例时，直接拒绝该样本，后续的特征和分类都可以不被计算。</li>
+</ul>
+<h1 id="4-代码实践"><a href="#4-代码实践" class="headerlink" title="4.代码实践"></a>4.代码实践</h1><h2 id="4-1-使用自带级联分类器"><a href="#4-1-使用自带级联分类器" class="headerlink" title="4.1.使用自带级联分类器"></a>4.1.使用自带级联分类器</h2><p>OpenCV自带了一些级联分类器，可以用于识别人脸，五官和人体等等，在Python下使用方法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">face_cascade = cv2.CascadeClassifier(<span class="string">&quot;./haarcascades/haarcascade_frontalface_alt2.xml&quot;</span>)</span><br><span class="line">faces = face_cascade.detectMultiScale(</span><br><span class="line">        gray, scaleFactor=<span class="number">1.3</span>, minNeighbors=<span class="number">2</span>, minSize=(<span class="number">60</span>, <span class="number">60</span>), maxSize=(<span class="number">300</span>, <span class="number">300</span>))</span><br></pre></td></tr></table></figure>
+<p>首先调用<code>cv2.CascadeClassifier()</code>打开一个级联分类器，这里载入的xml为OpenCV自带的人脸识别级联分类器，随后调用<code>.detectMultiScale()</code>方法进行识别，参数含义为：</p>
+<ul>
+<li>第一个参数image：待识别图片，必须是灰度图片（channel=1）</li>
+<li>scaleFactor：被检测对象的尺度变化，合理范围1.1~1.4，该参数越大检测越细致，速度越慢</li>
+<li>minNeighbors：每个候选框需要保持多少个领域，该参数越大，一个候选框被接受越困难</li>
+<li>minSize和maxSize：目标的最小尺寸和最大尺寸，当目标超过这一范围时无法识别</li>
+</ul>
+<p>该函数返回一个list，其中每个元素为一个有4个元素的list，分别是[x,y,w,h]，可直接用于绘制矩形框。</p>
+<h2 id="4-2-训练级联分类器"><a href="#4-2-训练级联分类器" class="headerlink" title="4.2.训练级联分类器"></a>4.2.训练级联分类器</h2><p>选择FDDB数据集训练针对人脸的级联分类器</p>
+<h3 id="4-2-1-处理标签"><a href="#4-2-1-处理标签" class="headerlink" title="4.2.1.处理标签"></a>4.2.1.处理标签</h3><p>FDDB的标注方式是椭圆形标注，提供椭圆形的中心，长短轴和角度信息，原label为\<major_axis_radius minor_axis_radius angle center_x center_y detection_score\>，先要将label转为<left_x top_y width height>的格式。考虑简便，使用以下公式：</p>
+<script type="math/tex; mode=display">
+left\_x = clamp(center\_x -  minor\_axis\_radius,0,-1) \\
+top\_y = clamp(center\_y - major\_axis\_radius,0,-1) \\
+width = 2 \times minor\_axis\_radius \\
+height = 2 \times  major\_axis\_radius</script><p>该公式简单的将椭圆转为矩形，clamp为钳位函数，将输入限制在0~-1，-1表示不限制。同时限制矩形的范围一定在图片范围中。代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">FDDB2label</span>(<span class="params">source_path, target_path</span>):</span></span><br><span class="line">    source_list = read_ellipseList(source_path) 	//读取原有label文件</span><br><span class="line">    target_list = change_label(source_list)			//转换label格式</span><br><span class="line">    save_rec_label(target_list, target_path)		//保存label格式</span><br></pre></td></tr></table></figure>
+<p>转换label的部分如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">change_label</span>(<span class="params">source</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;source:list[[path,label],...],label:[major_axis_radius minor_axis_radius angle center_x center_y detection_score]&quot;&quot;&quot;</span></span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">for</span> name, label <span class="keyword">in</span> source:</span><br><span class="line">        name = name + <span class="string">&quot;.jpg&quot;</span></span><br><span class="line">        data = [<span class="built_in">float</span>(x) <span class="keyword">for</span> x <span class="keyword">in</span> label.replace(<span class="string">&quot;  &quot;</span>, <span class="string">&#x27; &#x27;</span>).split(<span class="string">&#x27; &#x27;</span>)]</span><br><span class="line">        data = [<span class="built_in">int</span>(data[<span class="number">3</span>] - data[<span class="number">1</span>]), <span class="built_in">int</span>(data[<span class="number">4</span>] - data[<span class="number">0</span>]),</span><br><span class="line">                <span class="built_in">int</span>(data[<span class="number">1</span>] * <span class="number">2</span>), <span class="built_in">int</span>(data[<span class="number">0</span>] * <span class="number">2</span>)]</span><br><span class="line">        data = check_label(name, data, root=<span class="string">&quot;../FDDB-folds/&quot;</span>)</span><br><span class="line">        result.append(</span><br><span class="line">            [name, data])</span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<p>检查部分如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_label</span>(<span class="params">name, data, root=<span class="string">&quot;&quot;</span></span>):</span></span><br><span class="line">    img_shape = cv2.imread(os.path.join(root, name)).shape</span><br><span class="line">    <span class="keyword">if</span> data[<span class="number">0</span>] &lt; <span class="number">0</span>:</span><br><span class="line">        data[<span class="number">0</span>] = <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> data[<span class="number">1</span>] &lt; <span class="number">0</span>:</span><br><span class="line">        data[<span class="number">1</span>] = <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> data[<span class="number">0</span>] + data[<span class="number">2</span>] &gt; img_shape[<span class="number">1</span>]:</span><br><span class="line">        data[<span class="number">2</span>] = img_shape[<span class="number">1</span>] - data[<span class="number">0</span>] - <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> data[<span class="number">1</span>] + data[<span class="number">3</span>] &gt; img_shape[<span class="number">0</span>]:</span><br><span class="line">        data[<span class="number">3</span>] = img_shape[<span class="number">0</span>] - data[<span class="number">1</span>] - <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> data</span><br></pre></td></tr></table></figure>
+<p>共检查两种情况：</p>
+<ul>
+<li>物品左上角坐标小于0</li>
+<li>物品右下角坐标超过图片限制</li>
+</ul>
+<h3 id="4-2-2-准备文件"><a href="#4-2-2-准备文件" class="headerlink" title="4.2.2.准备文件"></a>4.2.2.准备文件</h3><p>训练前需要准备数据，包括正例和反例。</p>
+<h4 id="4-2-2-1-准备正例"><a href="#4-2-2-1-准备正例" class="headerlink" title="4.2.2.1.准备正例"></a>4.2.2.1.准备正例</h4><p>正例使用opencv自带的<code>opencv_createsamples.exe</code>生成，注意该exe文件不可独立运行，因此不能拷贝出来使用，其依赖OpenCV的其他文件，因此必须从OpenCV中调用（<code>opencv\build\x64\vc14\bin\opencv_createsamples.exe</code>），该工具将正例转为.vec文件，主要有以下命令行参数：</p>
+<ul>
+<li><code>-vec</code>：输出vec文件的路径</li>
+<li><code>-info</code>：正例描述文件路径</li>
+<li><code>-num</code>：生成的正例数量</li>
+<li><code>-w</code>和<code>-h</code>：正例图片的长宽</li>
+</ul>
+<p>使用之前，需要准备一个描述正例文件的文件<code>info.dat</code>，其格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FDDB-folds\2002\08\11\big\img_591.jpg 1 184 38 171 247 </span><br><span class="line">FDDB-folds\2002\07\19\big\img_423.jpg 1 196 46 118 174 </span><br><span class="line">FDDB-folds\2002\08\24\big\img_490.jpg 1 110 23 70 109 </span><br><span class="line">&lt;相对路径&gt; &lt;目标数量n&gt; &lt;目标1的x,y,w,h&gt; ... &lt;目标n的x,y,w,h&gt;</span><br></pre></td></tr></table></figure>
+<p>随后使用该工具，生成正例文件pos.vec。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.\opencv\build\x64\vc14\bin\opencv_createsamples.exe <span class="literal">-vec</span> .\pos.vec <span class="literal">-info</span> info.dat <span class="literal">-num</span> <span class="number">178</span> <span class="literal">-w</span> <span class="number">40</span> <span class="literal">-h</span> <span class="number">40</span></span><br></pre></td></tr></table></figure>
+<h4 id="4-2-2-2-准备反例"><a href="#4-2-2-2-准备反例" class="headerlink" title="4.2.2.2.准备反例"></a>4.2.2.2.准备反例</h4><p>对于反例，反例只需要准备一个文件列表<code>neg_list.dat</code>即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.\dataset\negtive\neg_img2698.jpg</span><br><span class="line">.\dataset\negtive\neg_img2699.jpg</span><br><span class="line">.\dataset\negtive\neg_img2700.jpg</span><br><span class="line">&lt;相对路径&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="4-2-3-模型训练"><a href="#4-2-3-模型训练" class="headerlink" title="4.2.3.模型训练"></a>4.2.3.模型训练</h3><p>模型训练使用OpenCV的<code>opencv_traincascade.exe</code>，主要的参数如下：</p>
+<ul>
+<li><code>-data</code>：最终保存分类器文件的位置</li>
+<li><code>-vec</code>：正例vec文件的路径</li>
+<li><code>-bg</code>：反例文件列表的路径</li>
+<li><code>-numPos</code>和<code>-numNeg</code>：正例和反例的数量</li>
+<li><code>-numStages</code>：多层分类器的层数</li>
+<li><code>-w</code>和<code>-h</code>：正例文件的长宽，必须和生成样本时填入的对应长宽相同</li>
+</ul>
+<p>本次使用的命令行参数如下图所示：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.\opencv\build\x64\vc14\bin\opencv_traincascade.exe <span class="literal">-data</span> . <span class="literal">-vec</span> .\pos</span><br><span class="line">.vec <span class="literal">-bg</span> .\neg_list.dat <span class="literal">-numPos</span> <span class="number">178</span> <span class="literal">-numNeg</span> <span class="number">200</span> <span class="literal">-numStages</span> <span class="number">10</span> <span class="literal">-w</span> <span class="number">40</span> <span class="literal">-h</span> <span class="number">40</span></span><br></pre></td></tr></table></figure>
+<p>最终训练的模型会保存在<code>-data/cascade.xml</code>中。</p>
+<h3 id="4-2-4-模型测试"><a href="#4-2-4-模型测试" class="headerlink" title="4.2.4.模型测试"></a>4.2.4.模型测试</h3><p>可以使用官方提供的测试工具<code>opencv_visualisation.exe</code>测试，该工具会可视化测试过程并打印使用的分类器的类型，命令行参数如下：</p>
+<ul>
+<li><code>--image</code>：用于测试的图片路径</li>
+<li><code>--model</code>：用于测试的模型（.xml文件）</li>
+<li><code>--data</code>：保存测试结果的路径（可选）</li>
+</ul>
+<p>官方给出的例子如下：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.\opencv\build\x64\vc14\bin\opencv_visualisation -<span class="literal">-image</span>=\data\object.png -<span class="literal">-model</span>=\</span><br><span class="line">data\model.xml -<span class="literal">-data</span>=\data\result\</span><br></pre></td></tr></table></figure>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>理论部分：Viola P, Jones M. Rapid object detection using a boosted cascade of simple features[C]// IEEE Computer Society Conference on Computer Vision &amp; Pattern Recognition. IEEE Computer Society, 2001:511. </p>
+<p>实践部分：<a target="_blank" rel="noopener" href="https://docs.opencv.org/3.4.1/dc/d88/tutorial_traincascade.html">OpenCV官方教程——训练级联分类器</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">月见樽</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.yuejianzun.xyz/2018/07/03/harr%E7%89%B9%E5%BE%81%E5%8A%A0%E7%BA%A7%E8%81%94%E5%88%86%E7%B1%BB%E5%99%A8%E7%9A%84%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F/">http://www.yuejianzun.xyz/2018/07/03/harr%E7%89%B9%E5%BE%81%E5%8A%A0%E7%BA%A7%E8%81%94%E5%88%86%E7%B1%BB%E5%99%A8%E7%9A%84%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.yuejianzun.xyz" target="_blank">月见樽'blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Python/">Python</a><a class="post-meta__tags" href="/tags/Detection/">Detection</a></div><div class="post_share"><div class="social-share" data-image="/img/1.PNG" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2018/07/16/HoG%E7%89%B9%E5%BE%81SVM%E7%89%A9%E5%93%81%E8%AF%86%E5%88%AB%E7%B3%BB%E7%BB%9F/"><img class="prev-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">HoG特征SVM物品识别系统</div></div></a></div><div class="next-post pull-right"><a href="/2018/07/03/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E6%8A%80%E6%9C%AF%E6%8C%87%E6%A0%87/"><img class="next-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">目标检测技术指标</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2018/07/16/HoG特征SVM物品识别系统/" title="HoG特征SVM物品识别系统"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-07-16</div><div class="title">HoG特征SVM物品识别系统</div></div></a></div><div><a href="/2018/07/16/LBP特征物品识别系统/" title="LBP特征物品识别系统"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-07-16</div><div class="title">LBP特征物品识别系统</div></div></a></div><div><a href="/2018/02/21/CNN的反向传播/" title="CNN的反向传播"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-02-21</div><div class="title">CNN的反向传播</div></div></a></div><div><a href="/2018/03/11/CapsNet学习笔记/" title="CapsNet学习笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-03-11</div><div class="title">CapsNet学习笔记</div></div></a></div><div><a href="/2017/09/06/PyTorch60分钟教程学习笔记/" title="Pytorch60分钟教程学习笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-09-06</div><div class="title">Pytorch60分钟教程学习笔记</div></div></a></div><div><a href="/2019/05/05/Octave卷积学习笔记/" title="Octave卷积学习笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-05-05</div><div class="title">Octave卷积学习笔记</div></div></a></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/had.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">月见樽</div><div class="author-info__description">日隐月现，潜龙在渊</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/qiankun214"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E8%AF%86%E5%88%AB%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">1.识别系统架构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-Harr%E7%89%B9%E5%BE%81"><span class="toc-number">1.1.</span> <span class="toc-text">1.1.Harr特征</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-2-%E7%BA%A7%E8%81%94%E5%88%86%E7%B1%BB%E5%99%A8"><span class="toc-number">1.2.</span> <span class="toc-text">1.2.级联分类器</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E8%AE%AD%E7%BB%83%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">2.训练方法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%8A%A0%E9%80%9F%E6%96%B9%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">3.加速方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E7%A7%AF%E5%88%86%E5%9B%BE"><span class="toc-number">3.1.</span> <span class="toc-text">3.1.积分图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E7%BA%A7%E8%81%94%E8%AE%A1%E7%AE%97"><span class="toc-number">3.2.</span> <span class="toc-text">3.2.级联计算</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E4%BB%A3%E7%A0%81%E5%AE%9E%E8%B7%B5"><span class="toc-number">4.</span> <span class="toc-text">4.代码实践</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%E4%BD%BF%E7%94%A8%E8%87%AA%E5%B8%A6%E7%BA%A7%E8%81%94%E5%88%86%E7%B1%BB%E5%99%A8"><span class="toc-number">4.1.</span> <span class="toc-text">4.1.使用自带级联分类器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E8%AE%AD%E7%BB%83%E7%BA%A7%E8%81%94%E5%88%86%E7%B1%BB%E5%99%A8"><span class="toc-number">4.2.</span> <span class="toc-text">4.2.训练级联分类器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-1-%E5%A4%84%E7%90%86%E6%A0%87%E7%AD%BE"><span class="toc-number">4.2.1.</span> <span class="toc-text">4.2.1.处理标签</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-2-%E5%87%86%E5%A4%87%E6%96%87%E4%BB%B6"><span class="toc-number">4.2.2.</span> <span class="toc-text">4.2.2.准备文件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-2-1-%E5%87%86%E5%A4%87%E6%AD%A3%E4%BE%8B"><span class="toc-number">4.2.2.1.</span> <span class="toc-text">4.2.2.1.准备正例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-2-2-%E5%87%86%E5%A4%87%E5%8F%8D%E4%BE%8B"><span class="toc-number">4.2.2.2.</span> <span class="toc-text">4.2.2.2.准备反例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-3-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83"><span class="toc-number">4.2.3.</span> <span class="toc-text">4.2.3.模型训练</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-4-%E6%A8%A1%E5%9E%8B%E6%B5%8B%E8%AF%95"><span class="toc-number">4.2.4.</span> <span class="toc-text">4.2.4.模型测试</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-number">5.</span> <span class="toc-text">参考文献</span></a></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/09/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%EF%BC%89/" title="网络学习笔记2——信号与系统">网络学习笔记2——信号与系统</a><time datetime="2020-11-09T15:51:13.000Z" title="发表于 2020-11-09 23:51:13">2020-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/" title="网络学习笔记1——协议分层">网络学习笔记1——协议分层</a><time datetime="2020-11-06T15:51:13.000Z" title="发表于 2020-11-06 23:51:13">2020-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/" title="高级综合工具StratusHLS学习笔记(4)">高级综合工具StratusHLS学习笔记(4)</a><time datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/" title="高级综合工具StratusHLS学习笔记(3)">高级综合工具StratusHLS学习笔记(3)</a><time datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/" title="高级综合工具StratusHLS学习笔记(2)">高级综合工具StratusHLS学习笔记(2)</a><time datetime="2020-07-19T15:51:13.000Z" title="发表于 2020-07-19 23:51:13">2020-07-19</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 月见樽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

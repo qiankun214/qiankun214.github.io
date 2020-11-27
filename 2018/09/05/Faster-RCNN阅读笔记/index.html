@@ -1,0 +1,252 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Faster-RCNN阅读笔记 | 月见樽'blog</title><meta name="keywords" content="NeuralNetwork"><meta name="author" content="月见樽"><meta name="copyright" content="月见樽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="系统架构 Faster-RCNN是Fast-RCNN的后续版本，主要针对Fast-RCNN速度过慢进行优化。在Fast-RCNN中，速度的瓶颈主要是用于生成候选区域的Selective Search过程。在Faster-RCNN中，候选区域的生成使用RPN网络，且共享的使用了卷积产生的特性，由此将候选区域的生成方式纳入神经网络的范畴下。该系统有以下部分构成：  卷积神经网络：对待测图片进行几层卷积">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Faster-RCNN阅读笔记">
+<meta property="og:url" content="http://www.yuejianzun.xyz/2018/09/05/Faster-RCNN%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="月见樽&#39;blog">
+<meta property="og:description" content="系统架构 Faster-RCNN是Fast-RCNN的后续版本，主要针对Fast-RCNN速度过慢进行优化。在Fast-RCNN中，速度的瓶颈主要是用于生成候选区域的Selective Search过程。在Faster-RCNN中，候选区域的生成使用RPN网络，且共享的使用了卷积产生的特性，由此将候选区域的生成方式纳入神经网络的范畴下。该系统有以下部分构成：  卷积神经网络：对待测图片进行几层卷积">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.yuejianzun.xyz/img/1.PNG">
+<meta property="article:published_time" content="2018-09-05T07:55:10.000Z">
+<meta property="article:modified_time" content="2020-11-27T16:47:57.066Z">
+<meta property="article:author" content="月见樽">
+<meta property="article:tag" content="NeuralNetwork">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yuejianzun.xyz/img/1.PNG"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.yuejianzun.xyz/2018/09/05/Faster-RCNN%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-11-28 00:47:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/had.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/1.PNG)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">月见樽'blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">Faster-RCNN阅读笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2018-09-05T07:55:10.000Z" title="发表于 2018-09-05 15:55:10">2018-09-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-27T16:47:57.066Z" title="更新于 2020-11-28 00:47:57">2020-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="系统架构"><a href="#系统架构" class="headerlink" title="系统架构"></a>系统架构</h1><img src="/2018/09/05/Faster-RCNN%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/structure.png" class="">
+<p>Faster-RCNN是Fast-RCNN的后续版本，主要针对Fast-RCNN速度过慢进行优化。在Fast-RCNN中，速度的瓶颈主要是用于生成候选区域的Selective Search过程。在Faster-RCNN中，候选区域的生成使用RPN网络，且共享的使用了卷积产生的特性，由此将候选区域的生成方式纳入神经网络的范畴下。该系统有以下部分构成：</p>
+<ul>
+<li>卷积神经网络：对待测图片进行几层卷积，产生高级特征，这些高级特征用于RPN生成候选框和RoI池化输入</li>
+<li>PRN网络：根据卷积产生的高级特性生成一系列不考虑物品类别的候选区域，即代替Selective Search方法</li>
+<li>Fast-CNN：RoI pool层输入的Fast-RCNN网络，输入为高级特征和候选区域，生成该候选区域的类别信息和候选区域的调整因子</li>
+</ul>
+<h2 id="PRN网络"><a href="#PRN网络" class="headerlink" title="PRN网络"></a>PRN网络</h2><p>PRN网络用于产生类别无关的候选区域，即代替Selective Search的功能，其结构如下：</p>
+<img src="/2018/09/05/Faster-RCNN%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/prn_structure.png" class="">
+<p>其输入为从共享卷积部分的输出feature map，该部分再经过PRN网络的卷积部分，变为PRN feature，其长宽不变，通道数变为$(4+2)n$，其中n为每个点上生成候选框的数量。即每个候选框对应六个数据，分别为：</p>
+<ul>
+<li>位置信息x,y,w,h：包含位置信息，分别是位置和大小的调整系数。</li>
+<li>评分信息a,b：对这个区域是否含有物体的打分，一个为物品的分数，另一个为是背景的分数。</li>
+</ul>
+<p>需要注意的是，位置信息均是调整系数，其和真实位置信息的关系为：</p>
+<script type="math/tex; mode=display">
+t_x = \cfrac{x-x_a}{w_a} \\
+t_y = \cfrac{y-y_a}{h_a} \\
+t_w = log\cfrac{w}{w_a} \\
+t_h = log\cfrac{h}{h_a}</script><p>其中，$t_x,t_y,t_w,t_h$为网络的输出，$x_a,y_a,w_a,h_a$为anchor box提供的基础框大小，而x,y,w,h为最终预测的结果。这里的anchor box为一种预设为固定大小的框，其长度和宽度为超参数，在训练前指定，其x坐标和y坐标为PRN feature产生该预测框的点在原图中对应的点。例如输入原图大小为400*400，卷积网络使用了三次2*2的池化，feature map的尺寸为50*50，那么在PRN feature中坐标为(4,4)产生的所有anchor box的预设中心坐标$x_a,y_a$均为(32,32)。</p>
+<p>anchor box的尺寸共n个，每个点共享n个anchor box尺寸，该尺寸一般通过类聚数据集上的物品尺寸产生，每个点都按指定的n个anchor box尺寸生成n个anchor box的调整系数和分数，调整后产生RoI的尺寸，注意RoI尺寸是原图上的尺寸，应用到Fast-RCNN上还需要进行缩放变换。</p>
+<h2 id="Fast-RCNN网络"><a href="#Fast-RCNN网络" class="headerlink" title="Fast-RCNN网络"></a>Fast-RCNN网络</h2><img src="/2018/09/05/Faster-RCNN%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/fast_rcnn_structure.png" class="">
+<p>这里的Fast-RCNN部分指RoI池化层之后的部分，输入为与PRN共享的卷积网络的输出，输出分为两个部分：</p>
+<ul>
+<li>类别信息：总物体类别加1，即类别+背景，用于判断候选框的物品类别</li>
+<li>调整因子：用于微调PRN的输出结果，该部分输出的每个数据的功能与PRN的4个调整因子相同</li>
+</ul>
+<p>由上图所示，共享卷积层输出的结果与PRN输出的RoI结合通过RoI池化层，获得一个固定大小的RoI feature，该部分经过一个共享的处理（卷积层，全连接层等），获得后续的feature，该feature分别通过两个独立的全连接层，获得类别信息和调整因子。使用其中的调整因子调整PRN输出的RoI数据，获得最终的RoI位置和大小数据。</p>
+<h1 id="系统训练"><a href="#系统训练" class="headerlink" title="系统训练"></a>系统训练</h1><h2 id="标签标注"><a href="#标签标注" class="headerlink" title="标签标注"></a>标签标注</h2><p>标记分为三种，分别是：</p>
+<ul>
+<li>标记为正例：相对于真实物体IoU高于0.7或相对于真实物体IoU在所有候选区域中最高</li>
+<li>标记为反例：相对于真实物体的IoU低于0.3</li>
+<li>不标记：不属于正例也不属于反例的候选区域，这些区域不影响训练过程</li>
+</ul>
+<h2 id="代价函数"><a href="#代价函数" class="headerlink" title="代价函数"></a>代价函数</h2><h3 id="PRN代价函数"><a href="#PRN代价函数" class="headerlink" title="PRN代价函数"></a>PRN代价函数</h3><script type="math/tex; mode=display">
+L(\{p_i\},\{t_i\}) = \cfrac{1}{N_{cls}}\sum\limits_i{L_{cls}(p_i,p_i^*)}+\lambda\cfrac{1}{N_{reg}}\sum\limits_ip_i^*L_{reg}(t_i,t_i^*)</script><p>PRN网络的代价函数如上所示，其中$i$是anchor box的标号；$p_i$为PRN判定的该anchor box有物体的概率；$p_i^<em>$为该anchor box的标记，若标记正例为1，反例则标记为0；$t_i$为PRN判定的调整因子；$t_i^</em>$为真实的调整因子。</p>
+<p>代价函数分为两个部分，分别是：</p>
+<ul>
+<li>类别代价：$L_{cls}(p_i,p_i^*)$衡量类别判断错误产生的代价，为log代价函数（交叉熵）</li>
+<li>回归代价：$L_{reg}(t_i,t_i^<em>)$衡量调整因子误差产生的代价，为$R(t_i-t_i^</em>)$</li>
+</ul>
+<p>其中，R函数的表达式如下所示：</p>
+<script type="math/tex; mode=display">
+R(x)=\begin{cases}0.5x^2 & |x| <1 \\ |x|-0.5&otherwise\end{cases}</script><h3 id="Fast-RCNN代价函数"><a href="#Fast-RCNN代价函数" class="headerlink" title="Fast-RCNN代价函数"></a>Fast-RCNN代价函数</h3><p>Fast-RCNN代价函数分为两个部分，如下所示：</p>
+<script type="math/tex; mode=display">
+L(p,u.t_u,v) = L_{cls}(p,u) + \lambda[u \geq 1]L_{loc}(t^u,v)</script><p>第一个部分$L_{cls}$为分类部分的代价函数，使用交叉熵函数，公式如下，其中u为该RoI区域的标记类别，p为神经网络输出的分类向量：</p>
+<script type="math/tex; mode=display">
+L_{cls}(p,u) = -log(p_u)</script><p>第二个部分$L<em>{loc}$为调整因子的代价函数，$[u \geq 1]$表示仅当当前位置不是背景时才考虑该部分代价， 超参数$\lambda$表示两个部分之间的权重，论文中取1。$L</em>{loc}$如下所示，其中t为网络输出的调整因子，v为目标调整因子。</p>
+<script type="math/tex; mode=display">
+L_{loc}(t^u,v) = \sum\limits_{i \in \{x,y,w,h\}}smooth_{L_1}(t^u_i-v_i) \\
+smooth_{L_1}=\begin{cases}0.5x^2 & |x| <1 \\ |x|-0.5&otherwise\end{cases}</script><h2 id="训练过程"><a href="#训练过程" class="headerlink" title="训练过程"></a>训练过程</h2><p>训练过程包括PRN和Fast-RCNN网络的训练，其中，前段的卷积层还是共享权值的，训练方法如下所示：</p>
+<ol>
+<li>单独训练共享部分和PRN网络，使其能获得类别无关的候选区域</li>
+<li>单独训练共享部分和Fast-RCNN网络，候选区域使用第一步中训练出的PRN获得，注意这里PRN和Fast-RCNN前端卷积（前向传播时共享权值的部分）并没有实现共享权值，PRN和Fast-RCNN是两个完全独立的网络</li>
+<li>将PRN网络与第二步训练出的共享部分连接，并固定共享部分权值，单独微调训练PRN网络</li>
+<li>使用第三步训练产生的PRN产生候选区域，固定共享部分权值，微调Fast-RCNN的ROI池化之后层的参数，注意这一步的PRN和Fast-RCNN网络的前端卷积的权值是共享的</li>
+</ol>
+<img src="/2018/09/05/Faster-RCNN%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/train.png" class="">
+<p>Fast-RCNN和PRN的训练都是批处理的，每一批均是从一张图片中获取的anchor box，且要求正例和反例的数量相同，原论文中batch大小是256，由128个正例和128个反例组成。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">月见樽</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.yuejianzun.xyz/2018/09/05/Faster-RCNN%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">http://www.yuejianzun.xyz/2018/09/05/Faster-RCNN%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.yuejianzun.xyz" target="_blank">月见樽'blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/NeuralNetwork/">NeuralNetwork</a></div><div class="post_share"><div class="social-share" data-image="/img/1.PNG" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2018/09/16/Deep-compression%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><img class="prev-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Deep-compression阅读笔记</div></div></a></div><div class="next-post pull-right"><a href="/2018/08/19/%E6%B5%81%E6%B0%B4%E7%BA%BF%E5%BC%8Fp2p%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%88%86%E6%9E%90%E4%B8%8E%E5%AE%9E%E7%8E%B0/"><img class="next-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">流水线式p2p接口的分析与实现</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2018/02/21/CNN的反向传播/" title="CNN的反向传播"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-02-21</div><div class="title">CNN的反向传播</div></div></a></div><div><a href="/2018/03/11/CapsNet学习笔记/" title="CapsNet学习笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-03-11</div><div class="title">CapsNet学习笔记</div></div></a></div><div><a href="/2018/09/16/Deep-compression阅读笔记/" title="Deep-compression阅读笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-09-16</div><div class="title">Deep-compression阅读笔记</div></div></a></div><div><a href="/2018/12/24/DianNao运算单元与体系结构分析/" title="DianNao运算单元与体系结构分析"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-12-24</div><div class="title">DianNao运算单元与体系结构分析</div></div></a></div><div><a href="/2019/07/22/EIE结构与算法映射/" title="EIE结构与算法映射"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-07-22</div><div class="title">EIE结构与算法映射</div></div></a></div><div><a href="/2018/08/07/Fast-RCNN阅读笔记/" title="Fast-RCNN阅读笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-08-07</div><div class="title">Fast-RCNN阅读笔记</div></div></a></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/had.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">月见樽</div><div class="author-info__description">日隐月现，潜龙在渊</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/qiankun214"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">系统架构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PRN%E7%BD%91%E7%BB%9C"><span class="toc-number">1.1.</span> <span class="toc-text">PRN网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Fast-RCNN%E7%BD%91%E7%BB%9C"><span class="toc-number">1.2.</span> <span class="toc-text">Fast-RCNN网络</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E8%AE%AD%E7%BB%83"><span class="toc-number">2.</span> <span class="toc-text">系统训练</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E7%AD%BE%E6%A0%87%E6%B3%A8"><span class="toc-number">2.1.</span> <span class="toc-text">标签标注</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0"><span class="toc-number">2.2.</span> <span class="toc-text">代价函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#PRN%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0"><span class="toc-number">2.2.1.</span> <span class="toc-text">PRN代价函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Fast-RCNN%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0"><span class="toc-number">2.2.2.</span> <span class="toc-text">Fast-RCNN代价函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83%E8%BF%87%E7%A8%8B"><span class="toc-number">2.3.</span> <span class="toc-text">训练过程</span></a></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/09/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%EF%BC%89/" title="网络学习笔记2——信号与系统">网络学习笔记2——信号与系统</a><time datetime="2020-11-09T15:51:13.000Z" title="发表于 2020-11-09 23:51:13">2020-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/" title="网络学习笔记1——协议分层">网络学习笔记1——协议分层</a><time datetime="2020-11-06T15:51:13.000Z" title="发表于 2020-11-06 23:51:13">2020-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/" title="高级综合工具StratusHLS学习笔记(4)">高级综合工具StratusHLS学习笔记(4)</a><time datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/" title="高级综合工具StratusHLS学习笔记(3)">高级综合工具StratusHLS学习笔记(3)</a><time datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/" title="高级综合工具StratusHLS学习笔记(2)">高级综合工具StratusHLS学习笔记(2)</a><time datetime="2020-07-19T15:51:13.000Z" title="发表于 2020-07-19 23:51:13">2020-07-19</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 月见樽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

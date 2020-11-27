@@ -1,0 +1,301 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>关于蘑菇数据集的探索分析 | 月见樽'blog</title><meta name="keywords" content="Python"><meta name="author" content="月见樽"><meta name="copyright" content="月见樽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="123import pandas as pdimport numpy as npimport matplotlib.pyplot as plt 数据集描述蘑菇数据集，包括毒性，大小，表面，颜色等，所有数据均为字符串类型，分析毒性与其他属性的关系 读取数据集12dataset &#x3D; pd.read_csv(&quot;.&#x2F;mushrooms.csv&quot;)dataset.info() &lt;c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于蘑菇数据集的探索分析">
+<meta property="og:url" content="http://www.yuejianzun.xyz/2017/12/13/%E5%85%B3%E4%BA%8E%E8%98%91%E8%8F%87%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E6%8E%A2%E7%B4%A2%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="月见樽&#39;blog">
+<meta property="og:description" content="123import pandas as pdimport numpy as npimport matplotlib.pyplot as plt 数据集描述蘑菇数据集，包括毒性，大小，表面，颜色等，所有数据均为字符串类型，分析毒性与其他属性的关系 读取数据集12dataset &#x3D; pd.read_csv(&quot;.&#x2F;mushrooms.csv&quot;)dataset.info() &lt;c">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.yuejianzun.xyz/img/1.PNG">
+<meta property="article:published_time" content="2017-12-13T12:36:50.000Z">
+<meta property="article:modified_time" content="2020-11-27T16:47:57.156Z">
+<meta property="article:author" content="月见樽">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yuejianzun.xyz/img/1.PNG"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.yuejianzun.xyz/2017/12/13/%E5%85%B3%E4%BA%8E%E8%98%91%E8%8F%87%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E6%8E%A2%E7%B4%A2%E5%88%86%E6%9E%90/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-11-28 00:47:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/had.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/1.PNG)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">月见樽'blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">关于蘑菇数据集的探索分析</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2017-12-13T12:36:50.000Z" title="发表于 2017-12-13 20:36:50">2017-12-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-27T16:47:57.156Z" title="更新于 2020-11-28 00:47:57">2020-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br></pre></td></tr></table></figure>
+<h1 id="数据集描述"><a href="#数据集描述" class="headerlink" title="数据集描述"></a>数据集描述</h1><p>蘑菇数据集，包括毒性，大小，表面，颜色等，所有数据均为字符串类型，分析毒性与其他属性的关系</p>
+<h1 id="读取数据集"><a href="#读取数据集" class="headerlink" title="读取数据集"></a>读取数据集</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dataset = pd.read_csv(<span class="string">&quot;./mushrooms.csv&quot;</span>)</span><br><span class="line">dataset.info()</span><br></pre></td></tr></table></figure>
+<pre><code>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 8124 entries, 0 to 8123
+Data columns (total 23 columns):
+class                       8124 non-null object
+cap-shape                   8124 non-null object
+cap-surface                 8124 non-null object
+cap-color                   8124 non-null object
+bruises                     8124 non-null object
+odor                        8124 non-null object
+gill-attachment             8124 non-null object
+gill-spacing                8124 non-null object
+gill-size                   8124 non-null object
+gill-color                  8124 non-null object
+stalk-shape                 8124 non-null object
+stalk-root                  8124 non-null object
+stalk-surface-above-ring    8124 non-null object
+stalk-surface-below-ring    8124 non-null object
+stalk-color-above-ring      8124 non-null object
+stalk-color-below-ring      8124 non-null object
+veil-type                   8124 non-null object
+veil-color                  8124 non-null object
+ring-number                 8124 non-null object
+ring-type                   8124 non-null object
+spore-print-color           8124 non-null object
+population                  8124 non-null object
+habitat                     8124 non-null object
+dtypes: object(23)
+memory usage: 1.4+ MB
+</code></pre><p>可以发现，一共包括23个属性，没有缺失值</p>
+<h1 id="直观分析——颜色鲜艳的蘑菇都有毒？"><a href="#直观分析——颜色鲜艳的蘑菇都有毒？" class="headerlink" title="直观分析——颜色鲜艳的蘑菇都有毒？"></a>直观分析——颜色鲜艳的蘑菇都有毒？</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">poison = dataset[dataset[<span class="string">&quot;class&quot;</span>] == <span class="string">&quot;p&quot;</span>][<span class="string">&quot;cap-color&quot;</span>]</span><br><span class="line">not_poison = dataset[dataset[<span class="string">&quot;class&quot;</span>] != <span class="string">&quot;p&quot;</span>][<span class="string">&quot;cap-color&quot;</span>]</span><br><span class="line"><span class="comment"># print(pd.value_counts(not_poison))</span></span><br><span class="line">poison_color = pd.concat([pd.value_counts(poison),pd.value_counts(not_poison),pd.value_counts(dataset[<span class="string">&quot;cap-color&quot;</span>])],axis=<span class="number">1</span>,keys=[<span class="string">&quot;poison&quot;</span>,<span class="string">&quot;normal&quot;</span>,<span class="string">&quot;all&quot;</span>])</span><br><span class="line">poison_color = poison_color.fillna(value=<span class="number">0</span>)</span><br><span class="line"><span class="comment"># print(poison_color)</span></span><br><span class="line">poison_color = poison_color.groupby(poison_color.columns,axis=<span class="number">1</span>).apply(<span class="keyword">lambda</span> x:x / x.<span class="built_in">sum</span>())</span><br><span class="line">print(poison_color.sort_values(by=<span class="string">&quot;poison&quot;</span>).loc[[<span class="string">&quot;p&quot;</span>,<span class="string">&quot;b&quot;</span>,<span class="string">&quot;y&quot;</span>,<span class="string">&quot;e&quot;</span>]])</span><br></pre></td></tr></table></figure>
+<pre><code>     poison    normal       all
+p  0.022472  0.013308  0.017725
+b  0.030644  0.011407  0.020679
+y  0.171604  0.095057  0.131955
+e  0.223698  0.148289  0.184638
+</code></pre><p>可得还是有一定道理的，尤其是黄色和红色的蘑菇</p>
+<h1 id="相关性分析——判断各指标与毒性相关性"><a href="#相关性分析——判断各指标与毒性相关性" class="headerlink" title="相关性分析——判断各指标与毒性相关性"></a>相关性分析——判断各指标与毒性相关性</h1><p>计算各不同指标下有毒的概率判断单独指标与毒性之间的关系</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">analysis_poison</span>(<span class="params">data,index_name</span>):</span></span><br><span class="line">    data[<span class="string">&quot;class&quot;</span>].replace(&#123;<span class="string">&quot;p&quot;</span>:<span class="number">1</span>,<span class="string">&quot;e&quot;</span>:<span class="number">0</span>&#125;,inplace=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">return</span> data.groupby([index_name])[<span class="string">&quot;class&quot;</span>].<span class="built_in">sum</span>() / pd.value_counts(data[index_name])</span><br><span class="line"><span class="comment">#     pd.value_counts(a)</span></span><br><span class="line"><span class="comment"># analysis_poison(dataset[[&quot;class&quot;,&quot;cap-color&quot;]],&quot;cap-color&quot;)   </span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">plt.close()</span><br><span class="line">plt.figure(figsize=(<span class="number">16</span>,<span class="number">30</span>))</span><br><span class="line">i = <span class="number">1</span></span><br><span class="line">danger=[]</span><br><span class="line"><span class="keyword">for</span> index_name <span class="keyword">in</span> dataset.columns[<span class="number">1</span>:]:</span><br><span class="line">    result = analysis_poison(dataset[[<span class="string">&quot;class&quot;</span>,index_name]],index_name)</span><br><span class="line">    ax = plt.subplot(<span class="number">6</span>,<span class="number">4</span>,i)</span><br><span class="line">    ax.set_title(index_name)</span><br><span class="line">    result.plot(kind=<span class="string">&quot;bar&quot;</span>)</span><br><span class="line">    temp = result[result &gt; <span class="number">0.75</span>]</span><br><span class="line">    temp = temp.rename(index=<span class="keyword">lambda</span> x:<span class="string">&quot;:&quot;</span>.join([index_name,x]))</span><br><span class="line">    danger.append(temp)</span><br><span class="line"><span class="comment">#     plt.bar(range(len(result)),result.data)</span></span><br><span class="line">    i += <span class="number">1</span></span><br><span class="line">plt.show()</span><br><span class="line">pd.concat(danger)</span><br></pre></td></tr></table></figure>
+<pre><code>c:\users\qiank\appdata\local\programs\python\python35\lib\site-packages\pandas\core\generic.py:3924: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/indexing.html#indexing-view-versus-copy
+  self._update_inplace(new_data)
+</code></pre><img src="/2017/12/13/%E5%85%B3%E4%BA%8E%E8%98%91%E8%8F%87%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E6%8E%A2%E7%B4%A2%E5%88%86%E6%9E%90/mushroom.png" class="">
+<pre><code>cap-shape:c                   1.000000
+cap-surface:g                 1.000000
+odor:c                        1.000000
+odor:f                        1.000000
+odor:m                        1.000000
+odor:p                        1.000000
+odor:s                        1.000000
+odor:y                        1.000000
+gill-size:n                   0.885350
+gill-color:b                  1.000000
+gill-color:r                  1.000000
+stalk-surface-above-ring:k    0.939292
+stalk-surface-below-ring:k    0.937500
+stalk-color-above-ring:b      1.000000
+stalk-color-above-ring:c      1.000000
+stalk-color-above-ring:n      0.964286
+stalk-color-above-ring:y      1.000000
+stalk-color-below-ring:b      1.000000
+stalk-color-below-ring:c      1.000000
+stalk-color-below-ring:n      0.875000
+stalk-color-below-ring:y      1.000000
+veil-color:y                  1.000000
+ring-number:n                 1.000000
+ring-type:l                   1.000000
+ring-type:n                   1.000000
+spore-print-color:h           0.970588
+spore-print-color:r           1.000000
+spore-print-color:w           0.758794
+habitat:p                     0.881119
+dtype: float64
+</code></pre><p>由上可以发现气味，菌褶颜色，孢子颜色是区分度最大的特征</p>
+<h1 id="模型训练——使用决策树模型"><a href="#模型训练——使用决策树模型" class="headerlink" title="模型训练——使用决策树模型"></a>模型训练——使用决策树模型</h1><h2 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h2><h3 id="特征向量化"><a href="#特征向量化" class="headerlink" title="特征向量化"></a>特征向量化</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">model_label = dataset[<span class="string">&quot;class&quot;</span>].replace(&#123;<span class="string">&quot;p&quot;</span>:<span class="number">1</span>,<span class="string">&quot;e&quot;</span>:<span class="number">0</span>&#125;)</span><br><span class="line">model_dataset = pd.get_dummies(dataset.drop([<span class="string">&quot;class&quot;</span>],axis=<span class="number">1</span>))</span><br><span class="line">print(model_dataset.info())</span><br></pre></td></tr></table></figure>
+<pre><code>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 8124 entries, 0 to 8123
+Columns: 117 entries, cap-shape_b to habitat_w
+dtypes: uint8(117)
+memory usage: 928.3 KB
+None
+</code></pre><h3 id="切分数据集"><a href="#切分数据集" class="headerlink" title="切分数据集"></a>切分数据集</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line">x_train,x_test,y_train,y_test = train_test_split(model_dataset,model_label,test_size=<span class="number">0.1</span>,random_state=<span class="number">33</span>)</span><br><span class="line">print(x_train.info())</span><br><span class="line">print(x_test.info())</span><br></pre></td></tr></table></figure>
+<pre><code>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+Int64Index: 7311 entries, 6849 to 7188
+Columns: 117 entries, cap-shape_b to habitat_w
+dtypes: uint8(117)
+memory usage: 892.5 KB
+None
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+Int64Index: 813 entries, 851 to 4472
+Columns: 117 entries, cap-shape_b to habitat_w
+dtypes: uint8(117)
+memory usage: 99.2 KB
+None
+</code></pre><h2 id="模型构建"><a href="#模型构建" class="headerlink" title="模型构建"></a>模型构建</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.tree <span class="keyword">import</span>  DecisionTreeClassifier</span><br><span class="line">tr = DecisionTreeClassifier()</span><br><span class="line">tr.fit(x_train,y_train)</span><br></pre></td></tr></table></figure>
+<pre><code>DecisionTreeClassifier(class_weight=None, criterion=&#39;gini&#39;, max_depth=None,
+            max_features=None, max_leaf_nodes=None,
+            min_impurity_decrease=0.0, min_impurity_split=None,
+            min_samples_leaf=1, min_samples_split=2,
+            min_weight_fraction_leaf=0.0, presort=False, random_state=None,
+            splitter=&#39;best&#39;)
+</code></pre><h2 id="模型评估"><a href="#模型评估" class="headerlink" title="模型评估"></a>模型评估</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tr.score(x_test,y_test)</span><br></pre></td></tr></table></figure>
+<pre><code>1.0
+</code></pre></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">月见樽</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.yuejianzun.xyz/2017/12/13/%E5%85%B3%E4%BA%8E%E8%98%91%E8%8F%87%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E6%8E%A2%E7%B4%A2%E5%88%86%E6%9E%90/">http://www.yuejianzun.xyz/2017/12/13/%E5%85%B3%E4%BA%8E%E8%98%91%E8%8F%87%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E6%8E%A2%E7%B4%A2%E5%88%86%E6%9E%90/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.yuejianzun.xyz" target="_blank">月见樽'blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Python/">Python</a></div><div class="post_share"><div class="social-share" data-image="/img/1.PNG" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2017/12/14/%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91/"><img class="prev-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">二叉查找树</div></div></a></div><div class="next-post pull-right"><a href="/2017/12/12/%E6%A0%91%E4%B8%8E%E4%BA%8C%E5%8F%89%E8%A1%A8%E8%BE%BE%E6%A0%91/"><img class="next-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">树与二叉表达树</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2018/02/21/CNN的反向传播/" title="CNN的反向传播"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-02-21</div><div class="title">CNN的反向传播</div></div></a></div><div><a href="/2018/03/11/CapsNet学习笔记/" title="CapsNet学习笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-03-11</div><div class="title">CapsNet学习笔记</div></div></a></div><div><a href="/2018/07/16/HoG特征SVM物品识别系统/" title="HoG特征SVM物品识别系统"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-07-16</div><div class="title">HoG特征SVM物品识别系统</div></div></a></div><div><a href="/2018/07/16/LBP特征物品识别系统/" title="LBP特征物品识别系统"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-07-16</div><div class="title">LBP特征物品识别系统</div></div></a></div><div><a href="/2017/09/06/PyTorch60分钟教程学习笔记/" title="Pytorch60分钟教程学习笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-09-06</div><div class="title">Pytorch60分钟教程学习笔记</div></div></a></div><div><a href="/2019/05/05/Octave卷积学习笔记/" title="Octave卷积学习笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-05-05</div><div class="title">Octave卷积学习笔记</div></div></a></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/had.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">月见樽</div><div class="author-info__description">日隐月现，潜龙在渊</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/qiankun214"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E9%9B%86%E6%8F%8F%E8%BF%B0"><span class="toc-number">1.</span> <span class="toc-text">数据集描述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%BB%E5%8F%96%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-number">2.</span> <span class="toc-text">读取数据集</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%B4%E8%A7%82%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E9%A2%9C%E8%89%B2%E9%B2%9C%E8%89%B3%E7%9A%84%E8%98%91%E8%8F%87%E9%83%BD%E6%9C%89%E6%AF%92%EF%BC%9F"><span class="toc-number">3.</span> <span class="toc-text">直观分析——颜色鲜艳的蘑菇都有毒？</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E6%80%A7%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E5%88%A4%E6%96%AD%E5%90%84%E6%8C%87%E6%A0%87%E4%B8%8E%E6%AF%92%E6%80%A7%E7%9B%B8%E5%85%B3%E6%80%A7"><span class="toc-number">4.</span> <span class="toc-text">相关性分析——判断各指标与毒性相关性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83%E2%80%94%E2%80%94%E4%BD%BF%E7%94%A8%E5%86%B3%E7%AD%96%E6%A0%91%E6%A8%A1%E5%9E%8B"><span class="toc-number">5.</span> <span class="toc-text">模型训练——使用决策树模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86"><span class="toc-number">5.1.</span> <span class="toc-text">数据预处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%B9%E5%BE%81%E5%90%91%E9%87%8F%E5%8C%96"><span class="toc-number">5.1.1.</span> <span class="toc-text">特征向量化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%87%E5%88%86%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-number">5.1.2.</span> <span class="toc-text">切分数据集</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E6%9E%84%E5%BB%BA"><span class="toc-number">5.2.</span> <span class="toc-text">模型构建</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0"><span class="toc-number">5.3.</span> <span class="toc-text">模型评估</span></a></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/09/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%EF%BC%89/" title="网络学习笔记2——信号与系统">网络学习笔记2——信号与系统</a><time datetime="2020-11-09T15:51:13.000Z" title="发表于 2020-11-09 23:51:13">2020-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/" title="网络学习笔记1——协议分层">网络学习笔记1——协议分层</a><time datetime="2020-11-06T15:51:13.000Z" title="发表于 2020-11-06 23:51:13">2020-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/" title="高级综合工具StratusHLS学习笔记(4)">高级综合工具StratusHLS学习笔记(4)</a><time datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/" title="高级综合工具StratusHLS学习笔记(3)">高级综合工具StratusHLS学习笔记(3)</a><time datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/" title="高级综合工具StratusHLS学习笔记(2)">高级综合工具StratusHLS学习笔记(2)</a><time datetime="2020-07-19T15:51:13.000Z" title="发表于 2020-07-19 23:51:13">2020-07-19</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 月见樽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

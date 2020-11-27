@@ -1,0 +1,361 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>月见樽'blog</title><meta name="author" content="月见樽"><meta name="copyright" content="月见樽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="日隐月现，潜龙在渊">
+<meta property="og:type" content="website">
+<meta property="og:title" content="月见樽&#39;blog">
+<meta property="og:url" content="http://www.yuejianzun.xyz/page/4/index.html">
+<meta property="og:site_name" content="月见樽&#39;blog">
+<meta property="og:description" content="日隐月现，潜龙在渊">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.yuejianzun.xyz/img/had.jpg">
+<meta property="article:author" content="月见樽">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yuejianzun.xyz/img/had.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.yuejianzun.xyz/page/4/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2020-11-28 01:25:49'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/had.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><header class="full_page" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">月见樽'blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="site-info"><h1 id="site-title">月见樽'blog</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/07/03/YOLOv2%E4%B8%8EYOLOv3%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="YOLOv2与YOLOv3学习笔记">YOLOv2与YOLOv3学习笔记</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-07-03T14:58:56.000Z" title="发表于 2018-07-03 22:58:56">2018-07-03</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a></span></div><div class="content">基本思路YOLOv2是YOLO的第二个版本，该物品检测系统仍然只需要“Look Once”，其整体结构如下所示：
+
+其主要由两个部分构成：
+
+神经网络：将图片计算为一个$13\times 13 \times 125$的向量，该向量包含了预测的物品位置和类别信息
+检测器：将神经网络输出的向量进行“解码”操作，输出物品的分类和位置信息。
+
+神经网络部分YOLOv2的神经网络部分使用了一个带跳层的神经网络，具体结构如下所示：
+
+神经网络的设计没有太大飞跃性的改变，相对于YOLOv1的神经网络设计主要有以下改变：
+
+每个卷积层后添加了批标准化层，加速了网络的收敛。
+在第16层开始分为两条路径，将低层的特征直接连接到高层，可提高模型性能。
+移除全连接层，最终的输出向量中保存了原来的位置信息。
+输入尺寸变为$416\times 416 \times 3$，识别更高分辨率的图片。
+
+该网络最终输入图片尺寸为，$416\times 416 \times 3$输出向量尺寸为$13 \times 13 \times 125$。
+检测器部分YOLOv2使用了Anchor Box的方法，神经网络输出的向量尺寸 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/07/03/YOLO1%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="YOLO1学习笔记">YOLO1学习笔记</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-07-03T14:45:21.000Z" title="发表于 2018-07-03 22:45:21">2018-07-03</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a></span></div><div class="content">基本思路YOLO（You Only Look Once）是一种目标检测系统，其特点是将物品识别和物品分类融合，使用一个深度学习模型直接计算出物体的位置和类型。基本思路如下所示：
+
+首先图片被分为$S \times S$个框，如最左边的图所示。对于每个框，若一个物体的中心落在该框中，则这个框负责该物体的类型和位置预测。对于每个框，需要计算以下数据：
+
+B个Bounding boxes的数据，共$B \times 5$个。每个框对应5个数据，分别是：
+x：物体中心x的位置
+y：物体中心y的位置
+w：物体水平长度
+h：物品垂直长度
+conf：物品置信度，即有多大的概率这个框包含了物体，定义$conf =P(object) \times IOU_{pred}^{truth}$，即该指标同时考虑物品的存在可能性和对应Bounding boxes与真实物体重叠的面积。
+
+
+所属类别：共C个，分别对应物品的种类，用于标记这个框的属于哪一个物体。
+
+在VOC数据集中，共有20类物品，即C=20。取S = 7，B = 2，因此最后数据共$7 \times 7 \times (20 + 5 \times  ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/05/14/DianNao%E7%B3%BB%E5%88%97%E5%88%86%E6%9E%90/" title="DianNao系列分析">DianNao系列分析</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-05-14T10:12:05.000Z" title="发表于 2018-05-14 18:12:05">2018-05-14</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1/">硬件设计</a></span></div><div class="content">简介DianNao系列是中科院计算所推出的系列机器学习加速器，包括以下四个成员：
+
+DianNao：神经网络加速器，DianNao系列的开山之作。
+DaDianNao：神经网络“超级计算机”，DianNao的多核升级版本
+ShiDianNao：机器视觉专用加速器，集成了视频处理部分
+PuDianNao：机器学习加速器，DianNao系列收山之作，可支持7种机器学习算法
+
+DianNao系列相比于其他神经网络加速器，除了关心运算的实现外，更关心存储的优化。
+整体架构DianNao系列的整体架构比较类似，均分为以下三个部分：
+
+运算核心：完成对应的运算加速功能
+缓存：缓存输入输出数据与参数，减小访存带宽需求
+控制：协调运算核心和缓存的工作
+
+前三代（DianNao，DaDianNao，ShiDianNao）的整体架构如下图所示：
+
+其中：
+
+NBin，NBout和SB：均为存储器，分别用于存储输入数据，输出数据或临时数据和参数
+NFU：运算核心，用于完成神经网络相关的运算
+
+以下为原论文中所绘制的架构图（左图为DianNao/DaDianNao，右图为ShiDianNao）：
+
+最后一代P ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/04/24/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95%E6%80%BB%E7%BB%93/" title="神经网络优化算法总结">神经网络优化算法总结</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-04-24T13:21:57.000Z" title="发表于 2018-04-24 21:21:57">2018-04-24</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a></span></div><div class="content">优化算法框架优化算法的框架如下所示：
+
+w_{t+1} = w_t - \eta_t \\
+\eta_t = \cfrac{\alpha}{\sqrt{V_t}} \cdot m_t其中，$w_i$为i时刻的权值，$\eta_i$为i时刻的优化量；$\alpha$为学习率，$m_t$为一阶动量，$V_t$为二阶动量。一阶动量和二阶动量都与梯度有关，如下所示：
+
+m_t = M_1(g_1,g_2,...,g_t) \\
+V_t = M_2(g_1,g_2,...,g_t) \\
+g_t = \nabla f(w_t)一阶动量和二阶动量均是历史梯度和当前梯度的函数
+优化算法固定学习率优化算法学习率固定的优化算法均有一个特点：不考虑二阶动量（即$M_2(g_i) = I$）
+随机梯度下降（SGD）随机梯度下降时最简单的优化算法，有：$m_t = g_t,V_t = I$，带入公式有优化公式为：$\eta_t = \alpha \cdot g_t$
+带动量的随机梯度下降（SGD with Momentum）随机梯度下降加上动量项，即考虑梯度累积，有：
+
+g_t = \nabla f(w_t) ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/04/18/AHB%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="AHB学习笔记">AHB学习笔记</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-04-18T12:31:28.000Z" title="发表于 2018-04-18 20:31:28">2018-04-18</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1/">硬件设计</a></span></div><div class="content">目录[TOC]
+1.AHB概述AHB总线是一种专为高性能同步传输设计的总线，层次高于APB总线，支持以下特性：
+
+突发传输
+拆分事务
+主设备单时钟周期传输
+单时钟沿操作
+非三态实现
+宽数据总线配置（64/128bit）
+
+1.1.典型AHB系统
+典型的AHB系统包括以下部分：
+
+可支持高带宽传输的主干总线
+AHB主设备（如高性能CPU和DMA设备等）
+AHB从设备（存储器和APB桥等）
+
+1.2.AHB互连AHB的互连使用多路复用器策略，由以下几个部分组成：
+
+主设备：发起通信，所有主设备将通行地址和数据发送到主设备多路复用器
+从设备：回应通信，从主设备多路复用器获得通信地址和数据，将回应数据发送到从设备多路复用器
+判决器：主设备多路复用器的控制器，控制哪一个主设备的通信数据可以被发送到从机
+解码器：从设备多路复用器的控制器，控制哪一个从设备的通信数据可以被发送回主机
+
+
+2.AHB信号2.1.基本AHB信号
+
+
+
+信号名
+位宽
+来源
+描述
+
+
+
+
+HCLK
+1
+系统时钟
+传输系统的时钟
+
+
+HRESETn
+1
+复位系统
+传输系统复位信号，低有效
+
+
+HADDR
+32
+主机
+主机发送传 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/04/17/%E5%9F%BA%E4%BA%8Epytorch%E7%9A%84CapsNet%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3/" title="基于pytorch的CapsNet代码详解">基于pytorch的CapsNet代码详解</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-04-17T14:24:35.000Z" title="发表于 2018-04-17 22:24:35">2018-04-17</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a></span></div><div class="content">CapsNet基本结构参考CapsNet的论文，提出的基本结构如下所示：
+
+可以看出，CapsNet的基本结构如下所示：
+
+普通卷积层Conv1：基本的卷积层，感受野较大，达到了9x9
+预胶囊层PrimaryCaps：为胶囊层准备，运算为卷积运算，最终输出为[batch,caps_num,caps_length]的三维数据：
+batch为批大小
+caps_num为胶囊的数量
+caps_length为每个胶囊的长度（每个胶囊为一个向量，该向量包括caps_length个分量）
+
+
+胶囊层DigitCaps：胶囊层，目的是代替最后一层全连接层，输出为10个胶囊
+
+代码实现胶囊相关组件激活函数Squash胶囊网络有特有的激活函数Squash函数：
+
+Squash(S) = \cfrac{||S||^2}{1+||S||^2} \cdot \cfrac{S}{||S||}其中输入为S胶囊，该激活函数可以将胶囊的长度压缩，代码实现如下：
+1234def squash(inputs, axis=-1):    norm = torch.norm(inputs, p=2, dim=axis, kee ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/04/01/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%84%9F%E7%9F%A5%E6%9C%BA/" title="深入理解感知机">深入理解感知机</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-04-01T15:35:40.000Z" title="发表于 2018-04-01 23:35:40">2018-04-01</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a></span></div><div class="content">1.模型感知机的模型如下图所示：
+
+公式表示如下所示：
+
+f(x) = sign(w \cdot x + b)  \\
+sign(x) = \begin{cases} +1 & x \geq 0 \\
+-1 & x < 0
+\end{cases}对于该分类器，其假设空间为特征空间的所有线性分类器，从几何学的角度可以理解为是特征空间中所有的超平面。那么，只要样本在特征空间中是线性可分的（可以被一个超平面完美划分），由感知机的假设空间，那么这个超平面一定在假设空间内，所以感知机是可以用于区分所有线性可分的样本。
+2.学习策略2.1.代价函数感知机的目标是为了找到那个能完美划分线性可分样本的超平面。为了达到这个目标，我们需要定义代价函数。代价函数的意思是该函数刻画的是模型的性能，通常需要满足以下条件：
+
+条件一：模型性能越好，代价函数越小，模型性能越差，代价函数越大
+条件二：连续可导
+
+条件一是使代价函数可以刻画模型性能，条件二是为了该模型可以使用梯度下降的方法优化
+2.2.感知机代价函数选择对于感知机，选取代价函数为：
+
+L(w,b) = - \sum\limits_{x_i \in M} ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/03/27/%E5%B7%A6%E5%BC%8F%E5%A0%86/" title="左式堆">左式堆</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-03-27T13:32:03.000Z" title="发表于 2018-03-27 21:32:03">2018-03-27</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/">算法学习</a></span></div><div class="content">左式堆性质零路径长零路径长的定义为：
+
+零路径长：从节点X到一个没有两个子节点的（有一个子节点或没有子节点）节点的最短距离
+
+对于零路径长，有以下递归的计算方法：
+
+每个节点的零路径长比子节点的最小零路径长大1
+NULL的节点的零路径长为-1，只有一个子节点或没有子节点的节点零路径长为0
+
+左式堆左式堆是特殊的优先堆，除了有序性（每个节点的数据小于其子节点）以外，还有具有与零路径长相关的性质：对于左式堆，要求任一节点的左子节点零路径长大于等于右子节点的零路径长
+操作合并操作左式堆的基本操作是合并，合并的递归描述如下：
+
+当输入的两个堆都是空的，输出空堆；当有一个堆是空的，则返回非空的堆
+当两个堆非空时，比较两个根节点的大小，返回为：
+堆根节点为原较小的根节点
+左子树为原较小的跟节点的左子树
+右子树为根节点较大的堆和跟节点较小堆右子树合并的结果
+
+
+
+如下图所示：
+
+对于最终结果，可能在根节点上出现不符合左式堆的性质的情况，出现这种情况时，交换左右子节点即可：
+
+其他操作有了核心操作合并，优先堆的其他操作可由合并实现：
+
+插入：通过合并单个节点和现有堆实现
+弹出：将根节点返回，并合并左右 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/03/18/%E5%9F%BA%E4%BA%8Egluno%E7%9A%84Inception%E7%BB%93%E6%9E%84/" title="基于gluno的Inception结构">基于gluno的Inception结构</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-03-18T10:10:02.000Z" title="发表于 2018-03-18 18:10:02">2018-03-18</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a></span></div><div class="content">Inception结构初级Inception结构初级Inception结构如下所示：
+
+其前向传播分为4个部分：
+
+通过1x1卷积
+通过3x3卷积，padding为1（不改变图片大小）
+通过5x5卷积，padding为2（不改变图片大小）
+通过3x3池化，为了保证图片大小与以上相同，stride应为1，padding应为1
+
+最后，将以上四个部分在feature这一维度堆叠起来，即获得最终输出
+分析假设输入feature，每个层（卷积和池化）输出feature分别为$N_i,N_o$（即最终输出feature为$4 \times N_o$）;输入图片的尺寸为WxL，对于每一层，有：
+
+1x1卷积层：有参数$1 \times 1 \times N_i \times N_o = N_iN_o$，需要进行计算的次数为$N_o \times W \times L \times 1 \times 1 \times N_i = WLN_iN_o$
+3x3卷积层：有参数$3 \times 3 \times N_i \times N_o = 9N_iN_o$，需要计算次数为$N_o \times W  ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/03/15/%E5%9F%BA%E4%BA%8E%E4%BC%98%E5%85%88%E5%A0%86%E7%9A%84%E8%B0%83%E5%BA%A6%E9%98%9F%E5%88%97/" title="基于优先堆的调度队列">基于优先堆的调度队列</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-03-15T15:33:21.000Z" title="发表于 2018-03-15 23:33:21">2018-03-15</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/">算法学习</a></span></div><div class="content">应用场景模拟考虑优先堆的一种应用场景——按优先级的任务调度队列：每个任务有一个优先级和唯一标号，该调度队列需要具有以下功能：
+
+添加任务：将任务添加进调度队列并按优先级置于对应的位置
+执行任务：将优先堆中优先级最高的任务取出（并执行）
+删除任务：按标号删除队列中的未执行任务
+修改任务优先级：修改指定标号任务的优先级
+
+应用分析数据结构对于任务，考虑使用类封装，对于一个任务类需要以下特征：
+
+标号：int型，用于区别任务的标号，每个任务有一个且唯一
+优先级：int型，每个任务的优先级，该特征越小则优先级越高
+
+同时需要具有以下方法：
+
+任务执行方法：调用该任务表示执行了该任务
+优先级修改方法：调用该任务修改优先级
+
+优先堆定义了数据结构后，使用2D优先堆实现该优先队列，2D优先堆为完全二叉树，且任意一个节点的值小于其子节点的值。要实现场景中的几种功能，需要以下几种方法：
+
+Push：对应添加任务，将任务类插入该优先堆中，调用上移方法。
+Pop：对应执行任务，取出2D优先堆根节点的任务，调用下移方法。
+Delete：对应删除任务，按标号取出某一节点的任务并调整堆使其满足2D优先堆的条件，调 ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/3/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/5/"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/had.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">月见樽</div><div class="author-info__description">日隐月现，潜龙在渊</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/qiankun214"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/09/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%EF%BC%89/" title="网络学习笔记2——信号与系统">网络学习笔记2——信号与系统</a><time datetime="2020-11-09T15:51:13.000Z" title="发表于 2020-11-09 23:51:13">2020-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/" title="网络学习笔记1——协议分层">网络学习笔记1——协议分层</a><time datetime="2020-11-06T15:51:13.000Z" title="发表于 2020-11-06 23:51:13">2020-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/" title="高级综合工具StratusHLS学习笔记(4)">高级综合工具StratusHLS学习笔记(4)</a><time datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/" title="高级综合工具StratusHLS学习笔记(3)">高级综合工具StratusHLS学习笔记(3)</a><time datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/" title="高级综合工具StratusHLS学习笔记(2)">高级综合工具StratusHLS学习笔记(2)</a><time datetime="2020-07-19T15:51:13.000Z" title="发表于 2020-07-19 23:51:13">2020-07-19</time></div></div></div></div></div><div class="card-widget card-categories"><div class="card-content"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div><ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/JavaScript%E5%AD%A6%E4%B9%A0/"><span class="card-category-list-name">JavaScript学习</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Python%E5%BA%94%E7%94%A8%E6%89%8B%E8%AE%B0/"><span class="card-category-list-name">Python应用手记</span><span class="card-category-list-count">7</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Verilog%E5%B7%A9%E5%9B%BA%E6%89%8B%E8%AE%B0/"><span class="card-category-list-name">Verilog巩固手记</span><span class="card-category-list-count">14</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E4%BC%A0%E7%BB%9F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"><span class="card-category-list-name">传统机器学习</span><span class="card-category-list-count">16</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"><span class="card-category-list-name">数据分析</span><span class="card-category-list-count">3</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1/"><span class="card-category-list-name">硬件设计</span><span class="card-category-list-count">16</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><span class="card-category-list-name">神经网络</span><span class="card-category-list-count">24</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/"><span class="card-category-list-name">算法学习</span><span class="card-category-list-count">15</span></a></li>
+            <li class="card-category-list-item more is-center"><a class="card-category-list-link-more" href="/categories/">
+                <span>查看更多</span><i class="fas fa-angle-right"></i></a></li>
+            </ul></div></div><div class="card-widget card-tags"><div class="card-content"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/AMBA/" style="font-size: 1.16em; color: #999b9e">AMBA</a> <a href="/tags/Detection/" style="font-size: 1.21em; color: #999ea4">Detection</a> <a href="/tags/FIFO/" style="font-size: 1.1em; color: #999">FIFO</a> <a href="/tags/JavaScript/" style="font-size: 1.27em; color: #99a0a9">JavaScript</a> <a href="/tags/MIPS/" style="font-size: 1.1em; color: #999">MIPS</a> <a href="/tags/NeuralNetwork/" style="font-size: 1.44em; color: #99a7ba">NeuralNetwork</a> <a href="/tags/Python/" style="font-size: 1.5em; color: #99a9bf">Python</a> <a href="/tags/StratusHLS/" style="font-size: 1.21em; color: #999ea4">StratusHLS</a> <a href="/tags/SystemC/" style="font-size: 1.1em; color: #999">SystemC</a> <a href="/tags/Verilog/" style="font-size: 1.39em; color: #99a4b4">Verilog</a> <a href="/tags/float32/" style="font-size: 1.1em; color: #999">float32</a> <a href="/tags/golang/" style="font-size: 1.33em; color: #99a2af">golang</a> <a href="/tags/pipeline/" style="font-size: 1.1em; color: #999">pipeline</a> <a href="/tags/%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86/" style="font-size: 1.33em; color: #99a2af">数字信号处理</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 1.33em; color: #99a2af">算法</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" style="font-size: 1.1em; color: #999">计算机体系结构</a> <a href="/tags/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88/" style="font-size: 1.21em; color: #999ea4">高级综合</a></div></div></div><div class="card-widget card-archives"><div class="card-content"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/11/"><span class="card-archive-list-date">十一月 2020</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/09/"><span class="card-archive-list-date">九月 2020</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/07/"><span class="card-archive-list-date">七月 2020</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/01/"><span class="card-archive-list-date">一月 2020</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2019/07/"><span class="card-archive-list-date">七月 2019</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2019/05/"><span class="card-archive-list-date">五月 2019</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2019/04/"><span class="card-archive-list-date">四月 2019</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2019/01/"><span class="card-archive-list-date">一月 2019</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item more is-center"><a class="card-archive-list-link-more" href="/archives/">
+              <span>查看更多</span><i class="fas fa-angle-right"  ></i></a></li></ul></div></div><div class="card-widget card-webinfo"><div class="card-content"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">103</div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">149.7k</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2020-11-27T17:25:49.050Z"></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 月见樽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

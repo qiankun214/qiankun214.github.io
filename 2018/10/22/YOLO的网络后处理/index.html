@@ -1,0 +1,229 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>YOLO的网络后处理 | 月见樽'blog</title><meta name="keywords" content="NeuralNetwork"><meta name="author" content="月见樽"><meta name="copyright" content="月见樽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="理论分析 YOLO从v2版本开始重新启用anchor box，YOLOv2网络的网络输出为尺寸为[b,125,13,13]的tensor，要将这个Tensor变为最终的输出结果，还需要以下的处理：  解码：从Tensor中解析出所有框的位置信息和类别信息 NMS：筛选最能表现物品的识别框  解码过程解码之前，需要明确的是每个候选框需要5+class_num个数据，分别是相对位置x,y，相对宽度w,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="YOLO的网络后处理">
+<meta property="og:url" content="http://www.yuejianzun.xyz/2018/10/22/YOLO%E7%9A%84%E7%BD%91%E7%BB%9C%E5%90%8E%E5%A4%84%E7%90%86/index.html">
+<meta property="og:site_name" content="月见樽&#39;blog">
+<meta property="og:description" content="理论分析 YOLO从v2版本开始重新启用anchor box，YOLOv2网络的网络输出为尺寸为[b,125,13,13]的tensor，要将这个Tensor变为最终的输出结果，还需要以下的处理：  解码：从Tensor中解析出所有框的位置信息和类别信息 NMS：筛选最能表现物品的识别框  解码过程解码之前，需要明确的是每个候选框需要5+class_num个数据，分别是相对位置x,y，相对宽度w,">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.yuejianzun.xyz/img/1.PNG">
+<meta property="article:published_time" content="2018-10-22T15:24:15.000Z">
+<meta property="article:modified_time" content="2020-11-27T16:47:57.132Z">
+<meta property="article:author" content="月见樽">
+<meta property="article:tag" content="NeuralNetwork">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yuejianzun.xyz/img/1.PNG"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.yuejianzun.xyz/2018/10/22/YOLO%E7%9A%84%E7%BD%91%E7%BB%9C%E5%90%8E%E5%A4%84%E7%90%86/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-11-28 00:47:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/had.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/1.PNG)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">月见樽'blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">YOLO的网络后处理</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2018-10-22T15:24:15.000Z" title="发表于 2018-10-22 23:24:15">2018-10-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-27T16:47:57.132Z" title="更新于 2020-11-28 00:47:57">2020-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="理论分析"><a href="#理论分析" class="headerlink" title="理论分析"></a>理论分析</h1><img src="/2018/10/22/YOLO%E7%9A%84%E7%BD%91%E7%BB%9C%E5%90%8E%E5%A4%84%E7%90%86/system.png" class="">
+<p>YOLO从v2版本开始重新启用anchor box，YOLOv2网络的网络输出为尺寸为<code>[b,125,13,13]</code>的tensor，要将这个Tensor变为最终的输出结果，还需要以下的处理：</p>
+<ul>
+<li>解码：从Tensor中解析出所有框的位置信息和类别信息</li>
+<li>NMS：筛选最能表现物品的识别框</li>
+</ul>
+<h2 id="解码过程"><a href="#解码过程" class="headerlink" title="解码过程"></a>解码过程</h2><p>解码之前，需要明确的是每个候选框需要5+class_num个数据，分别是相对位置x,y，相对宽度w,h，置信度c和class_num个分类结果，YOLOv2-voc中class_num=20，即每个格点对应5个候选框，每个候选框有5+20=25个参数，这就是为什么输出Tensor的最后一维为5*（20+5）=125。</p>
+<img src="/2018/10/22/YOLO%E7%9A%84%E7%BD%91%E7%BB%9C%E5%90%8E%E5%A4%84%E7%90%86/tensor.png" class="">
+<p>上图为一个框所需要的所有数据构成，假设这个框是位于格点X,Y的，对应的anchor box大小为W,H，位置相关参数的处理方法如下所示，其中，$T_x,T_y​$分别是输出Tensor在长宽上的值，这里$T_x = 13,T_y = 13​$；$P_x,P_y​$分别为原图片的长和宽：</p>
+<script type="math/tex; mode=display">
+x_r = \cfrac{sigmoid(x) + X}{T_x} \times P_x\\
+y_r = \cfrac{sigmoid(x) + Y}{T_y} \times P_y\\
+w_r = e^{w} \times W \\
+h_r = e^{h} \times H</script><p>置信度和类别信息处理方法如下所示：</p>
+<script type="math/tex; mode=display">
+c_{r} = sigmoid(c) \times max\{softmax(class)\} \\
+class\_id = argmax(class)</script><p>当格点置信度大于某个阈值时，认为该格点有物体，物体类别为class_id对应的类别</p>
+<h2 id="NMS"><a href="#NMS" class="headerlink" title="NMS"></a>NMS</h2><p>NMS为非最大值抑制，用在YOLO系统中的含义指从多个候选框标记同一个物品时，从中选择最合适的候选框。其基本思维很简单：使用置信度最高的候选框标记一个物体，若其他候选框与该候选框的IOU超过一个阈值，则认为其他候选框与该候选框标记的是同一个物体，丢弃其他候选框。</p>
+<p>具体实现时，可以将所有候选框进行排序，置信度高的在前，置信度低的在后。从置信度高的候选框开始遍历所有候选框，对于某一个候选框，将之后所有的候选框与其计算IOU，若IOU高于一个阈值，则丢弃置信度低的候选框。算法流程图如下所示：</p>
+<img src="/2018/10/22/YOLO%E7%9A%84%E7%BD%91%E7%BB%9C%E5%90%8E%E5%A4%84%E7%90%86/nms.png" class="">
+<h1 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h1><p>这里选择的是<a target="_blank" rel="noopener" href="https://github.com/marvis">marvis</a>开源的基于Pytorch的YOLOv2代码，其优势在于所有的部分均使用Python实现，没有使用Cython，无需编译即可使用，且依赖较少，文件管理比较扁平。</p>
+<h2 id="解码部分"><a href="#解码部分" class="headerlink" title="解码部分"></a>解码部分</h2><p>解码部分在<code>utils.py</code>文件中，由<code>get_region_boxes</code>函数实现。首先是准备部分，这里首先获取了输出的相关信息，yolo-voc网络下有b为batch，预测模式下一般为1，h=w=13。随后reshape了输出，其维度变为(25,13*13*5)，改变维度的目的是方便后面处理的索引。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_region_boxes</span>(<span class="params">output, conf_thresh, num_classes, anchors, num_anchors, only_objectness=<span class="number">1</span>, validation=<span class="literal">False</span></span>):</span>    </span><br><span class="line">    anchor_step = <span class="built_in">len</span>(anchors) / num_anchors</span><br><span class="line">    <span class="keyword">if</span> output.dim() == <span class="number">3</span>:</span><br><span class="line">        output = output.unsqueeze(<span class="number">0</span>)</span><br><span class="line">    batch = output.size(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">assert</span>(output.size(<span class="number">1</span>) == (<span class="number">5</span> + num_classes) * num_anchors)</span><br><span class="line">    h = output.size(<span class="number">2</span>)</span><br><span class="line">    w = output.size(<span class="number">3</span>)</span><br><span class="line">    output = output.view(batch * num_anchors, <span class="number">5</span> + num_classes, h * w).transpose(</span><br><span class="line">        <span class="number">0</span>, <span class="number">1</span>).contiguous().view(<span class="number">5</span> + num_classes, batch * num_anchors * h * w)</span><br><span class="line">    all_boxes = []</span><br></pre></td></tr></table></figure>
+<p>随后是处理x，y的部分，xs和ys就是处理后的候选框中心点相对坐标，grid_x和grid_y与output[0]shape相同，分别表示对应output位置的候选框所属的格点坐标X与Y，这里的xs和ys实现了上述公式中的$xs = sigmoid(x) + X$和$ys = sigmoid(y) + Y$</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">grid_x = torch.linspace(<span class="number">0</span>, w - <span class="number">1</span>, w).repeat(h, <span class="number">1</span>).repeat(batch *</span><br><span class="line">                                                         num_anchors, <span class="number">1</span>, <span class="number">1</span>).view(batch * num_anchors * h * w).cuda()</span><br><span class="line">grid_y = torch.linspace(<span class="number">0</span>, h - <span class="number">1</span>, h).repeat(w, <span class="number">1</span>).t().repeat(</span><br><span class="line">    batch * num_anchors, <span class="number">1</span>, <span class="number">1</span>).view(batch * num_anchors * h * w).cuda()</span><br><span class="line">print(<span class="string">&quot;outputs shape&quot;</span>, output.shape)</span><br><span class="line">xs = torch.sigmoid(output[<span class="number">0</span>]) + grid_x</span><br><span class="line">ys = torch.sigmoid(output[<span class="number">1</span>]) + grid_y</span><br></pre></td></tr></table></figure>
+<p>之后为处理w,h的部分，与处理x,y的部分类似，最终ws和hs为修正后的物品尺寸信息，实现了$ws = e^w\cdot W$和$hs = e^{h} \cdot H$。其中W和H分别为当前anchor box的建议尺寸。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">anchor_w = torch.Tensor(anchors).view(</span><br><span class="line">    num_anchors, anchor_step).index_select(<span class="number">1</span>, torch.LongTensor([<span class="number">0</span>]))</span><br><span class="line">anchor_h = torch.Tensor(anchors).view(</span><br><span class="line">    num_anchors, anchor_step).index_select(<span class="number">1</span>, torch.LongTensor([<span class="number">1</span>]))</span><br><span class="line">anchor_w = anchor_w.repeat(batch, <span class="number">1</span>).repeat(</span><br><span class="line">    <span class="number">1</span>, <span class="number">1</span>, h * w).view(batch * num_anchors * h * w).cuda()</span><br><span class="line">anchor_h = anchor_h.repeat(batch, <span class="number">1</span>).repeat(</span><br><span class="line">    <span class="number">1</span>, <span class="number">1</span>, h * w).view(batch * num_anchors * h * w).cuda()</span><br><span class="line">ws = torch.exp(output[<span class="number">2</span>]) * anchor_w</span><br><span class="line">hs = torch.exp(output[<span class="number">3</span>]) * anchor_h</span><br></pre></td></tr></table></figure>
+<p>接下来是获取置信度的部分和类别部分，获取该anchor box的置信度为<code>det_confs=sigmoid(c)</code>。随后处理类别信息，先对类别信息对应的数据做softmax操作，随后获取其最大值<code>cls_max_confs</code>和最大值所在的位置<code>cls_max_ids</code>，其中位置<code>cls_max_ids</code>对应每个anchor box框住的“物品”的类别。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">det_confs = torch.sigmoid(output[<span class="number">4</span>])</span><br><span class="line">cls_confs = torch.nn.Softmax()(</span><br><span class="line">    Variable(output[<span class="number">5</span>:<span class="number">5</span> + num_classes].transpose(<span class="number">0</span>, <span class="number">1</span>))).data</span><br><span class="line">cls_max_confs, cls_max_ids = torch.<span class="built_in">max</span>(cls_confs, <span class="number">1</span>)</span><br><span class="line">cls_max_confs = cls_max_confs.view(-<span class="number">1</span>)</span><br><span class="line">cls_max_ids = cls_max_ids.view(-<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>随后是一些其他的处理过程，例如获取格点数量<code>sz_hw</code>，anchor box的数量<code>sz_hwa</code>等，函数<code>convert2cpu</code>是在CPU上复制一个该数据，注意这里是拷贝，并不是将数据从GPU转移到CPU上。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">sz_hw = h * w</span><br><span class="line">sz_hwa = sz_hw * num_anchors</span><br><span class="line">det_confs = convert2cpu(det_confs)</span><br><span class="line">cls_max_confs = convert2cpu(cls_max_confs)</span><br><span class="line">cls_max_ids = convert2cpu_long(cls_max_ids)</span><br><span class="line">xs = convert2cpu(xs)</span><br><span class="line">ys = convert2cpu(ys)</span><br><span class="line">ws = convert2cpu(ws)</span><br><span class="line">hs = convert2cpu(hs)</span><br><span class="line"><span class="keyword">if</span> validation:</span><br><span class="line">    cls_confs = convert2cpu(cls_confs.view(-<span class="number">1</span>, num_classes))</span><br></pre></td></tr></table></figure>
+<p>随后是一个解码的大循环，分析见下面的注释</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> b <span class="keyword">in</span> <span class="built_in">range</span>(batch):</span><br><span class="line">    boxes = []</span><br><span class="line">    <span class="comment"># boxes为容纳所有候选框的list</span></span><br><span class="line">    <span class="keyword">for</span> cy <span class="keyword">in</span> <span class="built_in">range</span>(h):</span><br><span class="line">        <span class="keyword">for</span> cx <span class="keyword">in</span> <span class="built_in">range</span>(w):</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(num_anchors):</span><br><span class="line">                <span class="comment"># 遍历每一个anchor box，这里访问位于格点cx,cy的第i个anchor box</span></span><br><span class="line">                ind = b * sz_hwa + i * sz_hw + cy * w + cx</span><br><span class="line">                <span class="comment"># 获取该anchor box在det_conf中对应的index</span></span><br><span class="line">                det_conf = det_confs[ind]</span><br><span class="line">                <span class="keyword">if</span> only_objectness:</span><br><span class="line">                    conf = det_confs[ind]</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    conf = det_confs[ind] * cls_max_confs[ind]</span><br><span class="line">                <span class="comment"># 处理置信度</span></span><br><span class="line"></span><br><span class="line">                <span class="keyword">if</span> conf &gt; conf_thresh:</span><br><span class="line">                    <span class="comment"># 若置信度大于阈值，则认为该anchor box有效</span></span><br><span class="line">                    bcx = xs[ind]</span><br><span class="line">                    bcy = ys[ind]</span><br><span class="line">                    bw = ws[ind]</span><br><span class="line">                    bh = hs[ind]</span><br><span class="line">                    cls_max_conf = cls_max_confs[ind]</span><br><span class="line">                    cls_max_id = cls_max_ids[ind]</span><br><span class="line">                    <span class="comment"># 获取所有相关信息，包括长，宽，位置，置信度和类别</span></span><br><span class="line">                    box = [bcx / w, bcy / h, bw / w, bh / h,</span><br><span class="line">                           det_conf, cls_max_conf, cls_max_id]</span><br><span class="line">                    <span class="comment"># 处理数据，其中位置信息x,y,尺寸信息w,h均归一化，使其与输入图片尺寸解耦</span></span><br><span class="line">                    <span class="keyword">if</span> (<span class="keyword">not</span> only_objectness) <span class="keyword">and</span> validation:</span><br><span class="line">                        <span class="keyword">for</span> c <span class="keyword">in</span> <span class="built_in">range</span>(num_classes):</span><br><span class="line">                            tmp_conf = cls_confs[ind][c]</span><br><span class="line">                            <span class="keyword">if</span> c != cls_max_id <span class="keyword">and</span> det_confs[ind] * tmp_conf &gt; conf_thresh:</span><br><span class="line">                                box.append(tmp_conf)</span><br><span class="line">                                box.append(c)</span><br><span class="line">                    boxes.append(box)</span><br><span class="line">                    <span class="comment"># 将处理好的anchor box信息保存在boxes中</span></span><br><span class="line">    all_boxes.append(boxes)</span><br><span class="line">    <span class="keyword">return</span> all_boxes</span><br></pre></td></tr></table></figure>
+<h2 id="NMS部分"><a href="#NMS部分" class="headerlink" title="NMS部分"></a>NMS部分</h2><p>NMS也在<code>utils.py</code>中，函数名为<code>nms</code>。该函数中，首先实现对所有候选框的排序。这里使用<code>det_confs</code>获取了置信度从大到小的anchor box的坐标位置<code>sortIds</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">nms</span>(<span class="params">boxes, nms_thresh</span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(boxes) == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> boxes</span><br><span class="line"></span><br><span class="line">    det_confs = torch.zeros(<span class="built_in">len</span>(boxes))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(boxes)):</span><br><span class="line">        det_confs[i] = <span class="number">1</span> - boxes[i][<span class="number">4</span>]</span><br><span class="line"></span><br><span class="line">    _, sortIds = torch.sort(det_confs)</span><br></pre></td></tr></table></figure>
+<p>随后实现候选框的筛选，从高置信度的候选框开始遍历，对于每个候选框<code>boxes[sortIds[i]]</code>，遍历所有置信度低于该候选框且置信度不为0（置信度为0表示该候选框被抛弃）的候选框，若低置信度候选框与高置信度候选框的IOU大于阈值，则抛弃低置信度候选框。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">out_boxes = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(boxes)):</span><br><span class="line">    <span class="comment"># 按置信度从高到低遍历</span></span><br><span class="line">    box_i = boxes[sortIds[i]]</span><br><span class="line">    <span class="keyword">if</span> box_i[<span class="number">4</span>] &gt; <span class="number">0</span>:</span><br><span class="line">        <span class="comment"># 置信度大于0表示该候选框没有在之前的筛选中被抛弃</span></span><br><span class="line">        out_boxes.append(box_i)</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i + <span class="number">1</span>, <span class="built_in">len</span>(boxes)):</span><br><span class="line">            <span class="comment"># 遍历所有置信度低于该候选框的候选框</span></span><br><span class="line">            box_j = boxes[sortIds[j]]</span><br><span class="line">            <span class="keyword">if</span> bbox_iou(box_i, box_j, x1y1x2y2=<span class="literal">False</span>) &gt; nms_thresh:</span><br><span class="line">                <span class="comment"># 若置信度低的候选框与该候选框IOU大于一定值，抛弃低置信度候选框</span></span><br><span class="line">                box_j[<span class="number">4</span>] = <span class="number">0</span></span><br><span class="line"><span class="keyword">return</span> out_boxes</span><br></pre></td></tr></table></figure></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">月见樽</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.yuejianzun.xyz/2018/10/22/YOLO%E7%9A%84%E7%BD%91%E7%BB%9C%E5%90%8E%E5%A4%84%E7%90%86/">http://www.yuejianzun.xyz/2018/10/22/YOLO%E7%9A%84%E7%BD%91%E7%BB%9C%E5%90%8E%E5%A4%84%E7%90%86/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.yuejianzun.xyz" target="_blank">月见樽'blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/NeuralNetwork/">NeuralNetwork</a></div><div class="post_share"><div class="social-share" data-image="/img/1.PNG" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2018/11/04/SSD%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F/"><img class="prev-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">SSD目标检测系统</div></div></a></div><div class="next-post pull-right"><a href="/2018/10/05/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%8B%E7%BC%A9%E5%AE%9E%E9%AA%8C-Deep-compression/"><img class="next-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">神经网络压缩实验-Deep-compression</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2018/02/21/CNN的反向传播/" title="CNN的反向传播"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-02-21</div><div class="title">CNN的反向传播</div></div></a></div><div><a href="/2018/03/11/CapsNet学习笔记/" title="CapsNet学习笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-03-11</div><div class="title">CapsNet学习笔记</div></div></a></div><div><a href="/2018/09/16/Deep-compression阅读笔记/" title="Deep-compression阅读笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-09-16</div><div class="title">Deep-compression阅读笔记</div></div></a></div><div><a href="/2018/12/24/DianNao运算单元与体系结构分析/" title="DianNao运算单元与体系结构分析"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-12-24</div><div class="title">DianNao运算单元与体系结构分析</div></div></a></div><div><a href="/2019/07/22/EIE结构与算法映射/" title="EIE结构与算法映射"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-07-22</div><div class="title">EIE结构与算法映射</div></div></a></div><div><a href="/2018/08/07/Fast-RCNN阅读笔记/" title="Fast-RCNN阅读笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-08-07</div><div class="title">Fast-RCNN阅读笔记</div></div></a></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/had.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">月见樽</div><div class="author-info__description">日隐月现，潜龙在渊</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/qiankun214"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%90%86%E8%AE%BA%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">理论分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E7%A0%81%E8%BF%87%E7%A8%8B"><span class="toc-number">1.1.</span> <span class="toc-text">解码过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NMS"><span class="toc-number">1.2.</span> <span class="toc-text">NMS</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">代码分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E7%A0%81%E9%83%A8%E5%88%86"><span class="toc-number">2.1.</span> <span class="toc-text">解码部分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NMS%E9%83%A8%E5%88%86"><span class="toc-number">2.2.</span> <span class="toc-text">NMS部分</span></a></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/09/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%EF%BC%89/" title="网络学习笔记2——信号与系统">网络学习笔记2——信号与系统</a><time datetime="2020-11-09T15:51:13.000Z" title="发表于 2020-11-09 23:51:13">2020-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/" title="网络学习笔记1——协议分层">网络学习笔记1——协议分层</a><time datetime="2020-11-06T15:51:13.000Z" title="发表于 2020-11-06 23:51:13">2020-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/" title="高级综合工具StratusHLS学习笔记(4)">高级综合工具StratusHLS学习笔记(4)</a><time datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/" title="高级综合工具StratusHLS学习笔记(3)">高级综合工具StratusHLS学习笔记(3)</a><time datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/" title="高级综合工具StratusHLS学习笔记(2)">高级综合工具StratusHLS学习笔记(2)</a><time datetime="2020-07-19T15:51:13.000Z" title="发表于 2020-07-19 23:51:13">2020-07-19</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 月见樽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

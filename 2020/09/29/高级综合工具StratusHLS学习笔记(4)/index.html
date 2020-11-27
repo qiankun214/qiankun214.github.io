@@ -1,0 +1,326 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>高级综合工具StratusHLS学习笔记(4) | 月见樽'blog</title><meta name="keywords" content="高级综合,StratusHLS"><meta name="author" content="月见樽"><meta name="copyright" content="月见樽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="HLS中使用浮点数学习目标：  使用浮点数 换用自己的库进行高级综合  HLS中的浮点数stratus HLS提供内置的浮点数，可以实现常规的加减乘操作，类型为： 1cynw_cm_float&lt;e,f,accurcy,rounding mode,NaN handle&gt; 该类型共有5个模板参数，分别如下所示：  e：指数位宽，为浮点数的指数位数 f：尾数位宽，为浮点数的尾数位数 accu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高级综合工具StratusHLS学习笔记(4)">
+<meta property="og:url" content="http://www.yuejianzun.xyz/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/index.html">
+<meta property="og:site_name" content="月见樽&#39;blog">
+<meta property="og:description" content="HLS中使用浮点数学习目标：  使用浮点数 换用自己的库进行高级综合  HLS中的浮点数stratus HLS提供内置的浮点数，可以实现常规的加减乘操作，类型为： 1cynw_cm_float&lt;e,f,accurcy,rounding mode,NaN handle&gt; 该类型共有5个模板参数，分别如下所示：  e：指数位宽，为浮点数的指数位数 f：尾数位宽，为浮点数的尾数位数 accu">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.yuejianzun.xyz/img/1.PNG">
+<meta property="article:published_time" content="2020-09-29T15:51:13.000Z">
+<meta property="article:modified_time" content="2020-11-27T16:47:57.298Z">
+<meta property="article:author" content="月见樽">
+<meta property="article:tag" content="高级综合">
+<meta property="article:tag" content="StratusHLS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yuejianzun.xyz/img/1.PNG"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.yuejianzun.xyz/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-11-28 00:47:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/had.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/1.PNG)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">月见樽'blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">高级综合工具StratusHLS学习笔记(4)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-27T16:47:57.298Z" title="更新于 2020-11-28 00:47:57">2020-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1/">硬件设计</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="HLS中使用浮点数"><a href="#HLS中使用浮点数" class="headerlink" title="HLS中使用浮点数"></a>HLS中使用浮点数</h1><p>学习目标：</p>
+<ul>
+<li>使用浮点数</li>
+<li>换用自己的库进行高级综合</li>
+</ul>
+<h2 id="HLS中的浮点数"><a href="#HLS中的浮点数" class="headerlink" title="HLS中的浮点数"></a>HLS中的浮点数</h2><p>stratus HLS提供内置的浮点数，可以实现常规的加减乘操作，类型为：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cynw_cm_float&lt;e,f,accurcy,rounding mode,NaN handle&gt;</span><br></pre></td></tr></table></figure>
+<p>该类型共有5个模板参数，分别如下所示：</p>
+<ul>
+<li>e：指数位宽，为浮点数的指数位数</li>
+<li>f：尾数位宽，为浮点数的尾数位数</li>
+<li>accuracy：精确度，这一参数可以设置是否需要实现完整的IEEE标准浮点数。若需要实现则可以提高计算精度，若不实现则可以缩小面积提升性能。</li>
+<li>rounding mode：取整模式，推测为浮点数尾数处理中如何取整，具有多种模式</li>
+<li>NaN handle：用于选择如何处理NaN</li>
+</ul>
+<p>对于指数位宽和尾数位宽，为每一个浮点数都具有的参数，不用过多解释；对于精确度，具有多种选项，每种选项具有不同的精度-代价折中，如下表所示：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>标号</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CYNW_REDUCED_ACCURACY</td>
+<td>默认情况，使用低精度低代价实现方法</td>
+</tr>
+<tr>
+<td>CYNW_BEST_ACCURACY</td>
+<td>使用IEEE标准的浮点数</td>
+</tr>
+<tr>
+<td>CYNW_NATIVE_ACCURACY</td>
+<td>使用C++中的浮点数，不可综合</td>
+</tr>
+<tr>
+<td>CYNW_EXCEPTION_ACCURACY</td>
+<td>使用IEEE标准带异常的浮点数精度</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>对于取整模式rounding，可选择的如下表所示：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>标号</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CYNW_NEAREST</td>
+<td>默认情况，向最接近的偶数取整</td>
+</tr>
+<tr>
+<td>CYNW_POSINF</td>
+<td>向上取整</td>
+</tr>
+<tr>
+<td>CYNW_NEGINF</td>
+<td>向下取整</td>
+</tr>
+<tr>
+<td>CYNW_RNDZERO</td>
+<td>向零取整</td>
+</tr>
+<tr>
+<td>CYNW_NEAREST_AWAY</td>
+<td>四舍五入</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>对于NaN处理，有下表所示：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>标号</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>返回恒定的NaN</td>
+</tr>
+<tr>
+<td>1</td>
+<td>默认情况，标准IEEE的NaN处理方法，左操作数优先</td>
+</tr>
+<tr>
+<td>2</td>
+<td>标准IEEE的NaN处理方法，右操作数优先</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p>在设计中，需要添加头文件<code>cynw_cm_float.h</code>即可使用以上浮点数类型，使用时如同常规数据类型直接使用，可实现加减乘等操作，如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;cynw_cm_float.h&quot;</span></span></span><br><span class="line"><span class="keyword">typedef</span> cynw_cm_float&lt;<span class="number">5</span>,<span class="number">10</span>&gt; DT;</span><br><span class="line"><span class="comment">// DT a,b,c;c = a+b 可实现</span></span><br></pre></td></tr></table></figure>
+<p>在<code>project.tcl</code>中，需要在添加库的同时添加使用浮点库，如下所示：</p>
+<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">use_hls_lib <span class="string">&quot;cynw_cm_float&quot;</span></span><br></pre></td></tr></table></figure>
+<p>随后进行常规的仿真流程即可，下图为CYNW_REDUCED_ACCURACY的float16加法器的仿真和综合结果，使用的库是自带的55nm库：</p>
+<img src="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/1.png" class="">
+<h1 id="时序相关"><a href="#时序相关" class="headerlink" title="时序相关"></a>时序相关</h1><h2 id="时序设置"><a href="#时序设置" class="headerlink" title="时序设置"></a>时序设置</h2><p>对于时序而言，在HLS有多个参数可以设置，包括：</p>
+<ul>
+<li>时钟频率（必须）</li>
+<li>时钟非理想因素</li>
+<li>输入与输出延迟</li>
+</ul>
+<p>这些因素在常规流程中使用SDC进行设置，在HLS流程中在代码或<code>project.tcl</code>中设置。首先考虑时钟非理想因素。即uncertainty，在HLS中使用<code>cycle_slack</code>在<code>project.tcl</code>中设置，如下所示：</p>
+<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set_attr clock_period <span class="number">10.0</span></span><br><span class="line">set_attr cycle_slack <span class="number">1.5</span></span><br></pre></td></tr></table></figure>
+<p>上述设置时钟周期为10ns，非理想因素为1.5ns，等效时钟周期为8.5ns。输入与输出延迟在代码中直接设置，使用<code>HLS_SET_INPUT_DELAY</code>或<code>HLS_SET_DEFAULT_INPUT_DELAY</code>设置输入延迟，其中：</p>
+<ul>
+<li><code>HLS_SET_INPUT_DELAY( port, float delay, &quot;char* name&quot; )</code>：用于设置特定端口</li>
+<li><code>HLS_SET_DEFAULT_INPUT_DELAY( float delay, &quot;char* name&quot; );</code>：用于设置所有未被特定设置的端口</li>
+</ul>
+<p>对于输出而言，同理有：</p>
+<ul>
+<li><code>HLS_SET_OUTPUT_DELAY(signal_id, delay );</code>：用于设置特定端口</li>
+<li><code>HLS_SET_DEFAULT_OUTPUT_DELAY( delay);</code>：用于设置所有未被特定设置的端口</li>
+</ul>
+<p>stratus HLS一般使用寄存器输出，因此除非输出端口，输出延迟可以不进行设置。设置端口延迟如下所示，以下例子中，设置了w_in端口的输入延迟为0.5ns，其他端口（x_in和data_valid）均为0.3ns。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dut_template::t</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    HLS_SET_INPUT_DELAY(w_in,<span class="number">0.5</span>,<span class="string">&quot;data0_delay&quot;</span>);</span><br><span class="line">    HLS_SET_DEFAULT_INPUT_DELAY(<span class="number">0.3</span>,<span class="string">&quot;data1_delay&quot;</span>);</span><br><span class="line">    &#123;</span><br><span class="line">        HLS_DEFINE_PROTOCOL(<span class="string">&quot;reset&quot;</span>);</span><br><span class="line">        w_in.reset();</span><br><span class="line">        x_in.reset();</span><br><span class="line">        y_out.reset();</span><br><span class="line">        data_valid.write(<span class="number">0</span>);</span><br><span class="line">        wait();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">        HLS_PIPELINE_LOOP(SOFT_STALL, <span class="number">1</span>, <span class="string">&quot;main_loop&quot;</span>);</span><br><span class="line">        DT x_val = x_in.get();</span><br><span class="line">        DT w_val = w_in.get();</span><br><span class="line">        DT out_val = x_val + w_val;</span><br><span class="line">        y_out.put(out_val);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="时序违例"><a href="#时序违例" class="headerlink" title="时序违例"></a>时序违例</h2><p>HLS一般不会出现时序违例，因为可以自动进行流水线的插入操作，经过试验，即使float计算ip也可以在时序不满足时自动进行流水线插入以避免时序违例，同时stratus HLS将时序违例看做“错误”，当出现时序违例时，软件会抛出错误Error并打印时序违例的信息，一般时序违例来源于人工指定过多时序等，例如强制要求某段代码在指定的时钟周期内完成。</p>
+<h1 id="使用自己的库"><a href="#使用自己的库" class="headerlink" title="使用自己的库"></a>使用自己的库</h1><p>stratus HLS中内置一个55nm的库，在具体工艺中，需要使用自己的库进行评估，在<code>project.tcl</code>中，使用如下命令：</p>
+<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">use_tech_lib <span class="string">&quot;path.lib&quot;</span></span><br></pre></td></tr></table></figure>
+<p>注意需要使用的是.lib库而不是.db库。随后重新生成makefile，即可使用自己的库进行评估。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">月见樽</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.yuejianzun.xyz/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/">http://www.yuejianzun.xyz/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.yuejianzun.xyz" target="_blank">月见樽'blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88/">高级综合</a><a class="post-meta__tags" href="/tags/StratusHLS/">StratusHLS</a></div><div class="post_share"><div class="social-share" data-image="/img/1.PNG" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/"><img class="prev-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">网络学习笔记1——协议分层</div></div></a></div><div class="next-post pull-right"><a href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/"><img class="next-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">高级综合工具StratusHLS学习笔记(3)</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2020/07/09/高级综合工具StratusHLS学习笔记(1)/" title="高级综合工具StratusHLS学习笔记(1)"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-09</div><div class="title">高级综合工具StratusHLS学习笔记(1)</div></div></a></div><div><a href="/2020/07/19/高级综合工具StratusHLS学习笔记(2)/" title="高级综合工具StratusHLS学习笔记(2)"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-19</div><div class="title">高级综合工具StratusHLS学习笔记(2)</div></div></a></div><div><a href="/2020/07/29/高级综合工具StratusHLS学习笔记(3)/" title="高级综合工具StratusHLS学习笔记(3)"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-29</div><div class="title">高级综合工具StratusHLS学习笔记(3)</div></div></a></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/had.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">月见樽</div><div class="author-info__description">日隐月现，潜龙在渊</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/qiankun214"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#HLS%E4%B8%AD%E4%BD%BF%E7%94%A8%E6%B5%AE%E7%82%B9%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">HLS中使用浮点数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#HLS%E4%B8%AD%E7%9A%84%E6%B5%AE%E7%82%B9%E6%95%B0"><span class="toc-number">1.1.</span> <span class="toc-text">HLS中的浮点数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">1.2.</span> <span class="toc-text">使用方法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%97%B6%E5%BA%8F%E7%9B%B8%E5%85%B3"><span class="toc-number">2.</span> <span class="toc-text">时序相关</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%B6%E5%BA%8F%E8%AE%BE%E7%BD%AE"><span class="toc-number">2.1.</span> <span class="toc-text">时序设置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%B6%E5%BA%8F%E8%BF%9D%E4%BE%8B"><span class="toc-number">2.2.</span> <span class="toc-text">时序违例</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E8%87%AA%E5%B7%B1%E7%9A%84%E5%BA%93"><span class="toc-number">3.</span> <span class="toc-text">使用自己的库</span></a></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/09/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%EF%BC%89/" title="网络学习笔记2——信号与系统">网络学习笔记2——信号与系统</a><time datetime="2020-11-09T15:51:13.000Z" title="发表于 2020-11-09 23:51:13">2020-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/" title="网络学习笔记1——协议分层">网络学习笔记1——协议分层</a><time datetime="2020-11-06T15:51:13.000Z" title="发表于 2020-11-06 23:51:13">2020-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/" title="高级综合工具StratusHLS学习笔记(4)">高级综合工具StratusHLS学习笔记(4)</a><time datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/" title="高级综合工具StratusHLS学习笔记(3)">高级综合工具StratusHLS学习笔记(3)</a><time datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/" title="高级综合工具StratusHLS学习笔记(2)">高级综合工具StratusHLS学习笔记(2)</a><time datetime="2020-07-19T15:51:13.000Z" title="发表于 2020-07-19 23:51:13">2020-07-19</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 月见樽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

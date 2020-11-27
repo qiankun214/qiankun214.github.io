@@ -1,0 +1,247 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>深入理解感知机 | 月见樽'blog</title><meta name="keywords" content="NeuralNetwork"><meta name="author" content="月见樽"><meta name="copyright" content="月见樽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="1.模型感知机的模型如下图所示：  公式表示如下所示：  f(x) &#x3D; sign(w \cdot x + b)  \\ sign(x) &#x3D; \begin{cases} +1 &amp; x \geq 0 \\ -1 &amp; x &lt; 0 \end{cases}对于该分类器，其假设空间为特征空间的所有线性分类器，从几何学的角度可以理解为是特征空间中所有的超平面。那么，只要样本在特征空间中是线性可分的（可以被一个超">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入理解感知机">
+<meta property="og:url" content="http://www.yuejianzun.xyz/2018/04/01/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%84%9F%E7%9F%A5%E6%9C%BA/index.html">
+<meta property="og:site_name" content="月见樽&#39;blog">
+<meta property="og:description" content="1.模型感知机的模型如下图所示：  公式表示如下所示：  f(x) &#x3D; sign(w \cdot x + b)  \\ sign(x) &#x3D; \begin{cases} +1 &amp; x \geq 0 \\ -1 &amp; x &lt; 0 \end{cases}对于该分类器，其假设空间为特征空间的所有线性分类器，从几何学的角度可以理解为是特征空间中所有的超平面。那么，只要样本在特征空间中是线性可分的（可以被一个超">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.yuejianzun.xyz/img/1.PNG">
+<meta property="article:published_time" content="2018-04-01T15:35:40.000Z">
+<meta property="article:modified_time" content="2020-11-27T16:47:57.261Z">
+<meta property="article:author" content="月见樽">
+<meta property="article:tag" content="NeuralNetwork">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yuejianzun.xyz/img/1.PNG"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.yuejianzun.xyz/2018/04/01/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%84%9F%E7%9F%A5%E6%9C%BA/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-11-28 00:47:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/had.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/1.PNG)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">月见樽'blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">深入理解感知机</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2018-04-01T15:35:40.000Z" title="发表于 2018-04-01 23:35:40">2018-04-01</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-27T16:47:57.261Z" title="更新于 2020-11-28 00:47:57">2020-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="1-模型"><a href="#1-模型" class="headerlink" title="1.模型"></a>1.模型</h1><p>感知机的模型如下图所示：</p>
+<img src="/2018/04/01/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%84%9F%E7%9F%A5%E6%9C%BA/linear_classifier_structure.png" class="">
+<p>公式表示如下所示：</p>
+<script type="math/tex; mode=display">
+f(x) = sign(w \cdot x + b)  \\
+sign(x) = \begin{cases} +1 & x \geq 0 \\
+-1 & x < 0
+\end{cases}</script><p>对于该分类器，其假设空间为特征空间的所有线性分类器，从几何学的角度可以理解为是特征空间中所有的超平面。那么，只要样本在特征空间中是线性可分的（可以被一个超平面完美划分），由感知机的假设空间，那么这个超平面一定在假设空间内，所以感知机是可以用于区分所有线性可分的样本。</p>
+<h1 id="2-学习策略"><a href="#2-学习策略" class="headerlink" title="2.学习策略"></a>2.学习策略</h1><h2 id="2-1-代价函数"><a href="#2-1-代价函数" class="headerlink" title="2.1.代价函数"></a>2.1.代价函数</h2><p>感知机的目标是为了找到那个能完美划分线性可分样本的超平面。为了达到这个目标，我们需要定义代价函数。代价函数的意思是该函数刻画的是模型的性能，通常需要满足以下条件：</p>
+<ul>
+<li>条件一：模型性能越好，代价函数越小，模型性能越差，代价函数越大</li>
+<li>条件二：连续可导</li>
+</ul>
+<p>条件一是使代价函数可以刻画模型性能，条件二是为了该模型可以使用梯度下降的方法优化</p>
+<h2 id="2-2-感知机代价函数选择"><a href="#2-2-感知机代价函数选择" class="headerlink" title="2.2.感知机代价函数选择"></a>2.2.感知机代价函数选择</h2><p>对于感知机，选取代价函数为：</p>
+<script type="math/tex; mode=display">
+L(w,b) = - \sum\limits_{x_i \in M}y_i(w \cdot x_i + b)</script><p>其中M为分类错误的样本集合。对于该代价函数，显而易见是连续可导的，且当分类错误的时候$y_i$和$w \cdot x_i + b$异号，代价为正。则当模型性能好时，M中样本少，代价较小；模型性能差时，M中样本多，代价较大。</p>
+<p>该代价函数还可以从几何学角度解释，空间中任意一点$x_0$到超平面的距离为：</p>
+<script type="math/tex; mode=display">
+\cfrac{1}{||w||} \cdot |w \cdot x_0 + b|</script><p>由此，错误分类的样本$y_i$和$w \cdot x_i + b$异号，由此有以下：</p>
+<script type="math/tex; mode=display">
+\cfrac{1}{||w||} \cdot |w \cdot x_i + b| = \cfrac{1}{||w||} \cdot (w \cdot x_i + b) \cdot y_i</script><p>取M为分类错误样本集合，则所有分类错误的样本到超平面距离如下：</p>
+<script type="math/tex; mode=display">
+- \cfrac{1}{||w||} \sum\limits_{x_i \in M} y_i(w \cdot x_i + b)</script><p>不考虑常数$\cfrac{1}{||w||}$，则可以获得感知机代价函数$L(w,b) = - \sum\limits_{x_i \in M}y_i(w \cdot x_i + b)$</p>
+<h1 id="3-学习算法"><a href="#3-学习算法" class="headerlink" title="3.学习算法"></a>3.学习算法</h1><h2 id="3-1-基本算法"><a href="#3-1-基本算法" class="headerlink" title="3.1.基本算法"></a>3.1.基本算法</h2><p>感知机算法是错误驱动的，由以上的代价函数，感知机的学习算法变为：</p>
+<script type="math/tex; mode=display">
+argmin_{w,b}(-\sum\limits_{x_i \in M}y_i \cdot (w \cdot x_i + b))</script><p>为了使代价函数下降最快，向代价函数的负梯度方向优化w和b。对代价函数取w和b的梯度：</p>
+<script type="math/tex; mode=display">
+\nabla_wL(w,b) = - \sum\limits_{x_i \in M}y_i \cdot x_i \\
+\nabla_bL(w,b) = - \sum\limits_{x_i \in M}y_i</script><p>由此可获得更新方法：</p>
+<script type="math/tex; mode=display">
+w^{n} = w^{n-1} - \eta \cdot \nabla_wL(w^{n-1},b^{n-1}) \\
+b^{n} = b^{n-1} - \eta \cdot \nabla_bL(w^{n-1},b^{n-1})</script><p>其中，$\eta$为学习率，表示每一次更新的步长，学习率越大更新越明显。由此，每次选择一批错误分类的点，进行上述的优化，多次循环即可学得可以正确分类的感知机模型</p>
+<h2 id="3-2-对偶算法"><a href="#3-2-对偶算法" class="headerlink" title="3.2.对偶算法"></a>3.2.对偶算法</h2><p>将梯度表达式带入更新公式：</p>
+<script type="math/tex; mode=display">
+w^{n} = w^{n-1} +\eta \cdot \sum\limits_{x_i \in M}y_i \cdot x_i \\
+b^{n} = b^{n-1} +\eta \cdot \sum\limits_{x_i \in M}y_i</script><p>若w和b的初始值都是0，$\eta = 1$，则可以认为w是错误样本的$y_i \cdot x_i$的和，b是错误样本标签的和，由此可以得到以下公式：</p>
+<script type="math/tex; mode=display">
+w = \sum\limits_{x_i \in M} a_i \cdot y_i \cdot x_i \\
+b = \sum\limits_{x_i \in M} a_i \cdot y_i</script><p>其中$a_i$是该样本被错误分类的次数，可以发现，分类错次数越多的样本在参数中所占的比例越大。则每次选择一批数据输入，将分类错误的样本按更新公式计入参数，重复多次直到无错误样本即可。</p>
+<h1 id="4-延伸"><a href="#4-延伸" class="headerlink" title="4.延伸"></a>4.延伸</h1><h2 id="4-1-感知机与支持向量机"><a href="#4-1-感知机与支持向量机" class="headerlink" title="4.1.感知机与支持向量机"></a>4.1.感知机与支持向量机</h2><p>感知机的对偶优化算法已经有一些支持向量机思想的影子——只有少数“关键样本”决定分类器超平面的位置，其他的样本并不重要，有对偶算法得到的w和b公式：</p>
+<script type="math/tex; mode=display">
+w = \sum\limits_{x_i \in M} a_i \cdot y_i \cdot x_i \\
+b = \sum\limits_{x_i \in M} a_i \cdot y_i</script><p>可以将$a_i$视为样本的权值，分类错误次数越多该权值$a_i$越大，即该样本越重要。很自然的可以想到距离最终超平面越近的样本越容易分类错，这种样本的权值也就越高，这些样本也就越重要。</p>
+<h2 id="4-2-感知机与神经网络"><a href="#4-2-感知机与神经网络" class="headerlink" title="4.2.感知机与神经网络"></a>4.2.感知机与神经网络</h2><p>感知机是神经网络的基础，感知机也被成为单层神经网络。感知机的一大缺陷是无法解决线性不可分问题，想要解决这一问题，需要将原来线性不可分的样本映射到另一个特征空间去，在该空间样本线性可分，映射方法主要有两种：</p>
+<ul>
+<li>人工指定映射方法：手动指定映射的方法，代表为核函数（核方法）</li>
+<li>自动寻找映射方法：使用机器学习的方法自动获得映射方法，代表为神经网络</li>
+</ul>
+<p>神经网络可以分解如下：</p>
+<img src="/2018/04/01/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%84%9F%E7%9F%A5%E6%9C%BA/linear_classifier_nn.png" class="">
+<p>当输入是线性不可分样本时，通过复杂的隐藏层（全连接层，卷积层或胶囊层）层层映射，最终在输出层之前将数据映射到一个线性可分的特征空间中，再由感知机进行线性分类。其中映射方法由神经网络自行学得。所有输出层为感知机层的神经网络都可以放在这个框架下理解。</p>
+<p>除此以外，感知机还奠定了神经网络的基础理论。例如神经网络的基本学习框架也是梯度下降：使用反向传播计算梯度，优化算法迭代获得新的参数。</p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p>《统计学习方法》李航</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">月见樽</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.yuejianzun.xyz/2018/04/01/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%84%9F%E7%9F%A5%E6%9C%BA/">http://www.yuejianzun.xyz/2018/04/01/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%84%9F%E7%9F%A5%E6%9C%BA/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.yuejianzun.xyz" target="_blank">月见樽'blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/NeuralNetwork/">NeuralNetwork</a></div><div class="post_share"><div class="social-share" data-image="/img/1.PNG" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2018/04/17/%E5%9F%BA%E4%BA%8Epytorch%E7%9A%84CapsNet%E4%BB%A3%E7%A0%81%E8%AF%A6%E8%A7%A3/"><img class="prev-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">基于pytorch的CapsNet代码详解</div></div></a></div><div class="next-post pull-right"><a href="/2018/03/27/%E5%B7%A6%E5%BC%8F%E5%A0%86/"><img class="next-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">左式堆</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2018/02/21/CNN的反向传播/" title="CNN的反向传播"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-02-21</div><div class="title">CNN的反向传播</div></div></a></div><div><a href="/2018/03/11/CapsNet学习笔记/" title="CapsNet学习笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-03-11</div><div class="title">CapsNet学习笔记</div></div></a></div><div><a href="/2018/09/16/Deep-compression阅读笔记/" title="Deep-compression阅读笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-09-16</div><div class="title">Deep-compression阅读笔记</div></div></a></div><div><a href="/2018/12/24/DianNao运算单元与体系结构分析/" title="DianNao运算单元与体系结构分析"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-12-24</div><div class="title">DianNao运算单元与体系结构分析</div></div></a></div><div><a href="/2019/07/22/EIE结构与算法映射/" title="EIE结构与算法映射"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-07-22</div><div class="title">EIE结构与算法映射</div></div></a></div><div><a href="/2018/08/07/Fast-RCNN阅读笔记/" title="Fast-RCNN阅读笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-08-07</div><div class="title">Fast-RCNN阅读笔记</div></div></a></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/had.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">月见樽</div><div class="author-info__description">日隐月现，潜龙在渊</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/qiankun214"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">1.模型</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%AD%A6%E4%B9%A0%E7%AD%96%E7%95%A5"><span class="toc-number">2.</span> <span class="toc-text">2.学习策略</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0"><span class="toc-number">2.1.</span> <span class="toc-text">2.1.代价函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2-%E6%84%9F%E7%9F%A5%E6%9C%BA%E4%BB%A3%E4%BB%B7%E5%87%BD%E6%95%B0%E9%80%89%E6%8B%A9"><span class="toc-number">2.2.</span> <span class="toc-text">2.2.感知机代价函数选择</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">3.学习算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#3-1-%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95"><span class="toc-number">3.1.</span> <span class="toc-text">3.1.基本算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-%E5%AF%B9%E5%81%B6%E7%AE%97%E6%B3%95"><span class="toc-number">3.2.</span> <span class="toc-text">3.2.对偶算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E5%BB%B6%E4%BC%B8"><span class="toc-number">4.</span> <span class="toc-text">4.延伸</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#4-1-%E6%84%9F%E7%9F%A5%E6%9C%BA%E4%B8%8E%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA"><span class="toc-number">4.1.</span> <span class="toc-text">4.1.感知机与支持向量机</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-2-%E6%84%9F%E7%9F%A5%E6%9C%BA%E4%B8%8E%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="toc-number">4.2.</span> <span class="toc-text">4.2.感知机与神经网络</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-number">5.</span> <span class="toc-text">参考文献</span></a></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/09/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%EF%BC%89/" title="网络学习笔记2——信号与系统">网络学习笔记2——信号与系统</a><time datetime="2020-11-09T15:51:13.000Z" title="发表于 2020-11-09 23:51:13">2020-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/" title="网络学习笔记1——协议分层">网络学习笔记1——协议分层</a><time datetime="2020-11-06T15:51:13.000Z" title="发表于 2020-11-06 23:51:13">2020-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/" title="高级综合工具StratusHLS学习笔记(4)">高级综合工具StratusHLS学习笔记(4)</a><time datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/" title="高级综合工具StratusHLS学习笔记(3)">高级综合工具StratusHLS学习笔记(3)</a><time datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/" title="高级综合工具StratusHLS学习笔记(2)">高级综合工具StratusHLS学习笔记(2)</a><time datetime="2020-07-19T15:51:13.000Z" title="发表于 2020-07-19 23:51:13">2020-07-19</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 月见樽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>关于巧克力数据集的数据分析 | 月见樽'blog</title><meta name="keywords" content="Python"><meta name="author" content="月见樽"><meta name="copyright" content="月见樽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="12import numpy as npimport pandas as pd 数据读取1dataset &#x3D; pd.read_csv(&quot;.&#x2F;flavors_of_cacao.csv&quot;) 123dataset.columns &#x3D; dataset.columns.map(lambda x:x.replace(&quot;\n&quot;,&quot; &quot;))dataset">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于巧克力数据集的数据分析">
+<meta property="og:url" content="http://www.yuejianzun.xyz/2018/01/25/%E5%85%B3%E4%BA%8E%E5%B7%A7%E5%85%8B%E5%8A%9B%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="月见樽&#39;blog">
+<meta property="og:description" content="12import numpy as npimport pandas as pd 数据读取1dataset &#x3D; pd.read_csv(&quot;.&#x2F;flavors_of_cacao.csv&quot;) 123dataset.columns &#x3D; dataset.columns.map(lambda x:x.replace(&quot;\n&quot;,&quot; &quot;))dataset">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.yuejianzun.xyz/img/1.PNG">
+<meta property="article:published_time" content="2018-01-25T11:45:43.000Z">
+<meta property="article:modified_time" content="2020-11-27T16:47:57.155Z">
+<meta property="article:author" content="月见樽">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yuejianzun.xyz/img/1.PNG"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.yuejianzun.xyz/2018/01/25/%E5%85%B3%E4%BA%8E%E5%B7%A7%E5%85%8B%E5%8A%9B%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-11-28 00:47:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/had.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/1.PNG)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">月见樽'blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">关于巧克力数据集的数据分析</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2018-01-25T11:45:43.000Z" title="发表于 2018-01-25 19:45:43">2018-01-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-27T16:47:57.155Z" title="更新于 2020-11-28 00:47:57">2020-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">数据分析</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">958</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br></pre></td></tr></table></figure>
+<h1 id="数据读取"><a href="#数据读取" class="headerlink" title="数据读取"></a>数据读取</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dataset = pd.read_csv(<span class="string">&quot;./flavors_of_cacao.csv&quot;</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dataset.columns = dataset.columns.<span class="built_in">map</span>(<span class="keyword">lambda</span> x:x.replace(<span class="string">&quot;\n&quot;</span>,<span class="string">&quot; &quot;</span>))</span><br><span class="line">dataset.columns = dataset.columns.<span class="built_in">map</span>(<span class="keyword">lambda</span> x:x.replace(<span class="string">&quot;\xa0&quot;</span>,<span class="string">&quot;&quot;</span>))</span><br><span class="line">dataset.info()</span><br></pre></td></tr></table></figure>
+<pre><code>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 1795 entries, 0 to 1794
+Data columns (total 9 columns):
+Company (Maker-if known)            1795 non-null object
+Specific Bean Origin or Bar Name    1795 non-null object
+REF                                 1795 non-null int64
+Review Date                         1795 non-null int64
+Cocoa Percent                       1795 non-null object
+Company Location                    1795 non-null object
+Rating                              1795 non-null float64
+Bean Type                           1794 non-null object
+Broad Bean Origin                   1794 non-null object
+dtypes: float64(1), int64(2), object(6)
+memory usage: 126.3+ KB
+</code></pre><p>每个列的含义如下：</p>
+<ul>
+<li>Company：生产公司</li>
+<li>Specific Bean Origin or Bar Name：产品名称</li>
+<li>REF：不祥</li>
+<li>Review Date：</li>
+<li>Cocoa Percent：可可含量</li>
+<li>Company Location：公司地址</li>
+<li>Rating：等级</li>
+<li>Bean Type：可可豆类型</li>
+<li>Broad Bean Origin：原产地</li>
+</ul>
+<h1 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h1><h2 id="缺失值丢弃"><a href="#缺失值丢弃" class="headerlink" title="缺失值丢弃"></a>缺失值丢弃</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dataset_nona = dataset.dropna()</span><br><span class="line">dataset_nona = dataset_nona.drop([<span class="string">&quot;REF&quot;</span>],axis=<span class="number">1</span>)</span><br><span class="line">dataset_nona.info()</span><br></pre></td></tr></table></figure>
+<pre><code>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+Int64Index: 1793 entries, 0 to 1794
+Data columns (total 8 columns):
+Company (Maker-if known)            1793 non-null object
+Specific Bean Origin or Bar Name    1793 non-null object
+Review Date                         1793 non-null int64
+Cocoa Percent                       1793 non-null object
+Company Location                    1793 non-null object
+Rating                              1793 non-null float64
+Bean Type                           1793 non-null object
+Broad Bean Origin                   1793 non-null object
+dtypes: float64(1), int64(1), object(6)
+memory usage: 126.1+ KB
+</code></pre><h2 id="百分比转换"><a href="#百分比转换" class="headerlink" title="百分比转换"></a>百分比转换</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dataset_nona[<span class="string">&quot;Cocoa Percent&quot;</span>] = dataset_nona[<span class="string">&quot;Cocoa Percent&quot;</span>].<span class="built_in">map</span>(<span class="keyword">lambda</span> x:<span class="built_in">float</span>(x.strip(<span class="string">&#x27;%&#x27;</span>)) / <span class="number">100</span>)</span><br><span class="line">dataset_nona.info()</span><br></pre></td></tr></table></figure>
+<pre><code>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+Int64Index: 1793 entries, 0 to 1794
+Data columns (total 8 columns):
+Company (Maker-if known)            1793 non-null object
+Specific Bean Origin or Bar Name    1793 non-null object
+Review Date                         1793 non-null int64
+Cocoa Percent                       1793 non-null float64
+Company Location                    1793 non-null object
+Rating                              1793 non-null float64
+Bean Type                           1793 non-null object
+Broad Bean Origin                   1793 non-null object
+dtypes: float64(2), int64(1), object(5)
+memory usage: 126.1+ KB
+</code></pre><h1 id="问题分析"><a href="#问题分析" class="headerlink" title="问题分析"></a>问题分析</h1><h2 id="Where-are-the-best-cocoa-beans-grown"><a href="#Where-are-the-best-cocoa-beans-grown" class="headerlink" title="Where are the best cocoa beans grown?"></a>Where are the best cocoa beans grown?</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">best_been = dataset_nona[[<span class="string">&quot;Broad Bean Origin&quot;</span>,<span class="string">&quot;Rating&quot;</span>]]</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">best_been_data = best_been.groupby([<span class="string">&quot;Broad Bean Origin&quot;</span>]).apply(np.mean)</span><br><span class="line">best_been_data.sort_values(by=<span class="string">&quot;Rating&quot;</span>,inplace=<span class="literal">True</span>)</span><br><span class="line">print(best_been_data[-<span class="number">10</span>:])</span><br></pre></td></tr></table></figure>
+<pre><code>                              Rating
+Broad Bean Origin                   
+Dominican Rep., Bali            3.75
+Peru, Belize                    3.75
+Ven.,Ecu.,Peru,Nic.             3.75
+DR, Ecuador, Peru               3.75
+Venez,Africa,Brasil,Peru,Mex    3.75
+Dom. Rep., Madagascar           4.00
+Venezuela, Java                 4.00
+Gre., PNG, Haw., Haiti, Mad     4.00
+Guat., D.R., Peru, Mad., PNG    4.00
+Peru, Dom. Rep                  4.00
+</code></pre><p>可看出最好的可可豆生长在秘鲁的Dom. Rep，危地马拉的D.R., Peru, Mad., PNG等地</p>
+<h2 id="Which-countries-produce-the-highest-rated-bars"><a href="#Which-countries-produce-the-highest-rated-bars" class="headerlink" title="Which countries produce the highest-rated bars?"></a>Which countries produce the highest-rated bars?</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">best_country = dataset_nona[[<span class="string">&quot;Company Location&quot;</span>,<span class="string">&quot;Rating&quot;</span>]]</span><br><span class="line">best_country.info()</span><br></pre></td></tr></table></figure>
+<pre><code>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+Int64Index: 1793 entries, 0 to 1794
+Data columns (total 2 columns):
+Company Location    1793 non-null object
+Rating              1793 non-null float64
+dtypes: float64(1), object(1)
+memory usage: 42.0+ KB
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">best_country_data = best_country.groupby([<span class="string">&quot;Company Location&quot;</span>]).apply(np.mean)</span><br><span class="line">best_country_data.sort_values(by=[<span class="string">&quot;Rating&quot;</span>],inplace=<span class="literal">True</span>)</span><br><span class="line">print(best_country_data[-<span class="number">10</span>:])</span><br></pre></td></tr></table></figure>
+<pre><code>                    Rating
+Company Location          
+Guatemala         3.350000
+Australia         3.357143
+Poland            3.375000
+Brazil            3.397059
+Vietnam           3.409091
+Iceland           3.416667
+Philippines       3.500000
+Netherlands       3.500000
+Amsterdam         3.500000
+Chile             3.750000
+</code></pre><p>可以看出生产出巧克力较好的是智利，荷兰等地</p>
+<h2 id="what’s-the-relationship-between-cocoa-solids-percentage-and-rating"><a href="#what’s-the-relationship-between-cocoa-solids-percentage-and-rating" class="headerlink" title="what’s the relationship between cocoa solids percentage and rating?"></a>what’s the relationship between cocoa solids percentage and rating?</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">best_coco = dataset_nona[[<span class="string">&quot;Cocoa Percent&quot;</span>,<span class="string">&quot;Rating&quot;</span>]]</span><br><span class="line">best_coco.columns = best_coco.columns.<span class="built_in">map</span>(<span class="keyword">lambda</span> x:x.replace(<span class="string">&quot; &quot;</span>,<span class="string">&quot;&quot;</span>))</span><br><span class="line">best_coco.info()</span><br></pre></td></tr></table></figure>
+<pre><code>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+Int64Index: 1793 entries, 0 to 1794
+Data columns (total 2 columns):
+CocoaPercent    1793 non-null float64
+Rating          1793 non-null float64
+dtypes: float64(2)
+memory usage: 42.0 KB
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(best_coco.corr())</span><br></pre></td></tr></table></figure>
+<pre><code>              CocoaPercent    Rating
+CocoaPercent      1.000000 -0.164758
+Rating           -0.164758  1.000000
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">plt.close()</span><br><span class="line"><span class="comment"># print(best_coco[&quot;CocoaPercent&quot;])</span></span><br><span class="line">plt.scatter(best_coco[<span class="string">&quot;CocoaPercent&quot;</span>].values,best_coco[<span class="string">&quot;Rating&quot;</span>].values)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+<img src="/2018/01/25/%E5%85%B3%E4%BA%8E%E5%B7%A7%E5%85%8B%E5%8A%9B%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/output_20_0.png" class="">
+<p>可以看出巧克力质量和含可可量没有明显的关系</p>
+<h1 id="探索分析"><a href="#探索分析" class="headerlink" title="探索分析"></a>探索分析</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(dataset_nona.groupby([<span class="string">&quot;Review Date&quot;</span>]).apply(<span class="keyword">lambda</span> x:x[<span class="string">&quot;Rating&quot;</span>].<span class="built_in">sum</span>() / x.shape[<span class="number">0</span>]))</span><br></pre></td></tr></table></figure>
+<pre><code>Review Date
+2006    3.125000
+2007    3.162338
+2008    2.994624
+2009    3.073171
+2010    3.148649
+2011    3.251524
+2012    3.181701
+2013    3.197011
+2014    3.189271
+2015    3.246491
+2016    3.226027
+2017    3.312500
+dtype: float64
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">coco_type = dataset_nona[[<span class="string">&quot;Bean Type&quot;</span>,<span class="string">&quot;Rating&quot;</span>]]</span><br><span class="line">coco_type = coco_type.groupby([<span class="string">&quot;Bean Type&quot;</span>]).apply(np.mean)</span><br><span class="line">print(coco_type.sort_values(by=<span class="string">&quot;Rating&quot;</span>)[-<span class="number">10</span>:])</span><br></pre></td></tr></table></figure>
+<pre><code>                          Rating
+Bean Type                       
+Amazon, ICS                3.625
+Criollo (Ocumare 77)       3.750
+Trinitario, TCGA           3.750
+Blend-Forastero,Criollo    3.750
+Amazon mix                 3.750
+Trinitario, Nacional       3.750
+Forastero (Amelonado)      3.750
+Trinitario (85% Criollo)   3.875
+Criollo (Wild)             4.000
+Criollo (Ocumare 67)       4.000
+</code></pre><p>最好的可可豆是Criollo</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">月见樽</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.yuejianzun.xyz/2018/01/25/%E5%85%B3%E4%BA%8E%E5%B7%A7%E5%85%8B%E5%8A%9B%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">http://www.yuejianzun.xyz/2018/01/25/%E5%85%B3%E4%BA%8E%E5%B7%A7%E5%85%8B%E5%8A%9B%E6%95%B0%E6%8D%AE%E9%9B%86%E7%9A%84%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.yuejianzun.xyz" target="_blank">月见樽'blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Python/">Python</a></div><div class="post_share"><div class="social-share" data-image="/img/1.PNG" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2018/01/31/%E5%9F%BA%E4%BA%8EMXnet%E7%9A%84RNN%E7%AE%80%E8%A6%81%E5%89%96%E6%9E%90/"><img class="prev-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">基于MXnet的RNN简要剖析</div></div></a></div><div class="next-post pull-right"><a href="/2018/01/23/%E5%BC%80%E6%94%BE%E5%9C%B0%E5%9D%80%E6%B3%95%E6%95%A3%E5%88%97/"><img class="next-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">开放地址法散列</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2018/02/21/CNN的反向传播/" title="CNN的反向传播"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-02-21</div><div class="title">CNN的反向传播</div></div></a></div><div><a href="/2018/03/11/CapsNet学习笔记/" title="CapsNet学习笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-03-11</div><div class="title">CapsNet学习笔记</div></div></a></div><div><a href="/2018/07/16/HoG特征SVM物品识别系统/" title="HoG特征SVM物品识别系统"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-07-16</div><div class="title">HoG特征SVM物品识别系统</div></div></a></div><div><a href="/2018/07/16/LBP特征物品识别系统/" title="LBP特征物品识别系统"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-07-16</div><div class="title">LBP特征物品识别系统</div></div></a></div><div><a href="/2017/09/06/PyTorch60分钟教程学习笔记/" title="Pytorch60分钟教程学习笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-09-06</div><div class="title">Pytorch60分钟教程学习笔记</div></div></a></div><div><a href="/2019/05/05/Octave卷积学习笔记/" title="Octave卷积学习笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-05-05</div><div class="title">Octave卷积学习笔记</div></div></a></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/had.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">月见樽</div><div class="author-info__description">日隐月现，潜龙在渊</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/qiankun214"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%AF%BB%E5%8F%96"><span class="toc-number">1.</span> <span class="toc-text">数据读取</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">数据预处理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%BA%E5%A4%B1%E5%80%BC%E4%B8%A2%E5%BC%83"><span class="toc-number">2.1.</span> <span class="toc-text">缺失值丢弃</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%99%BE%E5%88%86%E6%AF%94%E8%BD%AC%E6%8D%A2"><span class="toc-number">2.2.</span> <span class="toc-text">百分比转换</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E5%88%86%E6%9E%90"><span class="toc-number">3.</span> <span class="toc-text">问题分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Where-are-the-best-cocoa-beans-grown"><span class="toc-number">3.1.</span> <span class="toc-text">Where are the best cocoa beans grown?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Which-countries-produce-the-highest-rated-bars"><span class="toc-number">3.2.</span> <span class="toc-text">Which countries produce the highest-rated bars?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#what%E2%80%99s-the-relationship-between-cocoa-solids-percentage-and-rating"><span class="toc-number">3.3.</span> <span class="toc-text">what’s the relationship between cocoa solids percentage and rating?</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8E%A2%E7%B4%A2%E5%88%86%E6%9E%90"><span class="toc-number">4.</span> <span class="toc-text">探索分析</span></a></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/09/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%EF%BC%89/" title="网络学习笔记2——信号与系统">网络学习笔记2——信号与系统</a><time datetime="2020-11-09T15:51:13.000Z" title="发表于 2020-11-09 23:51:13">2020-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/" title="网络学习笔记1——协议分层">网络学习笔记1——协议分层</a><time datetime="2020-11-06T15:51:13.000Z" title="发表于 2020-11-06 23:51:13">2020-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/" title="高级综合工具StratusHLS学习笔记(4)">高级综合工具StratusHLS学习笔记(4)</a><time datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/" title="高级综合工具StratusHLS学习笔记(3)">高级综合工具StratusHLS学习笔记(3)</a><time datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/" title="高级综合工具StratusHLS学习笔记(2)">高级综合工具StratusHLS学习笔记(2)</a><time datetime="2020-07-19T15:51:13.000Z" title="发表于 2020-07-19 23:51:13">2020-07-19</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 月见樽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

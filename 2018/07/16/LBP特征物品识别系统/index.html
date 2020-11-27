@@ -1,0 +1,225 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LBP特征物品识别系统 | 月见樽'blog</title><meta name="keywords" content="Python,Detection"><meta name="author" content="月见樽"><meta name="copyright" content="月见樽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="系统结构 LBP是一种常规的人脸识别使用的特征，系统架构如上图所示，主要分为三个部分：  滑动框：滑动框在图片上滑动，产生不同的子图 LBP特征提取器：针对滑动框产生的子图，计算LBP特征 分类器：根据LBP特征，判断当前图片是否是人脸  LBP特征原始LBP特征原始LBP特征是一个3X3区域的区域特征。考虑一个像素的特征值，该特征值与周围的8个像素（3X3区域）有关，对于像素值大于该像素的周围像">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LBP特征物品识别系统">
+<meta property="og:url" content="http://www.yuejianzun.xyz/2018/07/16/LBP%E7%89%B9%E5%BE%81%E7%89%A9%E5%93%81%E8%AF%86%E5%88%AB%E7%B3%BB%E7%BB%9F/index.html">
+<meta property="og:site_name" content="月见樽&#39;blog">
+<meta property="og:description" content="系统结构 LBP是一种常规的人脸识别使用的特征，系统架构如上图所示，主要分为三个部分：  滑动框：滑动框在图片上滑动，产生不同的子图 LBP特征提取器：针对滑动框产生的子图，计算LBP特征 分类器：根据LBP特征，判断当前图片是否是人脸  LBP特征原始LBP特征原始LBP特征是一个3X3区域的区域特征。考虑一个像素的特征值，该特征值与周围的8个像素（3X3区域）有关，对于像素值大于该像素的周围像">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.yuejianzun.xyz/img/1.PNG">
+<meta property="article:published_time" content="2018-07-16T05:24:42.000Z">
+<meta property="article:modified_time" content="2020-11-27T16:47:57.097Z">
+<meta property="article:author" content="月见樽">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Detection">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yuejianzun.xyz/img/1.PNG"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.yuejianzun.xyz/2018/07/16/LBP%E7%89%B9%E5%BE%81%E7%89%A9%E5%93%81%E8%AF%86%E5%88%AB%E7%B3%BB%E7%BB%9F/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-11-28 00:47:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/had.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/1.PNG)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">月见樽'blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">LBP特征物品识别系统</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2018-07-16T05:24:42.000Z" title="发表于 2018-07-16 13:24:42">2018-07-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-27T16:47:57.097Z" title="更新于 2020-11-28 00:47:57">2020-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E4%BC%A0%E7%BB%9F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">传统机器学习</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="系统结构"><a href="#系统结构" class="headerlink" title="系统结构"></a>系统结构</h1><img src="/2018/07/16/LBP%E7%89%B9%E5%BE%81%E7%89%A9%E5%93%81%E8%AF%86%E5%88%AB%E7%B3%BB%E7%BB%9F/structure.png" class="">
+<p>LBP是一种常规的人脸识别使用的特征，系统架构如上图所示，主要分为三个部分：</p>
+<ul>
+<li>滑动框：滑动框在图片上滑动，产生不同的子图</li>
+<li>LBP特征提取器：针对滑动框产生的子图，计算LBP特征</li>
+<li>分类器：根据LBP特征，判断当前图片是否是人脸</li>
+</ul>
+<h2 id="LBP特征"><a href="#LBP特征" class="headerlink" title="LBP特征"></a>LBP特征</h2><h3 id="原始LBP特征"><a href="#原始LBP特征" class="headerlink" title="原始LBP特征"></a>原始LBP特征</h3><p>原始LBP特征是一个3X3区域的区域特征。考虑一个像素的特征值，该特征值与周围的8个像素（3X3区域）有关，对于像素值大于该像素的周围像素赋值1，其他赋值0，如下图所示：</p>
+<img src="/2018/07/16/LBP%E7%89%B9%E5%BE%81%E7%89%A9%E5%93%81%E8%AF%86%E5%88%AB%E7%B3%BB%E7%BB%9F/base_lpb.png" class="">
+<p>如图中红框的中心像素，像素值为134，使用134和红框的其他像素（周围像素）比较，若大于134为1，否则为0，最后周围的8个像素的值依次为00101010，将其视为二进制数，转化为十进制就是42。</p>
+<h3 id="圆形LBP特征"><a href="#圆形LBP特征" class="headerlink" title="圆形LBP特征"></a>圆形LBP特征</h3><p>圆形LBP特征与原始LBP特征类似，只是周围像素为一个圆形环绕的，如下图所示：</p>
+<img src="/2018/07/16/LBP%E7%89%B9%E5%BE%81%E7%89%A9%E5%93%81%E8%AF%86%E5%88%AB%E7%B3%BB%E7%BB%9F/c_lbp.png" class="">
+<p>LBP使用如图所示8个实心点位置的像素计算，其中四个红色实心点不落在像素上，使用双线性插值的方法计算对应的值，最后带入原始LBP的计算方法中计算中间像素的值。该LBP使用(P,R)表示，P表示带入计算的像素点数，R表示半径，如上图即为（8,2）</p>
+<h3 id="系统使用的LBP"><a href="#系统使用的LBP" class="headerlink" title="系统使用的LBP"></a>系统使用的LBP</h3><p>系统使用的LBP表示为$LBP^{u2}_{P,R}$，其中u2表示统一LBP特征，即像素点的特征值的二进制最多有两次0到1或1到0跳变，如00001111为统一LBP，而10101010不为统一LBP，非统一LBP会被统一复位到一个特定值；P,R即为圆形LBP的(P,R)。</p>
+<p>最终计算出所有统计的特征值后可统计出直方图特征，使用以下公式：</p>
+<script type="math/tex; mode=display">
+H_i  = \sum\limits_{x,y}I\{f_l(x,y)==i\},i = 0,1,...,n-1 \\
+I\{A\} = \begin{cases} 1 & A \ is \ true \\ 0 & A \ is \ false
+\end{cases}</script><p>例如P=8时，最终获得256个数据，以上方法抛弃了空间特性，因此除了整体的直方图特征，还计算区域的直方图特征，将整个图片划分为m个方形区域，依次统计直方图特征：</p>
+<script type="math/tex; mode=display">
+H_{i,j} = \sum\limits_{x,y} I\{f_l(x,y)=i\}I\{(x,y) \in R_j\},i=0,1,2,...,n-1,j=0,1,...,m-1</script><p>此时获得最终LBP特征，包括像素级别的特征和区域级别的特征。</p>
+<h2 id="分类器"><a href="#分类器" class="headerlink" title="分类器"></a>分类器</h2><p>原论文中使用近邻分类器分类，提出了以下几种计算距离的方法：</p>
+<script type="math/tex; mode=display">
+Histogram \ intersection:D(S,M) = \sum_imin(S_i,M_i) \\
+Log-likelihood \ statistic:L(S,M) = - \sum_iS_ilog(M_i) \\
+Chi square \ statistic:\chi^2(S,M) = \sum_i\cfrac{(S_i - M_i)^2}{S_i + M_i} \\
+Chi square \ statistic \ with\ weight:\chi^2_w(S,M) = \sum_{i,j}\cfrac{(S_{i,j} - M_{i,j})^2}{S_{i,j} + M_{i,j}}</script><p>根据以上距离公式结合近邻分类器可以完成是否是物品的分类。</p>
+<h1 id="代码实践"><a href="#代码实践" class="headerlink" title="代码实践"></a>代码实践</h1><p>OpenCV中自带LBP+级联分类器的人脸识别模型，同时也提供了训练的相应工具</p>
+<h2 id="使用默认模型测试"><a href="#使用默认模型测试" class="headerlink" title="使用默认模型测试"></a>使用默认模型测试</h2><p>该代码与使用Harr+级联分类器完全相同，唯一需要改变的是调用的模型文件改为LBP特征模型<code>lbpcascade_frontalface_improved.xml</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">detectFaces</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">        img, path=<span class="string">&quot;./haarcascades/haarcascade_frontalface_alt2.xml&quot;</span></span>):</span></span><br><span class="line">    face_cascade = cv2.CascadeClassifier(path)</span><br><span class="line">    <span class="keyword">if</span> img.ndim == <span class="number">3</span>:</span><br><span class="line">        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        gray = img  </span><br><span class="line">    faces = face_cascade.detectMultiScale(</span><br><span class="line">        gray, scaleFactor=<span class="number">1.3</span>, minNeighbors=<span class="number">2</span>, minSize=(<span class="number">60</span>, <span class="number">60</span>), maxSize=(<span class="number">300</span>, <span class="number">300</span>))</span><br><span class="line">    print(faces)</span><br><span class="line">    result = []</span><br><span class="line">    <span class="keyword">for</span> (x, y, width, height) <span class="keyword">in</span> faces:</span><br><span class="line">        result.append((x, y, x + width, y + height))</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">drawFaces</span>(<span class="params">img, draw, color=(<span class="params"><span class="number">255</span>, <span class="number">0</span>, <span class="number">0</span></span>)</span>):</span></span><br><span class="line">    <span class="keyword">for</span> (x1, y1, x2, y2) <span class="keyword">in</span> draw:</span><br><span class="line">        cv2.rectangle(img, (x1, y1), (x2, y2), color, <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> img</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    cap = cv2.VideoCapture(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>):</span><br><span class="line">        <span class="comment"># get a frame</span></span><br><span class="line">        ret, frame = cap.read()</span><br><span class="line"></span><br><span class="line">        frame_face1 = detectFaces(frame,<span class="string">&quot;haarcascades/lbpcascade_frontalface_improved.xml&quot;</span>)</span><br><span class="line">        frame = drawFaces(frame, frame_face1)</span><br><span class="line">        cv2.imshow(<span class="string">&quot;capture&quot;</span>, frame)</span><br><span class="line">        <span class="keyword">if</span> cv2.waitKey(<span class="number">1</span>) == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<h2 id="训练"><a href="#训练" class="headerlink" title="训练"></a>训练</h2><p>训练部分也与Harr+级联分类器完全相同，唯一需要改变的是使用<code>opencv_traincascade.exe</code>时，添加命令行参数<code>-featureType LBP</code>，含义为指定是利用LBP特征训练。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">月见樽</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.yuejianzun.xyz/2018/07/16/LBP%E7%89%B9%E5%BE%81%E7%89%A9%E5%93%81%E8%AF%86%E5%88%AB%E7%B3%BB%E7%BB%9F/">http://www.yuejianzun.xyz/2018/07/16/LBP%E7%89%B9%E5%BE%81%E7%89%A9%E5%93%81%E8%AF%86%E5%88%AB%E7%B3%BB%E7%BB%9F/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.yuejianzun.xyz" target="_blank">月见樽'blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Python/">Python</a><a class="post-meta__tags" href="/tags/Detection/">Detection</a></div><div class="post_share"><div class="social-share" data-image="/img/1.PNG" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2018/07/19/RCNN%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"><img class="prev-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">RCNN学习笔记</div></div></a></div><div class="next-post pull-right"><a href="/2018/07/16/HoG%E7%89%B9%E5%BE%81SVM%E7%89%A9%E5%93%81%E8%AF%86%E5%88%AB%E7%B3%BB%E7%BB%9F/"><img class="next-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">HoG特征SVM物品识别系统</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2018/07/16/HoG特征SVM物品识别系统/" title="HoG特征SVM物品识别系统"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-07-16</div><div class="title">HoG特征SVM物品识别系统</div></div></a></div><div><a href="/2018/07/03/harr特征加级联分类器的目标检测系统/" title="harr特征加级联分类器的目标检测系统"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-07-03</div><div class="title">harr特征加级联分类器的目标检测系统</div></div></a></div><div><a href="/2018/02/21/CNN的反向传播/" title="CNN的反向传播"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-02-21</div><div class="title">CNN的反向传播</div></div></a></div><div><a href="/2018/03/11/CapsNet学习笔记/" title="CapsNet学习笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-03-11</div><div class="title">CapsNet学习笔记</div></div></a></div><div><a href="/2017/09/06/PyTorch60分钟教程学习笔记/" title="Pytorch60分钟教程学习笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-09-06</div><div class="title">Pytorch60分钟教程学习笔记</div></div></a></div><div><a href="/2019/05/05/Octave卷积学习笔记/" title="Octave卷积学习笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-05-05</div><div class="title">Octave卷积学习笔记</div></div></a></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/had.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">月见樽</div><div class="author-info__description">日隐月现，潜龙在渊</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/qiankun214"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text">系统结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#LBP%E7%89%B9%E5%BE%81"><span class="toc-number">1.1.</span> <span class="toc-text">LBP特征</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E5%A7%8BLBP%E7%89%B9%E5%BE%81"><span class="toc-number">1.1.1.</span> <span class="toc-text">原始LBP特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%86%E5%BD%A2LBP%E7%89%B9%E5%BE%81"><span class="toc-number">1.1.2.</span> <span class="toc-text">圆形LBP特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E4%BD%BF%E7%94%A8%E7%9A%84LBP"><span class="toc-number">1.1.3.</span> <span class="toc-text">系统使用的LBP</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E7%B1%BB%E5%99%A8"><span class="toc-number">1.2.</span> <span class="toc-text">分类器</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E8%B7%B5"><span class="toc-number">2.</span> <span class="toc-text">代码实践</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E9%BB%98%E8%AE%A4%E6%A8%A1%E5%9E%8B%E6%B5%8B%E8%AF%95"><span class="toc-number">2.1.</span> <span class="toc-text">使用默认模型测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%AD%E7%BB%83"><span class="toc-number">2.2.</span> <span class="toc-text">训练</span></a></li></ol></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/09/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%EF%BC%89/" title="网络学习笔记2——信号与系统">网络学习笔记2——信号与系统</a><time datetime="2020-11-09T15:51:13.000Z" title="发表于 2020-11-09 23:51:13">2020-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/" title="网络学习笔记1——协议分层">网络学习笔记1——协议分层</a><time datetime="2020-11-06T15:51:13.000Z" title="发表于 2020-11-06 23:51:13">2020-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/" title="高级综合工具StratusHLS学习笔记(4)">高级综合工具StratusHLS学习笔记(4)</a><time datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/" title="高级综合工具StratusHLS学习笔记(3)">高级综合工具StratusHLS学习笔记(3)</a><time datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/" title="高级综合工具StratusHLS学习笔记(2)">高级综合工具StratusHLS学习笔记(2)</a><time datetime="2020-07-19T15:51:13.000Z" title="发表于 2020-07-19 23:51:13">2020-07-19</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 月见樽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

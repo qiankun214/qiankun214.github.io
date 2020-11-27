@@ -1,0 +1,281 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>月见樽'blog</title><meta name="author" content="月见樽"><meta name="copyright" content="月见樽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="日隐月现，潜龙在渊">
+<meta property="og:type" content="website">
+<meta property="og:title" content="月见樽&#39;blog">
+<meta property="og:url" content="http://www.yuejianzun.xyz/page/9/index.html">
+<meta property="og:site_name" content="月见樽&#39;blog">
+<meta property="og:description" content="日隐月现，潜龙在渊">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.yuejianzun.xyz/img/had.jpg">
+<meta property="article:author" content="月见樽">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yuejianzun.xyz/img/had.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.yuejianzun.xyz/page/9/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2020-11-28 01:25:49'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/had.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><header class="full_page" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">月见樽'blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="site-info"><h1 id="site-title">月见樽'blog</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/09/30/APB%E6%80%BB%E7%BA%BF%E5%8D%8F%E8%AE%AE/" title="APB总线协议">APB总线协议</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-09-30T04:13:40.000Z" title="发表于 2017-09-30 12:13:40">2017-09-30</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1/">硬件设计</a></span></div><div class="content">APB学习笔记APB简介
+The APB is part of the AMBA 3 protocol family. It provides a low-cost interface that is optimized for minimal power consumption and reduced interface complexity.The APB interfaces to any peripherals that are low-bandwidth and do not require the high performance of a pipelined bus interface. The APB has unpipelined protocol.All signal transitions are only related to the rising edge of the clock to enable theintegration of APB peripherals easily into any design flow. Every transfer ta ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/09/21/%E5%9F%BA%E4%BA%8E%E8%BF%AD%E4%BB%A3%E5%8D%95%E5%85%83%E7%9A%84%E4%B8%8D%E6%81%A2%E5%A4%8D%E4%BD%99%E6%95%B0%E5%BC%80%E6%96%B9%E5%99%A8/" title="基于迭代单元的不恢复余数开方器">基于迭代单元的不恢复余数开方器</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-09-21T14:08:38.000Z" title="发表于 2017-09-21 22:08:38">2017-09-21</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Verilog%E5%B7%A9%E5%9B%BA%E6%89%8B%E8%AE%B0/">Verilog巩固手记</a></span></div><div class="content">基于迭代单元的不恢复余数开方器基本算法与恢复余数开方器类似，不恢复余数开方器也是通过迭代完成运算的，基本算法的伪代码如下所示
+1234567891011Ra = 被开方数(位宽2W)Re = 余数(初值为0)Dout = 0for i in W -&gt; 0 &#123;  if(Re &gt; 0) &#123;    Re = &#123;Re,Ra[2i - 1],Ra[2i]&#125; - &#123;Dout,2&#x27;b01&#125;  &#125; else &#123;    Re = &#123;Re,Ra[2i - 1],Ra[2i]&#125; + &#123;Dout,2&#x27;b11&#125;  &#125;  Dout = &#123;Dout,!Re[MSB]&#125;&#125;
+迭代单元基本算法迭代单元的基本算法即基本算法中for循环包裹的部分：
+12345678910input Re = 上一余数input Dout = 上一结果if(Re &gt; 0) &#123;    Re = &#123;Re,Ra[2i - 1],Ra[ ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/09/19/%E5%9F%BA%E4%BA%8E%E8%BF%AD%E4%BB%A3%E5%8D%95%E5%85%83%E7%9A%84%E6%81%A2%E5%A4%8D%E4%BD%99%E6%95%B0%E5%BC%80%E6%96%B9%E5%99%A8/" title="基于迭代单元的恢复余数开方器">基于迭代单元的恢复余数开方器</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-09-19T14:30:47.000Z" title="发表于 2017-09-19 22:30:47">2017-09-19</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Verilog%E5%B7%A9%E5%9B%BA%E6%89%8B%E8%AE%B0/">Verilog巩固手记</a></span></div><div class="content">基于迭代单元的恢复余数开方器基本算法该开方器的算法与“手算”（以前并不知道开方还有这种手算的方法）算法相似，使用迭代解决，文字描述如下
+
+将0为余数的初值a，0作为结果初值b
+将被开方数前两位&#123;I(2m + 1),I(2m)&#125;取出，与01比较大小。若前两位大，则&#123;I(2m + 1),I(2m)&#125; - 01为输出余数（a(m)），输出结果1(b(m))，否则&#123;I(2m + 1),I(2m)&#125;为输出余数（a(m)），输出结果0（b(m)）
+将被开方数的从高位数第3,4位&#123;I(2m - 1),I(2m - 2)&#125;取出，比较&#123;a(m),I(2m - 1),I(2m - 2)&#125;和&#123;b(m),2&#39;b01&#125;的大小，若前一项大，则输出余数a(m - 1)为前一项减后一项，输出结果b(m - 1)为&#123;b(m),1&#125;;否则，输出余数为前一项（直接输出），输出结果b(m - 1)为&#123;b(m),0&#125;
+…
+直到计算完被开方数结束
+
+迭代单元算法迭 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/09/17/%E5%9F%BA%E4%BA%8E%E8%BF%AD%E4%BB%A3%E5%8D%95%E5%85%83%E7%9A%84%E9%99%A4%E6%B3%95%E5%99%A8/" title="基于迭代单元的除法器">基于迭代单元的除法器</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-09-17T09:27:28.000Z" title="发表于 2017-09-17 17:27:28">2017-09-17</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Verilog%E5%B7%A9%E5%9B%BA%E6%89%8B%E8%AE%B0/">Verilog巩固手记</a></span></div><div class="content">基于迭代单元的除法器迭代单元数字信号处理中，有大量的算法是基于迭代算法，即下一次的运算需要上一次运算的结果，将运算部分固化为迭代单元可以将数据处理和流程控制区分，更容易做出时序和面积优化更好的硬件描述，这次将基于迭代单元构造恢复余数和不恢复余数除法器
+恢复余数除法器迭代单元算法
+将除数移位i位
+判断位移后的除数与余数大小
+若位移除数大于余数，则余数输出当前余数，结果输出0；否则输出余数减位移除数，结果输出1
+
+
+RTL代码12345678910111213141516171819202122232425262728293031module restore_cell #(	parameter WIDTH = 4,	parameter STEP = 1)(	input clk,	input rst_n,	input [WIDTH * 3 - 1:0]remainder_din,	input [WIDTH - 1:0]divisor,	output reg [WIDTH * 3 - 1:0]remainder_dout,	output reg quotient);wire [WIDTH *  ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/09/13/%E4%B8%8D%E6%81%A2%E5%A4%8D%E4%BD%99%E6%95%B0%E9%99%A4%E6%B3%95%E5%99%A8/" title="不恢复余数除法器">不恢复余数除法器</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-09-13T02:33:08.000Z" title="发表于 2017-09-13 10:33:08">2017-09-13</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Verilog%E5%B7%A9%E5%9B%BA%E6%89%8B%E8%AE%B0/">Verilog巩固手记</a></span></div><div class="content">不恢复余数除法器基本算法不恢复余数除法器的基本算法来自于恢复余数除法器，区别在于当余数变负时不停下恢复余数而是继续运行迭代，并在迭代中加上移位后除数而不是减去移位后除数，基本算法如下所示
+
+将除数向左移位到恰好大于被除数
+若余数为正：余数减去移位后除数；若余数为负：余数加上移位后除数；
+若现余数为正，该位结果为1，否则为0，将除数向右移位一位
+重复2,3，知道移位后除数小于原除数
+
+RTL代码12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182module norestore_divider #(	parameter WIDTH = 4)(	input clk,    // Clock	input rst_n,  // Asynchronous reset active low	input [WIDTH * 2 - 1:0]divi ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/09/11/selenium%E5%88%9D%E6%8E%A2/" title="selenium初探">selenium初探</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-09-11T13:36:28.000Z" title="发表于 2017-09-11 21:36:28">2017-09-11</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Python%E5%BA%94%E7%94%A8%E6%89%8B%E8%AE%B0/">Python应用手记</a></span></div><div class="content">selenium初探selenium简介与安装简介selenium是一个网站的自动化测试库，但由于其具有大量的自动化库而且可以调用浏览器，常常被用于爬虫技术。也正是因为其是调用浏览器的，这几乎成了一个无解的爬虫。在神经网络领域需要大量的数据集，爬虫是一种快速获得数据的方法，这也正是我学习这个库的动机
+安装selenium安装使用pip install -U selenium即可
+Diver安装selenium要调用各种浏览器需要对应的浏览器driver，我将使用chrome测试，测试成功后转为无界面的PhontomJS。使用Chrome需要将对应的driver下载后复制到Python的安装文件夹下，使用PhontomJS则直接将.exe文件复制到Python安装文件夹下即可
+selenium基本操作浏览器操作导入库1from selenium import webdriver
+打开浏览器12driver = webdriver.PhantomJS() #打开PhantomJS浏览器driver = webdriver.Chrome() #打开Chrome浏览器
+访问网页1driver. ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/09/09/%E6%81%A2%E5%A4%8D%E4%BD%99%E6%95%B0%E9%99%A4%E6%B3%95%E5%99%A8/" title="恢复余数除法器">恢复余数除法器</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-09-09T05:58:54.000Z" title="发表于 2017-09-09 13:58:54">2017-09-09</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Verilog%E5%B7%A9%E5%9B%BA%E6%89%8B%E8%AE%B0/">Verilog巩固手记</a></span></div><div class="content">恢复余数除法器算法描述恢复余数除法器是一种常用的除法器，过程与手算除法的方法很类似，过程为
+
+将除数向左位移直到比被除数大
+执行被除数减除数操作，得余数，并将商向左移位1位，空位补1
+若余数大于0，除数向右移位1位。如余数小于0，余数加当前除数，商最后一位置0，除数向右移位1位
+重复到2，只到除数比最初的除数小
+
+RTL代码RTL代码就是使用了大量的if语句完成了以上的算法描述，其中
+
+为了使移位后的除数确保大于被除数，直接将除数放到一个位宽WIDTH*3的寄存器的前WIDTH位
+divisor_move &gt;= &#39;&#123;divisor_lock&#125;用于当移位除数小于原除数时停止
+(divisor_move &gt; &#39;&#123;remainder_r&#125;) &amp;&amp; (dout == &#39;b0)用于当出现第一个1时才开始保存结果
+
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/09/06/%E7%A7%BB%E4%BD%8D%E7%9B%B8%E5%87%8F%E9%99%A4%E6%B3%95%E5%99%A8/" title="移位相减除法器">移位相减除法器</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-09-06T15:51:13.000Z" title="发表于 2017-09-06 23:51:13">2017-09-06</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Verilog%E5%B7%A9%E5%9B%BA%E6%89%8B%E8%AE%B0/">Verilog巩固手记</a></span></div><div class="content">移位相减除法器基本算法与使用移位相加实现加法一样，移位减法可以实现除法，基本算法如下描述
+
+将除数向左移位直到比被除数大
+使用移位后的除数与被除数比较，若除数大，则商向左移位1位后末尾补0；若除数小，则被除数累减除数，商向左移位1位后末尾补1
+除数向右移位1位，重复2，知道除数小于原除数
+
+RTL代码移位相减算法比较简单，一个Verilog模块即可描述
+1234567891011121314module shiftsub_divider #(	parameter WIDTH = 4)(	input clk,    // Clock	input rst_n,  // Asynchronous reset active low	input [2 * WIDTH - 1:0]dividend,	input [WIDTH - 1:0]divisor,	input din_valid,	output reg [2 * WIDTH - 1:0]dout,	output reg [2 * WIDTH - 1:0]remainder);
+定义端口，其中remainder前WIDTH位均为0，可以不连接 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/09/06/Python%E9%A9%B1%E5%8A%A8%E6%A0%91%E8%8E%93%E6%B4%BESPI%E6%8E%A5%E5%8F%A3/" title="Python驱动树莓派SPI接口">Python驱动树莓派SPI接口</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-09-06T04:37:01.000Z" title="发表于 2017-09-06 12:37:01">2017-09-06</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Python%E5%BA%94%E7%94%A8%E6%89%8B%E8%AE%B0/">Python应用手记</a></span></div><div class="content">目的进行IC测试，需要使用SPI输入数据并采集数据，考虑使用树莓派可以直接将数据采集和数据处理结合成一体，避免易出错的数据采集部分（单片机或FPGA实现）
+树莓派SPI接口物理接口
+由上图中可以看出，树莓派的19,21,23构成了一个SPI接口，片选信号使用GPIO控制，本次并不使用自动的片选信号。速度方面，树莓派的接口有以下速度可以选择
+
+
+
+
+速度
+值 
+
+
+
+
+125.0 MHz
+125000000
+
+
+62.5 MHz
+62500000
+
+
+31.2 MHz
+31200000
+
+
+15.6 MHz
+15600000
+
+
+7.8 MHz
+7800000
+
+
+3.9 MHz
+3900000
+
+
+1953 kHz
+1953000
+
+
+976 kHz
+976000
+
+
+488 kHz
+488000
+
+
+244 kHz
+244000
+
+
+122 kHz
+122000
+
+
+61 kHz
+61000
+
+
+30.5 kHz
+30500
+
+
+15.2 kHz
+15200
+
+
+7629 Hz
+7629
+
+
+
+
+开启SPI接口使用sudo raspi-config命令进入配置选项后选择SPI接口，打 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/09/06/Python%E8%A7%A3%E5%86%B3%E5%A4%A7%E8%A7%84%E6%A8%A1%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%95%B0%E6%8D%AE%E9%94%99%E4%BD%8D/" title="Python解决大规模二进制数据错位">Python解决大规模二进制数据错位</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-09-06T04:36:59.000Z" title="发表于 2017-09-06 12:36:59">2017-09-06</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Python%E5%BA%94%E7%94%A8%E6%89%8B%E8%AE%B0/">Python应用手记</a></span></div><div class="content">问题描述有一些二进制数据，每八位按顺序存为一个十进制数保存成CSV文件，每行为一个二进数数据，每个单元格均为一个十进制数。若数据为0000 0001 1000 0000，在CSV的一行中则存为1,128\n。现发现存储错位，需要将每个数据整体向左移位2位并保存成以上描述的格式
+解决方法
+将每个行数据读出并将每个十进制转换为8位二进制数的字符串(同时使用切片去除开头的二进制数标识)
+将字符串整体连接起来，切去开头两个0并在结尾连接一个00
+重新将字符串切片，并转换实验代码1234567891011121314151617# 读取数据 with open(&quot;.&#x2F;ramdata_brockenline.csv&quot;) as file_point:     content_list &#x3D; [x.split(&quot;,&quot;) for x in file_point.read().split(&quot;\n&quot;)] input_data &#x3D; [] for content in content_list[:-1]:     # 转换为 ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/8/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><span class="page-number current">9</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/10/"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/had.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">月见樽</div><div class="author-info__description">日隐月现，潜龙在渊</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/qiankun214"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/09/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%EF%BC%89/" title="网络学习笔记2——信号与系统">网络学习笔记2——信号与系统</a><time datetime="2020-11-09T15:51:13.000Z" title="发表于 2020-11-09 23:51:13">2020-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/" title="网络学习笔记1——协议分层">网络学习笔记1——协议分层</a><time datetime="2020-11-06T15:51:13.000Z" title="发表于 2020-11-06 23:51:13">2020-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/" title="高级综合工具StratusHLS学习笔记(4)">高级综合工具StratusHLS学习笔记(4)</a><time datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/" title="高级综合工具StratusHLS学习笔记(3)">高级综合工具StratusHLS学习笔记(3)</a><time datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/" title="高级综合工具StratusHLS学习笔记(2)">高级综合工具StratusHLS学习笔记(2)</a><time datetime="2020-07-19T15:51:13.000Z" title="发表于 2020-07-19 23:51:13">2020-07-19</time></div></div></div></div></div><div class="card-widget card-categories"><div class="card-content"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div><ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/JavaScript%E5%AD%A6%E4%B9%A0/"><span class="card-category-list-name">JavaScript学习</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Python%E5%BA%94%E7%94%A8%E6%89%8B%E8%AE%B0/"><span class="card-category-list-name">Python应用手记</span><span class="card-category-list-count">7</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Verilog%E5%B7%A9%E5%9B%BA%E6%89%8B%E8%AE%B0/"><span class="card-category-list-name">Verilog巩固手记</span><span class="card-category-list-count">14</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E4%BC%A0%E7%BB%9F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"><span class="card-category-list-name">传统机器学习</span><span class="card-category-list-count">16</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"><span class="card-category-list-name">数据分析</span><span class="card-category-list-count">3</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1/"><span class="card-category-list-name">硬件设计</span><span class="card-category-list-count">16</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><span class="card-category-list-name">神经网络</span><span class="card-category-list-count">24</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/"><span class="card-category-list-name">算法学习</span><span class="card-category-list-count">15</span></a></li>
+            <li class="card-category-list-item more is-center"><a class="card-category-list-link-more" href="/categories/">
+                <span>查看更多</span><i class="fas fa-angle-right"></i></a></li>
+            </ul></div></div><div class="card-widget card-tags"><div class="card-content"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/AMBA/" style="font-size: 1.16em; color: #999b9e">AMBA</a> <a href="/tags/Detection/" style="font-size: 1.21em; color: #999ea4">Detection</a> <a href="/tags/FIFO/" style="font-size: 1.1em; color: #999">FIFO</a> <a href="/tags/JavaScript/" style="font-size: 1.27em; color: #99a0a9">JavaScript</a> <a href="/tags/MIPS/" style="font-size: 1.1em; color: #999">MIPS</a> <a href="/tags/NeuralNetwork/" style="font-size: 1.44em; color: #99a7ba">NeuralNetwork</a> <a href="/tags/Python/" style="font-size: 1.5em; color: #99a9bf">Python</a> <a href="/tags/StratusHLS/" style="font-size: 1.21em; color: #999ea4">StratusHLS</a> <a href="/tags/SystemC/" style="font-size: 1.1em; color: #999">SystemC</a> <a href="/tags/Verilog/" style="font-size: 1.39em; color: #99a4b4">Verilog</a> <a href="/tags/float32/" style="font-size: 1.1em; color: #999">float32</a> <a href="/tags/golang/" style="font-size: 1.33em; color: #99a2af">golang</a> <a href="/tags/pipeline/" style="font-size: 1.1em; color: #999">pipeline</a> <a href="/tags/%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86/" style="font-size: 1.33em; color: #99a2af">数字信号处理</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 1.33em; color: #99a2af">算法</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" style="font-size: 1.1em; color: #999">计算机体系结构</a> <a href="/tags/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88/" style="font-size: 1.21em; color: #999ea4">高级综合</a></div></div></div><div class="card-widget card-archives"><div class="card-content"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/11/"><span class="card-archive-list-date">十一月 2020</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/09/"><span class="card-archive-list-date">九月 2020</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/07/"><span class="card-archive-list-date">七月 2020</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/01/"><span class="card-archive-list-date">一月 2020</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2019/07/"><span class="card-archive-list-date">七月 2019</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2019/05/"><span class="card-archive-list-date">五月 2019</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2019/04/"><span class="card-archive-list-date">四月 2019</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2019/01/"><span class="card-archive-list-date">一月 2019</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item more is-center"><a class="card-archive-list-link-more" href="/archives/">
+              <span>查看更多</span><i class="fas fa-angle-right"  ></i></a></li></ul></div></div><div class="card-widget card-webinfo"><div class="card-content"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">103</div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">149.7k</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2020-11-27T17:25:49.050Z"></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 月见樽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

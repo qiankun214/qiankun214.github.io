@@ -1,0 +1,279 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>高级综合工具StratusHLS学习笔记(3) | 月见樽'blog</title><meta name="keywords" content="高级综合,StratusHLS"><meta name="author" content="月见樽"><meta name="copyright" content="月见樽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="学习目标：  学习如何使用Stratus IDE生成存储器模型 学习如何在代码中使用存储器模型  1.存储器生成存储器生成使用Stratus IDE内置的存储器模型生成器，首先使用Stratus IDE打开工程，在左侧边栏中打开project选项卡，打开libraries，右键Memories，选择New Memory Library新建存储器库，新建后可以在工程下发现同名文件夹  随后，右击新建">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高级综合工具StratusHLS学习笔记(3)">
+<meta property="og:url" content="http://www.yuejianzun.xyz/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/index.html">
+<meta property="og:site_name" content="月见樽&#39;blog">
+<meta property="og:description" content="学习目标：  学习如何使用Stratus IDE生成存储器模型 学习如何在代码中使用存储器模型  1.存储器生成存储器生成使用Stratus IDE内置的存储器模型生成器，首先使用Stratus IDE打开工程，在左侧边栏中打开project选项卡，打开libraries，右键Memories，选择New Memory Library新建存储器库，新建后可以在工程下发现同名文件夹  随后，右击新建">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.yuejianzun.xyz/img/1.PNG">
+<meta property="article:published_time" content="2020-07-29T15:51:13.000Z">
+<meta property="article:modified_time" content="2020-11-27T16:47:57.297Z">
+<meta property="article:author" content="月见樽">
+<meta property="article:tag" content="高级综合">
+<meta property="article:tag" content="StratusHLS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yuejianzun.xyz/img/1.PNG"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.yuejianzun.xyz/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-11-28 00:47:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/had.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/1.PNG)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">月见樽'blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">高级综合工具StratusHLS学习笔记(3)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-27T16:47:57.297Z" title="更新于 2020-11-28 00:47:57">2020-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1/">硬件设计</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>学习目标：</p>
+<ul>
+<li>学习如何使用Stratus IDE生成存储器模型</li>
+<li>学习如何在代码中使用存储器模型</li>
+</ul>
+<h1 id="1-存储器生成"><a href="#1-存储器生成" class="headerlink" title="1.存储器生成"></a>1.存储器生成</h1><p>存储器生成使用Stratus IDE内置的存储器模型生成器，首先使用Stratus IDE打开工程，在左侧边栏中打开project选项卡，打开libraries，右键Memories，选择<code>New Memory Library</code>新建存储器库，新建后可以在工程下发现同名文件夹</p>
+<img src="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/1.png" class="">
+<p>随后，右击新建的库memlib选择新建存储器，可以打开如下的界面进行配置：</p>
+<ul>
+<li>Memory name：存储器名称，使用存储器时使用该名称进行调用</li>
+<li>Word size：数据位宽，即每个地址存储多少个bit</li>
+<li>Number of words：地址数量，即有多少个word，存储容量为$Word size \times Number of words$bit</li>
+<li>Latency：从地址输入到数据输出消耗的时钟周期数量</li>
+<li>Setup time：通常意义的建立时间加保持时间，即控制信号需要在时钟沿附近保持的长度，不要写0。</li>
+<li>Output delay：输出延迟，即从时钟沿或数据输入到数据输出的延迟时间，不要写0。</li>
+<li>Area：面积，HLS将在综合报告中使用该面积（如果填写）</li>
+</ul>
+<p>中间的Option部分可以选择时序的方式，时序有以下几种：</p>
+<ul>
+<li>Allow chaining：使用左侧的Setup time和Output delay计入延迟估算，在必要时插入寄存器</li>
+<li>Disallow chaining：不计入延迟估算，等效于Setup time和Output delay都填写0</li>
+<li>Registers at memories：强制插入寄存器</li>
+</ul>
+<img src="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/2.png" class="">
+<p>在这个页面填写常规信息后，点击上方的Port端口添加或编辑端口信息，该界面如下所示。可以通过编辑端口数量、选择端口类型和编辑端口名称，这些端口名称将在波形中体现。</p>
+<img src="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/3.png" class="">
+<p>随后点击OK即可生成存储器模型，生成的存储器模型文件结构如下所示：</p>
+<img src="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/4.png" class="">
+<p>在调用存储器模型的文件中，需要引用头文件<code>memlib.h</code></p>
+<h1 id="2-存储器使用"><a href="#2-存储器使用" class="headerlink" title="2.存储器使用"></a>2.存储器使用</h1><p>在高级综合中使用存储器通过wrapper和port构成：</p>
+<ul>
+<li>wrapper：存储器模块，通过调用该模块生成存储器</li>
+<li>port：访问接口，在一个模块中声明一个存储器的port并将该port和wrapper指针连接即可进行存储器访问</li>
+</ul>
+<p>对于wrapper，其声明方式为<code>&lt;memory name&gt;::wrapper&lt;ioConfig&gt; * point</code>，例如声明一个名称为RAM的wrapper，命名为m_mem如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RAM::wrapper&lt;ioConfig&gt; * m_mem;</span><br></pre></td></tr></table></figure>
+<p>定义后需要在构造函数（SC_CTOR）中对其进行实例化和绑定clk和rst端口，如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">m_mem = <span class="keyword">new</span> RAM::wrapper&lt;ioConfig&gt;(<span class="string">&quot;ram_wrapper&quot;</span>);</span><br><span class="line">m_mem-&gt;clk_rst(clk,rst);</span><br></pre></td></tr></table></figure>
+<p>对于port，声明方式为<code>&lt;memory name&gt;::port&lt;ioConfig&gt; port</code>，例如声明一个名称为RAM的port，命名为ram_port如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RAM::port&lt;ioConfig&gt; ram_port;</span><br></pre></td></tr></table></figure>
+<p>同样的，需要在构造函数中绑定clk和rst端口：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ram_port.clk_rst(clk, rst);</span><br></pre></td></tr></table></figure>
+<p>并且需要在顶层将wrapper绑定到端口上，如下所示（m_dut为ram_port所属的模块）：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">m_dut-&gt;ram_port(*m_mem);</span><br></pre></td></tr></table></figure>
+<p>随后可以使用类似数组的方式对存储进行访问，访问方式如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">read_data = ram_port[i] <span class="comment">// 从i地址读取数据</span></span><br><span class="line">ram_port[i] = write_data <span class="comment">// 将数据写入i地址</span></span><br></pre></td></tr></table></figure>
+<p>最后，需要在project.tcl中添加存储器库，使用<code>use_hls_lib</code>指令，写法如下所示：</p>
+<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">use_hls_lib <span class="string">&quot;./memlib&quot;</span></span><br></pre></td></tr></table></figure>
+<p>另外，对于一个存储器模型，具有以下的参数可以方便代码的编写：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>\<memory name>::SIZE</td>
+<td>存储器word数量（Number of words）</td>
+</tr>
+<tr>
+<td>\<memory name>::address_width</td>
+<td>存储器地址位宽</td>
+</tr>
+<tr>
+<td>\<memory name>::data_width</td>
+<td>存储器数据位宽</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="3-实际工程"><a href="#3-实际工程" class="headerlink" title="3.实际工程"></a>3.实际工程</h1><p>这里实现了一个将memory集成的加法器功能，功能为输入一个数据i，从存储器的地址i获取数据并与i相加，加法部分模块如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> __DUT_TEMPLATE__H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> __DUT_TEMPLATE__H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;cynw_p2p.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;cynw_fifo.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;defines.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;memlib.h&quot;</span></span></span><br><span class="line">SC_MODULE(dut_template) &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"></span><br><span class="line">    cynw_p2p&lt;DT, ioConfig&gt;::in x_in;</span><br><span class="line">    cynw_p2p&lt;DT, ioConfig&gt;::out y_out;</span><br><span class="line">    RAM::port&lt;ioConfig&gt; ram_port;  <span class="comment">// 存储器访问接口</span></span><br><span class="line">    </span><br><span class="line">    sc_in_clk clk;</span><br><span class="line">    sc_in&lt;<span class="keyword">bool</span>&gt; rst;</span><br><span class="line"></span><br><span class="line">    SC_CTOR(dut_template):</span><br><span class="line">        x_in(<span class="string">&quot;x_in&quot;</span>),</span><br><span class="line">        y_out(<span class="string">&quot;y_out&quot;</span>), </span><br><span class="line">        clk(<span class="string">&quot;clk&quot;</span>), rst(<span class="string">&quot;rst&quot;</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        SC_CTHREAD(t, clk.pos());</span><br><span class="line">        reset_signal_is(rst, <span class="number">0</span>);</span><br><span class="line">        x_in.clk_rst(clk, rst);</span><br><span class="line">        y_out.clk_rst(clk, rst);</span><br><span class="line">        ram_port.clk_rst(clk, rst);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">t</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;dut_template.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dut_template::t</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#123;</span><br><span class="line">        HLS_DEFINE_PROTOCOL(<span class="string">&quot;reset&quot;</span>);</span><br><span class="line">        x_in.reset();</span><br><span class="line">        y_out.reset();</span><br><span class="line">        ram_port.reset();</span><br><span class="line">        wait();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; RAM::SIZE; ++i) <span class="comment">// 存储器初始化过程</span></span><br><span class="line">    &#123;</span><br><span class="line">        ram_port[i] = i; <span class="comment">// 写入存储器</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span>(<span class="number">1</span>) &#123;</span><br><span class="line">        HLS_PIPELINE_LOOP(SOFT_STALL, <span class="number">1</span>, <span class="string">&quot;main_loop&quot;</span>); <span class="comment">// 使用流水线</span></span><br><span class="line">        DT x_val = x_in.get();</span><br><span class="line">        sc_uint&lt;RAM::address_width&gt; addr = x_val;  </span><br><span class="line">        sc_uint&lt;RAM::data_width&gt; ram_data = ram_port[addr];  <span class="comment">// 从存储器中读取数据</span></span><br><span class="line">        DT out_val = x_val + ram_data;</span><br><span class="line">        y_out.put(out_val);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>顶层模块如下所示：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> _DUI_MEM</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _DUI_MEM</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;cynw_p2p.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;cynw_fifo.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;defines.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;memlib.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&quot;dut_template_wrap.h&quot;</span></span></span><br><span class="line"></span><br><span class="line">SC_MODULE(memory_acc_test) &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"></span><br><span class="line">    cynw_p2p&lt;DT, ioConfig&gt;::base_in x_in;</span><br><span class="line">    cynw_p2p&lt;DT, ioConfig&gt;::base_out y_out;</span><br><span class="line">    </span><br><span class="line">    RAM::wrapper&lt;ioConfig&gt; * m_mem;  <span class="comment">// 定义RAM的wrapper</span></span><br><span class="line">    dut_template_wrapper *m_dut;</span><br><span class="line">    </span><br><span class="line">    sc_in_clk clk;</span><br><span class="line">    sc_in&lt;<span class="keyword">bool</span>&gt; rst;</span><br><span class="line"></span><br><span class="line">    SC_CTOR(memory_acc_test):</span><br><span class="line">        x_in(<span class="string">&quot;x_in&quot;</span>),</span><br><span class="line">        y_out(<span class="string">&quot;y_out&quot;</span>), </span><br><span class="line">        clk(<span class="string">&quot;clk&quot;</span>), rst(<span class="string">&quot;rst&quot;</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        m_mem = <span class="keyword">new</span> RAM::wrapper&lt;ioConfig&gt;(<span class="string">&quot;ram_wrapper&quot;</span>); <span class="comment">// 实例化</span></span><br><span class="line">        m_mem-&gt;clk_rst(clk,rst); <span class="comment">// 绑定端口</span></span><br><span class="line"></span><br><span class="line">        m_dut = <span class="keyword">new</span> dut_template_wrapper(<span class="string">&quot;m_dut&quot;</span>);</span><br><span class="line">        m_dut-&gt;clk(clk);</span><br><span class="line">        m_dut-&gt;rst(rst);</span><br><span class="line">        m_dut-&gt;x_in(x_in);</span><br><span class="line">        m_dut-&gt;y_out(y_out);</span><br><span class="line">        m_dut-&gt;ram_port(*m_mem); <span class="comment">// 将wrapper绑定到port上</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+<p>对于以上工程，project.tcl中的库部分如下所示：</p>
+<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> LIB_PATH <span class="string">&quot;[get_install_path]/share/stratus/techlibs/GPDK045/gsclib045_svt_v4.4/gsclib045/timing&quot;</span></span><br><span class="line"><span class="keyword">set</span> LIB_LEAF <span class="string">&quot;slow_vdd1v2_basicCells.lib&quot;</span></span><br><span class="line"></span><br><span class="line">use_tech_lib	<span class="string">&quot;$LIB_PATH/$LIB_LEAF&quot;</span></span><br><span class="line">use_hls_lib <span class="string">&quot;./memlib&quot;</span></span><br></pre></td></tr></table></figure>
+<p>除此之外，基本与之前的工程相同，进行仿真，不带流水线的结果如下所示：</p>
+<img src="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/5.png" class="">
+<p>带流水线的结果如下所示：</p>
+<img src="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/6.png" class="">
+<p>可以发现流水线有三级，分别是输入地址、获取输出和计算和。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">月见樽</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.yuejianzun.xyz/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/">http://www.yuejianzun.xyz/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.yuejianzun.xyz" target="_blank">月见樽'blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88/">高级综合</a><a class="post-meta__tags" href="/tags/StratusHLS/">StratusHLS</a></div><div class="post_share"><div class="social-share" data-image="/img/1.PNG" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/"><img class="prev-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">高级综合工具StratusHLS学习笔记(4)</div></div></a></div><div class="next-post pull-right"><a href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/"><img class="next-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">高级综合工具StratusHLS学习笔记(2)</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2020/07/09/高级综合工具StratusHLS学习笔记(1)/" title="高级综合工具StratusHLS学习笔记(1)"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-09</div><div class="title">高级综合工具StratusHLS学习笔记(1)</div></div></a></div><div><a href="/2020/07/19/高级综合工具StratusHLS学习笔记(2)/" title="高级综合工具StratusHLS学习笔记(2)"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-07-19</div><div class="title">高级综合工具StratusHLS学习笔记(2)</div></div></a></div><div><a href="/2020/09/29/高级综合工具StratusHLS学习笔记(4)/" title="高级综合工具StratusHLS学习笔记(4)"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-09-29</div><div class="title">高级综合工具StratusHLS学习笔记(4)</div></div></a></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/had.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">月见樽</div><div class="author-info__description">日隐月现，潜龙在渊</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/qiankun214"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1-%E5%AD%98%E5%82%A8%E5%99%A8%E7%94%9F%E6%88%90"><span class="toc-number">1.</span> <span class="toc-text">1.存储器生成</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E5%AD%98%E5%82%A8%E5%99%A8%E4%BD%BF%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">2.存储器使用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E5%AE%9E%E9%99%85%E5%B7%A5%E7%A8%8B"><span class="toc-number">3.</span> <span class="toc-text">3.实际工程</span></a></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/09/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%EF%BC%89/" title="网络学习笔记2——信号与系统">网络学习笔记2——信号与系统</a><time datetime="2020-11-09T15:51:13.000Z" title="发表于 2020-11-09 23:51:13">2020-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/" title="网络学习笔记1——协议分层">网络学习笔记1——协议分层</a><time datetime="2020-11-06T15:51:13.000Z" title="发表于 2020-11-06 23:51:13">2020-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/" title="高级综合工具StratusHLS学习笔记(4)">高级综合工具StratusHLS学习笔记(4)</a><time datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/" title="高级综合工具StratusHLS学习笔记(3)">高级综合工具StratusHLS学习笔记(3)</a><time datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/" title="高级综合工具StratusHLS学习笔记(2)">高级综合工具StratusHLS学习笔记(2)</a><time datetime="2020-07-19T15:51:13.000Z" title="发表于 2020-07-19 23:51:13">2020-07-19</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 月见樽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

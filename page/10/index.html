@@ -1,0 +1,224 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>月见樽'blog</title><meta name="author" content="月见樽"><meta name="copyright" content="月见樽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="日隐月现，潜龙在渊">
+<meta property="og:type" content="website">
+<meta property="og:title" content="月见樽&#39;blog">
+<meta property="og:url" content="http://www.yuejianzun.xyz/page/10/index.html">
+<meta property="og:site_name" content="月见樽&#39;blog">
+<meta property="og:description" content="日隐月现，潜龙在渊">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.yuejianzun.xyz/img/had.jpg">
+<meta property="article:author" content="月见樽">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yuejianzun.xyz/img/had.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.yuejianzun.xyz/page/10/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2020-11-28 01:25:49'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/had.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><header class="full_page" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">月见樽'blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="site-info"><h1 id="site-title">月见樽'blog</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/09/06/PyTorch60%E5%88%86%E9%92%9F%E6%95%99%E7%A8%8B%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="Pytorch60分钟教程学习笔记">Pytorch60分钟教程学习笔记</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-09-06T04:36:45.000Z" title="发表于 2017-09-06 12:36:45">2017-09-06</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a></span></div><div class="content">基本概念Tensortensor是的含义是张量，简单的理解可以将其当成三维矩阵，pytorch中的张量是对数据的一种封装，也是数据结构中最核心的部分之一。对于pytorch中的张量，数组可能是更好的理解方法。
+Tensor的定义
+直接定义矩阵，使用torch.Tensor(shape)方法定义未初始化的张量，使用torch.rand(shape)或torch.randn(shape)定义随机张量1234567891011121314151617import torch as ptx &#x3D; pt.Tensor(2,4)print(x)# 1.00000e-23 *#  0.0000  0.0000  1.2028  0.0000#  0.0000  0.0000  1.1517  0.0000# [torch.FloatTensor of size 2x4]x &#x3D; pt.rand(5,3)# 0.7609  0.5925  0.5840# 0.1949  0.6366  0.3763# 0.1802  0.8529  0.9373# 0.6013  0.9685  0. ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/09/06/ROM%E4%B9%98%E6%B3%95%E5%99%A8/" title="ROM乘法器">ROM乘法器</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-09-06T04:35:50.000Z" title="发表于 2017-09-06 12:35:50">2017-09-06</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Verilog%E5%B7%A9%E5%9B%BA%E6%89%8B%E8%AE%B0/">Verilog巩固手记</a></span></div><div class="content">基本算法ROM乘法器的算法比较简单，即使用一个ROM保存乘法的结果，在需要运算的时候直接到相应的地址去查表即可。例如计算两个4位二进制数的乘法a*b，那么需要一个八位输入八位输出的ROM存储计算结果即可，其地址与存储数据的关系为：地址&#123;a,b&#125;（位拼接）存储a*b（例如地址为8&#39;b00010010存储的结果就是0001*0001=8&#39;b00000010）这种情况下使用的ROM比较大，所以在时序要求不严格的时候可以用时钟换面积，例如对于8位8位的ROM乘法器，我们将其拆成乘数1高4位，低4位和乘数2高4位低4位两两相乘。高四位和高四位相乘后结果向左位移4位，高四位和低四位相乘结果往左移2位，低四位和低四位相乘结果不变累加（就是手算乘法常用的套路）可得在四个（最少）时钟周期后得到结果，使用的ROM可由16\16降到4*4
+单个ROM乘法器Python生成器单个ROM在Verilog中可以使用case语句模拟，手写这种重复化很高的case语句无疑是一种效率很低的方法，本次使用Python语句生成1234567891011121314151617181920 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/09/06/%E5%85%A8%E5%B9%B6%E8%A1%8C%E6%B5%81%E6%B0%B4%E7%BA%BF%E7%A7%BB%E4%BD%8D%E7%9B%B8%E5%8A%A0%E4%B9%98%E6%B3%95%E5%99%A8/" title="全并行流水移位相加乘法器">全并行流水移位相加乘法器</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-09-06T04:35:46.000Z" title="发表于 2017-09-06 12:35:46">2017-09-06</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Verilog%E5%B7%A9%E5%9B%BA%E6%89%8B%E8%AE%B0/">Verilog巩固手记</a></span></div><div class="content">基本算法与分时复用的移位相加类似，取消分时复用，使用面积换时间，使用流水线设计，流水线填满后可以一个时钟周期计算出一个结果
+
+分别计算乘数的移位结果，并与被乘数对应位相与
+使用加法树将结果相加
+
+RTL代码移位部分固定移位单元代码如下，当被乘数第n位为1时，输出乘数移位向左移位n位的结果123456789101112131415161718192021222324252627module shift_unit # (	parameter WIDTH &#x3D; 4,	parameter SHIFT_NUM &#x3D; 0)(	input clk,    &#x2F;&#x2F; Clock	input rst_n,  &#x2F;&#x2F; Asynchronous reset active low	input shift_valid,	input shift_mask,	input [WIDTH - 1:0]shift_din,	output reg [2 * WIDTH - 1:0]shift_dout);wire [2 * WIDTH - 1:0]shift_din_ext ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/09/06/%E5%88%86%E6%97%B6%E5%A4%8D%E7%94%A8%E7%9A%84%E7%A7%BB%E4%BD%8D%E7%9B%B8%E5%8A%A0%E4%B9%98%E6%B3%95%E5%99%A8/" title="分时复用的移位相加乘法器">分时复用的移位相加乘法器</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-09-06T04:35:45.000Z" title="发表于 2017-09-06 12:35:45">2017-09-06</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Verilog%E5%B7%A9%E5%9B%BA%E6%89%8B%E8%AE%B0/">Verilog巩固手记</a></span></div><div class="content">基本算法移位相加即是日常我们使用的手算算法，移位相加的描述如下
+
+设置积的初值为0
+若乘数的最低位为0，则积不变，否则累加被乘数
+若乘数的第一位为0，则积不变，否则累加向左移位一位的被乘数
+…
+若乘数的第n位（最高位）为0，则积不变，否则累加向左移位n位的被乘数RTL代码12345678910111213module serial_shiftadder_multipcation #  (	parameter WIDTH &#x3D; 4)(	input clk,    &#x2F;&#x2F; Clock	input rst_n,  &#x2F;&#x2F; Asynchronous reset active low	input multiplier_valid,	input [WIDTH - 1:0]multiplier1,	input [WIDTH - 1:0]multiplier2,	output reg product_valid,	output reg [2 * WIDTH - 1:0]product);
+接口定义部分，采用参数化设计，WIDTH为乘数/被乘数的位宽，mult ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/09/06/%E5%9F%BA%E4%BA%8EOpenCv-Python%E7%9A%84%E8%A7%86%E9%A2%91%E7%BB%84%E5%90%88/" title="基于OpenCv-Python的视频组合">基于OpenCv-Python的视频组合</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-09-06T04:35:45.000Z" title="发表于 2017-09-06 12:35:45">2017-09-06</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Python%E5%BA%94%E7%94%A8%E6%89%8B%E8%AE%B0/">Python应用手记</a></span></div><div class="content">step0：概述
+动机：手头有数个20秒左右的短视频（守望先锋最佳镜头），期望能组合成一个长视频
+
+
+
+技术路线：opencv+python（opencv在Python中的封装库是cv2，依赖于numpy）step1：打开并显示视频要组合视频，首先需要打开视频并获取每一帧的图像，在opencv中可以使用VideoCapture这个类来打开视频，打开的视频也存在于这个类中，使用.read()方法也可以获得每一帧的图像，该方法的用法类似于生成器，每调用一次都会返回下一帧的图像。其中.waitKey()方法是延迟并获取键盘输入，传入参数是延迟时间数，单位是1/60s且必须是整数，因为原视频是60帧，所以间隔为1时是常速播放123456789101112import cv2capture &#x3D; cv2.VideoCapture(    &quot;..&#x2F;leviathan&#39;s highlight_17-08-16_00-52-33.mp4&quot;)if capture.isOpened():    while True:        ret, prev &#x3 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/09/06/%E5%9F%BA%E4%BA%8EPython%E7%9A%84%E8%BF%90%E5%8A%A8%E8%AE%A1%E8%B4%B9%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F/" title="基于Python的运动计费管理系统">基于Python的运动计费管理系统</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-09-06T04:35:45.000Z" title="发表于 2017-09-06 12:35:45">2017-09-06</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Python%E5%BA%94%E7%94%A8%E6%89%8B%E8%AE%B0/">Python应用手记</a></span></div><div class="content">动机  小伙伴们最近迷恋上羽毛球，组织了个小群，办了公用的运动卡用于开场，考虑不是每次活动都是全员参与，需要一个计费的系统来计算每个人需要交的费用。商讨后决定采用“预充-扣费”的方式，则需要一个系统进行计费和扣费。
+技术路线规划
+
+
+
+模块名
+语言
+备注
+
+
+
+
+管理核心
+Python
+使用JSON存储信息
+
+
+Web后端
+Python
+Flask框架
+
+
+Web前端
+HTML
+Jinja框架渲染
+
+
+
+
+实现核心模块——用户状态管理该部分是整个计费系统的核心，用于管理每个用户的余额。使用一个类表示用户，需要的属性为
+
+状态列表（用户名，ID，使用次数，余额）
+
+需要的方法有：
+
+创建用户（创建新的JSON文件）
+读取用户状态（从已有的JSON文件中）
+扣费（使用次数增加1，余额减小）
+充值（余额增加）
+保存状态（将现有的状态写入JSON文件）
+
+代码如下1234567891011121314#  -*- coding: utf-8 -*-import jsonimport osclass UserHanlde(object):    &quot;&quot;&quot;docstri ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/09/06/%E5%9F%BA%E4%BA%8EPython%E7%9A%84Rosenblatt%E6%84%9F%E7%9F%A5%E5%99%A8%E6%A8%A1%E5%9E%8B/" title="基于Python的Rosenblatt感知机模型">基于Python的Rosenblatt感知机模型</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-09-06T04:35:45.000Z" title="发表于 2017-09-06 12:35:45">2017-09-06</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E4%BC%A0%E7%BB%9F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">传统机器学习</a></span></div><div class="content">Rosenblatt感知器Rosenblatt感知器是一种最简单的感知器模型，即输出值为输入与对应权值相乘后取和再累加并加上偏置后通过符号函数的结果，即：Output = sgn(w0 * x0 + w1 * x1 + ... + wn * xn + bias)。训练时，使用有监督学习，当输出值与真实值不同时，对应的weight与该次输入数据与真实值和学习率的乘积相加，或可以描述为weight += input * (d - o) * n其中，input为输入值，d为真实值，o为输出值，n为学习率
+Python实现Rosenblatt神经元的实现通过Rosenblatt感知器的数学模型，可以很简单的使用numpy库实现感知机功能123456789101112131415161718192021import numpy as npclass Rosenblatt(object):    &quot;&quot;&quot;docstring for Rosenblatt&quot;&quot;&quot;    def __init__(self, InputNum):        s ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/09/06/JavaScript%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B06/" title="JavaScript入门笔记6">JavaScript入门笔记6</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-09-06T04:30:50.000Z" title="发表于 2017-09-06 12:30:50">2017-09-06</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/JavaScript%E5%AD%A6%E4%B9%A0/">JavaScript学习</a></span></div><div class="content">标准对象正则对象正则表达式是一种处理文本信息的神器，在JavaScript中可以方便的使用正则对象对文本进行处理。JavaScript中声明正则对象可以使用var name = /.../和var name = new RegExp(&quot;...&quot;)，第二种方法个人是不推荐的，要处理一系列的文本转义，正则表达式定以后可以使用.test()方法检验是否有匹配和.exec()方法分组12345678var re_test &#x3D; &#x2F;\w+@\w+\.\w+&#x2F;console.log(re_test) &#x2F;&#x2F;&#x2F;\w+@\w+\.\w+&#x2F;console.log(re_test.test(&quot;avbd@163.com&quot;)) &#x2F;&#x2F;trueconsole.log(re_test.test(&quot;adfasd&quot;)) &#x2F;&#x2F;falsevar group_test &#x3D; &#x2F;(\w+)@(\w+)\.\w+&#x2F;console.log( ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/09/06/JavaScript%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B05/" title="JavaScript入门笔记5">JavaScript入门笔记5</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-09-06T04:30:48.000Z" title="发表于 2017-09-06 12:30:48">2017-09-06</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/JavaScript%E5%AD%A6%E4%B9%A0/">JavaScript学习</a></span></div><div class="content">函数
+函数就是最基本的一种代码抽象的方式
+函数的声明与调用JavaScript中声明函数的方法有两种
+
+声明一个有名称的函数，使用类似C语言的function name(arguments) &#123;&#125;
+声明一个匿名函数，再将该函数赋值给一个变量，使用var i = function (arguments) &#123;&#125;;函数的调用方法与C和Python都很相似，使用name(arguments)的方式调用123456789function add(a,b) &#123;	return a + b&#125;console.log(add(4,8)) &#x2F;&#x2F;12var add &#x3D; function(a,b) &#123;	return a + b&#125;console.log(add(4,9)) &#x2F;&#x2F;13
+函数的参数JavaScript中的参数传递方式很灵活，可以使用arguments和rest关键字获取动态数量的参数
+arguments关键字指向所有传入的参数，arguments是一个对象，不能使用for  ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2017/09/06/JavaScript%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B04/" title="JavaScript入门笔记4">JavaScript入门笔记4</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-09-06T04:30:47.000Z" title="发表于 2017-09-06 12:30:47">2017-09-06</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/JavaScript%E5%AD%A6%E4%B9%A0/">JavaScript学习</a></span></div><div class="content">MapMap的定义
+Map是一组键值对的结构，具有极快的查找速度。
+
+Map是JavaScript中更像字典的一种数据结构，使用new Map()定义，可选的在定义中传入使用二维数组存储的键值对，即new Map([...,[key,value],...])1234var black_map &#x3D; new Map()console.log(black_map) &#x2F;&#x2F;Map &#123;&#125;var test_map &#x3D; new Map([[&quot;javascript&quot;,0],[&quot;python&quot;,1],[&quot;verilog&quot;,3]])console.log(test_map) &#x2F;&#x2F;Map &#123; &#39;javascript&#39; &#x3D;&gt; 0, &#39;python&#39; &#x3D;&gt; 1, &#39;verilog&#39; &#x3D;&gt; 3 &#125;
+Map的访问
+使用Map.has(key)可以确定当前Map中是否 ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/9/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><span class="page-number current">10</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/11/"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/had.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">月见樽</div><div class="author-info__description">日隐月现，潜龙在渊</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/qiankun214"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/09/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%EF%BC%89/" title="网络学习笔记2——信号与系统">网络学习笔记2——信号与系统</a><time datetime="2020-11-09T15:51:13.000Z" title="发表于 2020-11-09 23:51:13">2020-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/" title="网络学习笔记1——协议分层">网络学习笔记1——协议分层</a><time datetime="2020-11-06T15:51:13.000Z" title="发表于 2020-11-06 23:51:13">2020-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/" title="高级综合工具StratusHLS学习笔记(4)">高级综合工具StratusHLS学习笔记(4)</a><time datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/" title="高级综合工具StratusHLS学习笔记(3)">高级综合工具StratusHLS学习笔记(3)</a><time datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/" title="高级综合工具StratusHLS学习笔记(2)">高级综合工具StratusHLS学习笔记(2)</a><time datetime="2020-07-19T15:51:13.000Z" title="发表于 2020-07-19 23:51:13">2020-07-19</time></div></div></div></div></div><div class="card-widget card-categories"><div class="card-content"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div><ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/JavaScript%E5%AD%A6%E4%B9%A0/"><span class="card-category-list-name">JavaScript学习</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Python%E5%BA%94%E7%94%A8%E6%89%8B%E8%AE%B0/"><span class="card-category-list-name">Python应用手记</span><span class="card-category-list-count">7</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Verilog%E5%B7%A9%E5%9B%BA%E6%89%8B%E8%AE%B0/"><span class="card-category-list-name">Verilog巩固手记</span><span class="card-category-list-count">14</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E4%BC%A0%E7%BB%9F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"><span class="card-category-list-name">传统机器学习</span><span class="card-category-list-count">16</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"><span class="card-category-list-name">数据分析</span><span class="card-category-list-count">3</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1/"><span class="card-category-list-name">硬件设计</span><span class="card-category-list-count">16</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><span class="card-category-list-name">神经网络</span><span class="card-category-list-count">24</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/"><span class="card-category-list-name">算法学习</span><span class="card-category-list-count">15</span></a></li>
+            <li class="card-category-list-item more is-center"><a class="card-category-list-link-more" href="/categories/">
+                <span>查看更多</span><i class="fas fa-angle-right"></i></a></li>
+            </ul></div></div><div class="card-widget card-tags"><div class="card-content"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/AMBA/" style="font-size: 1.16em; color: #999b9e">AMBA</a> <a href="/tags/Detection/" style="font-size: 1.21em; color: #999ea4">Detection</a> <a href="/tags/FIFO/" style="font-size: 1.1em; color: #999">FIFO</a> <a href="/tags/JavaScript/" style="font-size: 1.27em; color: #99a0a9">JavaScript</a> <a href="/tags/MIPS/" style="font-size: 1.1em; color: #999">MIPS</a> <a href="/tags/NeuralNetwork/" style="font-size: 1.44em; color: #99a7ba">NeuralNetwork</a> <a href="/tags/Python/" style="font-size: 1.5em; color: #99a9bf">Python</a> <a href="/tags/StratusHLS/" style="font-size: 1.21em; color: #999ea4">StratusHLS</a> <a href="/tags/SystemC/" style="font-size: 1.1em; color: #999">SystemC</a> <a href="/tags/Verilog/" style="font-size: 1.39em; color: #99a4b4">Verilog</a> <a href="/tags/float32/" style="font-size: 1.1em; color: #999">float32</a> <a href="/tags/golang/" style="font-size: 1.33em; color: #99a2af">golang</a> <a href="/tags/pipeline/" style="font-size: 1.1em; color: #999">pipeline</a> <a href="/tags/%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86/" style="font-size: 1.33em; color: #99a2af">数字信号处理</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 1.33em; color: #99a2af">算法</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" style="font-size: 1.1em; color: #999">计算机体系结构</a> <a href="/tags/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88/" style="font-size: 1.21em; color: #999ea4">高级综合</a></div></div></div><div class="card-widget card-archives"><div class="card-content"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/11/"><span class="card-archive-list-date">十一月 2020</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/09/"><span class="card-archive-list-date">九月 2020</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/07/"><span class="card-archive-list-date">七月 2020</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/01/"><span class="card-archive-list-date">一月 2020</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2019/07/"><span class="card-archive-list-date">七月 2019</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2019/05/"><span class="card-archive-list-date">五月 2019</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2019/04/"><span class="card-archive-list-date">四月 2019</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2019/01/"><span class="card-archive-list-date">一月 2019</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item more is-center"><a class="card-archive-list-link-more" href="/archives/">
+              <span>查看更多</span><i class="fas fa-angle-right"  ></i></a></li></ul></div></div><div class="card-widget card-webinfo"><div class="card-content"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">103</div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">149.7k</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2020-11-27T17:25:49.050Z"></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 月见樽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

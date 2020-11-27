@@ -1,0 +1,434 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>月见樽'blog</title><meta name="author" content="月见樽"><meta name="copyright" content="月见樽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="日隐月现，潜龙在渊">
+<meta property="og:type" content="website">
+<meta property="og:title" content="月见樽&#39;blog">
+<meta property="og:url" content="http://www.yuejianzun.xyz/page/3/index.html">
+<meta property="og:site_name" content="月见樽&#39;blog">
+<meta property="og:description" content="日隐月现，潜龙在渊">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.yuejianzun.xyz/img/had.jpg">
+<meta property="article:author" content="月见樽">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yuejianzun.xyz/img/had.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.yuejianzun.xyz/page/3/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2020-11-28 01:25:49'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/had.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><header class="full_page" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">月见樽'blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="site-info"><h1 id="site-title">月见樽'blog</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/09/16/Deep-compression%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="Deep-compression阅读笔记">Deep-compression阅读笔记</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-09-16T05:03:37.000Z" title="发表于 2018-09-16 13:03:37">2018-09-16</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a></span></div><div class="content">基本步骤
+以上是Deep compression中所述的神经网络压缩方法，主要包括三个步骤：
+
+剪枝：将部分很小的（认为不重要的）权值设为0，使权值矩阵转为一个稀疏矩阵
+量化：将剪枝后保留的权值进行量化，使剪枝后保留的权值共享一些的使用一些值，这样可以减小保存权值使用的空间，进一步压缩所需要的存储空间
+霍夫曼编码（可选）：霍夫曼编码是一种编码形式，可以减小数据的保存需要的存储空间
+
+经过以上的步骤，神经网络的存储空间可以被压缩到一个很小的值，同时提高预测运行的速度，降低功耗，且并几乎不损失准确率。
+剪枝剪枝的实现非常方便，即设定一个阈值，绝对值大于这个阈值的权值被保留，其他权值被置0，公式如下所示：
+
+pruning(x) = \begin{cases} 0 & |x| \leq TH \\ x & |x| > TH\end{cases}剪枝过后，权值矩阵由稠密矩阵转为稀疏矩阵（或由稀疏矩阵转为更稀疏的矩阵），由此权值矩阵可以使用存储稀疏矩阵的压缩存储方式存储，例如CSR(compressed sparse row) 或CSC(compressed sparse column)。该论文 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/09/05/Faster-RCNN%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="Faster-RCNN阅读笔记">Faster-RCNN阅读笔记</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-09-05T07:55:10.000Z" title="发表于 2018-09-05 15:55:10">2018-09-05</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a></span></div><div class="content">系统架构
+Faster-RCNN是Fast-RCNN的后续版本，主要针对Fast-RCNN速度过慢进行优化。在Fast-RCNN中，速度的瓶颈主要是用于生成候选区域的Selective Search过程。在Faster-RCNN中，候选区域的生成使用RPN网络，且共享的使用了卷积产生的特性，由此将候选区域的生成方式纳入神经网络的范畴下。该系统有以下部分构成：
+
+卷积神经网络：对待测图片进行几层卷积，产生高级特征，这些高级特征用于RPN生成候选框和RoI池化输入
+PRN网络：根据卷积产生的高级特性生成一系列不考虑物品类别的候选区域，即代替Selective Search方法
+Fast-CNN：RoI pool层输入的Fast-RCNN网络，输入为高级特征和候选区域，生成该候选区域的类别信息和候选区域的调整因子
+
+PRN网络PRN网络用于产生类别无关的候选区域，即代替Selective Search的功能，其结构如下：
+
+其输入为从共享卷积部分的输出feature map，该部分再经过PRN网络的卷积部分，变为PRN feature，其长宽不变，通道数变为$(4+2)n$，其中n为每个点上 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/08/19/%E6%B5%81%E6%B0%B4%E7%BA%BF%E5%BC%8Fp2p%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%88%86%E6%9E%90%E4%B8%8E%E5%AE%9E%E7%8E%B0/" title="流水线式p2p接口的分析与实现">流水线式p2p接口的分析与实现</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-08-19T14:32:00.000Z" title="发表于 2018-08-19 22:32:00">2018-08-19</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1/">硬件设计</a></span></div><div class="content">0.简介P2P接口是一种双向握手接口，传输的前级和后级各提供一个数据有效信号valid和忙信号busy信号，只有当两个信号达成某种指定情况时，握手完成，数据传输完成，否则数据传输均未完成。这可以看成一种分布式控制方式，每个模块的开发人员仅需要考虑上下级的握手信号即可。
+1.端口
+
+
+
+端口名
+类型
+位宽
+功能
+
+
+
+
+din_valid
+input
+1
+输入数据有效信号
+
+
+din_busy
+output
+1
+输入部分忙，不接受输入数据
+
+
+dout_valid
+output
+1
+输出有效信号
+
+
+dout_busy
+input
+1
+输出部分忙，下一级不接受输入
+
+
+din
+input
+-
+输入数据
+
+
+dout
+output
+-
+输出数据
+
+
+
+
+2.状态分析2.1.输入状态分析
+
+
+
+din_valid
+din_busy
+状态
+
+
+
+
+0
+0
+静默，无数据传输
+
+
+1
+0
+正常接收数据，无阻塞情况发生
+
+
+0
+1
+输入忙，但无数据输入
+
+
+1
+1
+输入数据被阻塞
+
+
+
+
+2.2.输出状态分析
+
+
+
+dout_valid
+dout_busy
+状态
+
+
+
+
+0
+0
+静默，无数据传输
+
+ ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/08/18/P2P%E6%8E%A5%E5%8F%A3%E4%B8%B2%E8%A1%8CFIR%E8%AE%BE%E8%AE%A1/" title="P2P接口串行FIR设计">P2P接口串行FIR设计</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-08-18T07:09:01.000Z" title="发表于 2018-08-18 15:09:01">2018-08-18</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/Verilog%E5%B7%A9%E5%9B%BA%E6%89%8B%E8%AE%B0/">Verilog巩固手记</a></span></div><div class="content">设计目标设计一个仅使用一个乘法器单元的参数化串行FIR，要求：
+
+FIR参数可配置
+具有双向P2P握手协议，可嵌入P2P流水线中
+当流水线后续被阻塞时，要求完成当前运算再进入等待状态
+
+结构框图
+整体结构如上图所示，共分为4个模块：
+
+P2P输入模块：输入模块，接收P2P握手信号，将数据传递给FIR滤波器并控制整个系统运行，为控制流起点
+FIR滤波器：功能模块，完成FIR滤波运算
+P2P输出端口：将功能模块的输出通过P2P握手方式发送给P2P转发模块
+P2P转发模块：隔离FIR滤波器和后向模块，使当后向模块阻塞时FIR滤波器仍能完成当前运算且不丢失数据
+
+参数说明
+
+
+
+参数
+默认值
+功能
+
+
+
+
+ADDR_WIDTH
+3
+配置地址位宽，要求为最小为ceil(log2(COM_NUM))
+
+
+DATA_WIDTH
+8
+输入数据位宽
+
+
+COM_NUM
+6
+FIR级数
+
+
+
+
+端口列表系统端口
+
+
+
+名称
+类型
+位宽
+功能
+
+
+
+
+clk
+input
+1
+系统时钟
+
+
+rst_n
+input
+1
+系统复位信号
+
+
+
+
+配置端口
+
+
+
+名称
+类型
+位宽
+功能
+
+
+
+
+cfg_addr
+in ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/08/07/Fast-RCNN%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/" title="Fast-RCNN阅读笔记">Fast-RCNN阅读笔记</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-08-07T03:45:53.000Z" title="发表于 2018-08-07 11:45:53">2018-08-07</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a></span></div><div class="content">系统架构
+由于RCNN存在流水线过长，检测速度慢的问题，Fast-RCNN几乎将整个过程置于深度学习的框架下，因此带来了准确率和速度的提升，该系统主要组成部分如上图所示，有：
+
+CNN特征提取器：与RCNN不同，该网络的输入为整张图片，输出为特征张量
+候选框提取：与RCNN相同使用Selective Search提取候选框，只是候选框通过大小变换后作用于CNN提取出的特征张量中，而不直接作用于图片
+RoI Pooling层：该层次用于将不同大小的候选框归一化到同一个大小上，然后通过全连接层计算出固定长度的特征向量
+分类器：根据特征向量对物品进行分类，列表包括物品类别和背景
+回归器：根据特征向量微调候选框位置和大小，最终生成针对候选框的调整因子
+
+该系统对于待识别图片，首先将其使用Selective Search处理获得一系列候选框，随后将其归一化到固定大小，送入CNN网络中提取特征。对于提取出的特征张量，假设其保留了原图片的空间位置信息，将候选框做对应变换后映射到特征张量上，提取出大小不同的候选区域的特征张量。对于每个候选区域的特征张量，使用RoI pooling层将其大小归一化，随后 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/07/19/RCNN%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="RCNN学习笔记">RCNN学习笔记</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-07-19T02:03:08.000Z" title="发表于 2018-07-19 10:03:08">2018-07-19</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a></span></div><div class="content">系统结构
+RCNN物品目标识别系统如上图所示，如图所示，共分为四步：
+
+候选区域提取：使用Selective search选择候选区域，并进行预处理，全部处理为相同大小
+CNN特征提取：使用CNN将特征区域图像提取为一个特征向量
+SVM分类：使用支持向量机判断支持该候选区域是否属于某一个类别
+边界回归：若确定某候选框属于某个类别，则使用回归的方式微调候选框的位置
+
+候选区域提取RCNN使用Selective search算法代替滑动框，该算法可以提取类别无关的物品候选区域。该算法分为以下步骤：
+
+初始化一些小候选框
+不断合并小候选框为大候选框，并保存所有未合并的候选框，产生一系列候选区域
+
+
+具体算法如上文所示，首先产生一系列初始区域R，并计算R中所有相邻区域之间的评分s，保存在集合S中，随后不断合并最高评分的两个区域，最终产生一系列候选区域。
+初始化初始化的过程使用论文《Efficient graph-based image segmentation》过程中的方法，即使用无向图$G=(V,E)$表示一张图片，其中V表示所有无向图中所有像素，即令每一个像素对应一个顶点；E表示连接，仅有 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/07/16/LBP%E7%89%B9%E5%BE%81%E7%89%A9%E5%93%81%E8%AF%86%E5%88%AB%E7%B3%BB%E7%BB%9F/" title="LBP特征物品识别系统">LBP特征物品识别系统</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-07-16T05:24:42.000Z" title="发表于 2018-07-16 13:24:42">2018-07-16</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E4%BC%A0%E7%BB%9F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">传统机器学习</a></span></div><div class="content">系统结构
+LBP是一种常规的人脸识别使用的特征，系统架构如上图所示，主要分为三个部分：
+
+滑动框：滑动框在图片上滑动，产生不同的子图
+LBP特征提取器：针对滑动框产生的子图，计算LBP特征
+分类器：根据LBP特征，判断当前图片是否是人脸
+
+LBP特征原始LBP特征原始LBP特征是一个3X3区域的区域特征。考虑一个像素的特征值，该特征值与周围的8个像素（3X3区域）有关，对于像素值大于该像素的周围像素赋值1，其他赋值0，如下图所示：
+
+如图中红框的中心像素，像素值为134，使用134和红框的其他像素（周围像素）比较，若大于134为1，否则为0，最后周围的8个像素的值依次为00101010，将其视为二进制数，转化为十进制就是42。
+圆形LBP特征圆形LBP特征与原始LBP特征类似，只是周围像素为一个圆形环绕的，如下图所示：
+
+LBP使用如图所示8个实心点位置的像素计算，其中四个红色实心点不落在像素上，使用双线性插值的方法计算对应的值，最后带入原始LBP的计算方法中计算中间像素的值。该LBP使用(P,R)表示，P表示带入计算的像素点数，R表示半径，如上图即为（8,2）
+系统使用的LBP系统使 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/07/16/HoG%E7%89%B9%E5%BE%81SVM%E7%89%A9%E5%93%81%E8%AF%86%E5%88%AB%E7%B3%BB%E7%BB%9F/" title="HoG特征SVM物品识别系统">HoG特征SVM物品识别系统</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-07-16T05:11:22.000Z" title="发表于 2018-07-16 13:11:22">2018-07-16</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E4%BC%A0%E7%BB%9F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">传统机器学习</a></span></div><div class="content">系统架构
+该系统仍然是基于滑动框+传统机器学习的目标识别系统，分为两个主要部分：
+
+HoG特征提取：从滑动框中提取出的子图中提取HoG特征
+支持向量机（SVM）：以子图的HoG特征为输入，判断该子图中是否有物品
+
+HoG特征该系统的最大贡献为提出基于梯度的HoG（locally normalized Histogram of Oriented Gradient）特征，该特征的计算流程分为5步，分别如下所示：
+
+归一化归一化目的是去除光线的影响，gamma校正的公式如下所示：
+
+y(x,y) = I(x,y)^{gamma}原论文尝试了多种输入方法，包括灰度图像和彩色图像与是否gamma校正的组合，由于这一步对最终结果影响很小，因此最终默认为使用彩色输入，不进行gamma校正。
+梯度计算梯度的计算使用相邻或不相邻的像素值相减获得，两个方向的梯度和计算出整体梯度的角度和模。原论文尝试了多种计算方法，最终使用的计算方法如下所示：
+
+grad_x(x,y) = I(x+1,y) - I(x-1,y) \\
+grad_y(x,y) = I(x,y+1) - I(x,y-1) \\
+||grad( ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/07/03/harr%E7%89%B9%E5%BE%81%E5%8A%A0%E7%BA%A7%E8%81%94%E5%88%86%E7%B1%BB%E5%99%A8%E7%9A%84%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E7%B3%BB%E7%BB%9F/" title="harr特征加级联分类器的目标检测系统">harr特征加级联分类器的目标检测系统</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-07-03T15:25:34.000Z" title="发表于 2018-07-03 23:25:34">2018-07-03</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E4%BC%A0%E7%BB%9F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">传统机器学习</a></span></div><div class="content">1.识别系统架构
+以上是Harr特征+级联分类器的识别系统架构图，系统分为以下几个部分：
+
+滑动框：固定大小的在原图上滑动的框，用于获取子图
+Harr特征提取器：在子图上提取指定的四种Harr特征（获取的特征非常多）
+级联分类器：基于选定的一些特征，进行分类，筛选出正例
+
+对于该目标识别器，将目标检测问题转换为目标分类问题：滑动框在原图上滑动，识别部分识别每一个滑动子图，判断是否为需要识别的目标。
+1.1.Harr特征Harr特征是一类非常简单的特征，如下图所示有四个框，这四个框的大小是可变的，使用黑色部分覆盖的像素之和减去白色部分覆盖的像素之和即为Harr特征：
+
+Harr(x) = \sum pic_{black}(x) - \sum pic_{white}(x)
+例如以下图片示意：
+
+取第一个4x4的区域数据计算第二种harr特征，被黑色覆盖的区域和为3，被白色区域覆盖的和为2，因此可获得基于第二种模板下滑动框的harr特征为3-2=1。对于基于某一个模板，一个候选框可取多个特征，例如对于24x24的滑动框，基于第一种模板（对角线模板），可以在2x2，3x3，…，24x24等多个 ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2018/07/03/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B%E6%8A%80%E6%9C%AF%E6%8C%87%E6%A0%87/" title="目标检测技术指标">目标检测技术指标</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-07-03T15:13:02.000Z" title="发表于 2018-07-03 23:13:02">2018-07-03</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a></span></div><div class="content">mAP：识别准确率mAP在目标检测中用于判断识别的准确率，即用于衡量物品被检测出的概率，其跟以下两个指标有关：
+
+Precision（准确率）：检测出的“物品有多少是真的物品
+Recall（召回率）：数据集中的物品有多少被检出
+
+对于以上两个概念，将其置于标准二分类问题框架下有以下公式：
+
+Precision = \cfrac{TP}{TP+FP} \\
+Recall = \cfrac{TP}{TP+FN}对于以上，有：
+
+TP：正例，被识别为正例
+FP：反例，被识别为正例
+TN：反例，被识别为正例
+FN：正例，被识别为反例
+
+对于不同的识别阈值，Precision和Recall会发生变化，选取多个阈值（不重新训练模型），可以获得多组Precision和Recall，将这数据绘制图像，横轴为Recall，纵轴为Precision，曲线下的面积为参数AP
+
+多次测试取平均值即为参数mAP值，该值越大说明系统性能越强
+IOU：检测效果通俗来说，IOU用于衡量目标检测中目标框的准不准，其定义为：
+
+IOU = \cfrac{A \bigcap B}{A \bigcup B}其中A为系统预测出 ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/2/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><a class="extend next" rel="next" href="/page/4/"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/had.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">月见樽</div><div class="author-info__description">日隐月现，潜龙在渊</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/qiankun214"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/09/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%EF%BC%89/" title="网络学习笔记2——信号与系统">网络学习笔记2——信号与系统</a><time datetime="2020-11-09T15:51:13.000Z" title="发表于 2020-11-09 23:51:13">2020-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/" title="网络学习笔记1——协议分层">网络学习笔记1——协议分层</a><time datetime="2020-11-06T15:51:13.000Z" title="发表于 2020-11-06 23:51:13">2020-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/" title="高级综合工具StratusHLS学习笔记(4)">高级综合工具StratusHLS学习笔记(4)</a><time datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/" title="高级综合工具StratusHLS学习笔记(3)">高级综合工具StratusHLS学习笔记(3)</a><time datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/" title="高级综合工具StratusHLS学习笔记(2)">高级综合工具StratusHLS学习笔记(2)</a><time datetime="2020-07-19T15:51:13.000Z" title="发表于 2020-07-19 23:51:13">2020-07-19</time></div></div></div></div></div><div class="card-widget card-categories"><div class="card-content"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div><ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/JavaScript%E5%AD%A6%E4%B9%A0/"><span class="card-category-list-name">JavaScript学习</span><span class="card-category-list-count">6</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Python%E5%BA%94%E7%94%A8%E6%89%8B%E8%AE%B0/"><span class="card-category-list-name">Python应用手记</span><span class="card-category-list-count">7</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/Verilog%E5%B7%A9%E5%9B%BA%E6%89%8B%E8%AE%B0/"><span class="card-category-list-name">Verilog巩固手记</span><span class="card-category-list-count">14</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E4%BC%A0%E7%BB%9F%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"><span class="card-category-list-name">传统机器学习</span><span class="card-category-list-count">16</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"><span class="card-category-list-name">数据分析</span><span class="card-category-list-count">3</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1/"><span class="card-category-list-name">硬件设计</span><span class="card-category-list-count">16</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"><span class="card-category-list-name">神经网络</span><span class="card-category-list-count">24</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/"><span class="card-category-list-name">算法学习</span><span class="card-category-list-count">15</span></a></li>
+            <li class="card-category-list-item more is-center"><a class="card-category-list-link-more" href="/categories/">
+                <span>查看更多</span><i class="fas fa-angle-right"></i></a></li>
+            </ul></div></div><div class="card-widget card-tags"><div class="card-content"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/AMBA/" style="font-size: 1.16em; color: #999b9e">AMBA</a> <a href="/tags/Detection/" style="font-size: 1.21em; color: #999ea4">Detection</a> <a href="/tags/FIFO/" style="font-size: 1.1em; color: #999">FIFO</a> <a href="/tags/JavaScript/" style="font-size: 1.27em; color: #99a0a9">JavaScript</a> <a href="/tags/MIPS/" style="font-size: 1.1em; color: #999">MIPS</a> <a href="/tags/NeuralNetwork/" style="font-size: 1.44em; color: #99a7ba">NeuralNetwork</a> <a href="/tags/Python/" style="font-size: 1.5em; color: #99a9bf">Python</a> <a href="/tags/StratusHLS/" style="font-size: 1.21em; color: #999ea4">StratusHLS</a> <a href="/tags/SystemC/" style="font-size: 1.1em; color: #999">SystemC</a> <a href="/tags/Verilog/" style="font-size: 1.39em; color: #99a4b4">Verilog</a> <a href="/tags/float32/" style="font-size: 1.1em; color: #999">float32</a> <a href="/tags/golang/" style="font-size: 1.33em; color: #99a2af">golang</a> <a href="/tags/pipeline/" style="font-size: 1.1em; color: #999">pipeline</a> <a href="/tags/%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86/" style="font-size: 1.33em; color: #99a2af">数字信号处理</a> <a href="/tags/%E7%AE%97%E6%B3%95/" style="font-size: 1.33em; color: #99a2af">算法</a> <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84/" style="font-size: 1.1em; color: #999">计算机体系结构</a> <a href="/tags/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88/" style="font-size: 1.21em; color: #999ea4">高级综合</a></div></div></div><div class="card-widget card-archives"><div class="card-content"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/11/"><span class="card-archive-list-date">十一月 2020</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/09/"><span class="card-archive-list-date">九月 2020</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/07/"><span class="card-archive-list-date">七月 2020</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/01/"><span class="card-archive-list-date">一月 2020</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2019/07/"><span class="card-archive-list-date">七月 2019</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2019/05/"><span class="card-archive-list-date">五月 2019</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2019/04/"><span class="card-archive-list-date">四月 2019</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2019/01/"><span class="card-archive-list-date">一月 2019</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item more is-center"><a class="card-archive-list-link-more" href="/archives/">
+              <span>查看更多</span><i class="fas fa-angle-right"  ></i></a></li></ul></div></div><div class="card-widget card-webinfo"><div class="card-content"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">103</div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">149.7k</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2020-11-27T17:25:49.050Z"></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 月见樽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

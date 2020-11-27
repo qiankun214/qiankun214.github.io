@@ -1,0 +1,281 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DianNao运算单元与体系结构分析 | 月见樽'blog</title><meta name="keywords" content="NeuralNetwork"><meta name="author" content="月见樽"><meta name="copyright" content="月见樽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="运算单元基本信息    名称 参数     数据输入位宽 $T_n \times DW$bit   权值输入位宽 $T_n \times T_n \times DW$bit   数据输出位宽 $T_n \times DW$bit   功能 矩阵乘法、最大值池化、平均值池化   乘法器数量 $T_n \times T_n \times T_n$   加法器数量 $T_n \times (T_n -">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DianNao运算单元与体系结构分析">
+<meta property="og:url" content="http://www.yuejianzun.xyz/2018/12/24/DianNao%E8%BF%90%E7%AE%97%E5%8D%95%E5%85%83%E4%B8%8E%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="月见樽&#39;blog">
+<meta property="og:description" content="运算单元基本信息    名称 参数     数据输入位宽 $T_n \times DW$bit   权值输入位宽 $T_n \times T_n \times DW$bit   数据输出位宽 $T_n \times DW$bit   功能 矩阵乘法、最大值池化、平均值池化   乘法器数量 $T_n \times T_n \times T_n$   加法器数量 $T_n \times (T_n -">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.yuejianzun.xyz/img/1.PNG">
+<meta property="article:published_time" content="2018-12-24T03:00:44.000Z">
+<meta property="article:modified_time" content="2020-11-27T16:47:57.062Z">
+<meta property="article:author" content="月见樽">
+<meta property="article:tag" content="NeuralNetwork">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yuejianzun.xyz/img/1.PNG"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.yuejianzun.xyz/2018/12/24/DianNao%E8%BF%90%E7%AE%97%E5%8D%95%E5%85%83%E4%B8%8E%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-11-28 00:47:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/had.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/1.PNG)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">月见樽'blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">DianNao运算单元与体系结构分析</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2018-12-24T03:00:44.000Z" title="发表于 2018-12-24 11:00:44">2018-12-24</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-27T16:47:57.062Z" title="更新于 2020-11-28 00:47:57">2020-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%A1%AC%E4%BB%B6%E8%AE%BE%E8%AE%A1/">硬件设计</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="运算单元"><a href="#运算单元" class="headerlink" title="运算单元"></a>运算单元</h1><h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据输入位宽</td>
+<td>$T_n \times DW$bit</td>
+</tr>
+<tr>
+<td>权值输入位宽</td>
+<td>$T_n \times T_n \times DW$bit</td>
+</tr>
+<tr>
+<td>数据输出位宽</td>
+<td>$T_n \times DW$bit</td>
+</tr>
+<tr>
+<td>功能</td>
+<td>矩阵乘法、最大值池化、平均值池化</td>
+</tr>
+<tr>
+<td>乘法器数量</td>
+<td>$T_n \times T_n \times T_n$</td>
+</tr>
+<tr>
+<td>加法器数量</td>
+<td>$T_n \times (T_n - 1)$</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><img src="/2018/12/24/DianNao%E8%BF%90%E7%AE%97%E5%8D%95%E5%85%83%E4%B8%8E%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/strutrue.png" class="">
+<p>NFU的整体结构如上所示，该部分分为三个部分，分别是NFU-1、NFU-2和NFU-3三个部分，分别是乘法器阵列，加法或最大值树和非线性函数部分。NFU-1由一些乘法器阵列构成，如下图所示。一个单元具有一个输入数据$I<em>i$和$T_n$个输入权值，一个单元中共有$T_n$个乘法器，分别计算$I_i \times W</em>{ji}$的值，具有$T_n$个输出。</p>
+<img src="/2018/12/24/DianNao%E8%BF%90%E7%AE%97%E5%8D%95%E5%85%83%E4%B8%8E%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/nfu1_unit.png" class="">
+<p>$T<em>n$个输入数据和$T_n \times T_n$输入权值经过NFU-1处理后，变为$T_n \times T_n$个部分积，第i个乘法器单元的第j个输出为$P</em>{ij} = I<em>i  \times W</em>{ji}$。所有部分积经过route分配给$T_n$NFU-2单元，分配规则如下所示，第i个NFU-2单元的输入是所有NFU-1单元的第i个输出。</p>
+<script type="math/tex; mode=display">
+Input_i = \{P_{1,i},P_{2,i},P_{3,i},...,P_{T_n,i}\}</script><p>NFU-2单元为加法/平均值（加法树前添加位移单元）/最大值（加法树的加法器可配置为取最大值）树，用于计算$T_n$个输入的和/平均值或最大值，如下所示：</p>
+<script type="math/tex; mode=display">
+Output_i = mux\{\sum\limits_{k=1}^{T_n}P_{k,i},\frac{1}{T_n}\sum\limits_{k=1}^{T_n}P_{k,i},\max\limits_{0 \leq k \leq T_n}\{P_{k,i}\}\}</script><p>NFU-2单元的输出为一个数据，整个NFU-2部分输出为$T_n$个部分操作数据。该输出可以流向NFU-3部分作为NFU-2的输出，也可以流向D-Reg作为部分和临时保存以节约带宽。NFU-3为一个加法器和一个非线性单元。非线性单元使用分段线性逼近非线性函数，分段线性逼近参数保存在RAM中，可通过更改该参数使该单元实现任意非线性函数。</p>
+<h2 id="运算映射"><a href="#运算映射" class="headerlink" title="运算映射"></a>运算映射</h2><h3 id="矩阵乘法-卷积"><a href="#矩阵乘法-卷积" class="headerlink" title="矩阵乘法/卷积"></a>矩阵乘法/卷积</h3><p>映射以下矩阵乘法：</p>
+<script type="math/tex; mode=display">
+W \times x = y,W \in R^{T_n \times T_n},x \in R^{T_n}\\
+y_{i} = \sum\limits_{j=0}^{T_n}{w_{ij}x_j}</script><p>有以下配置：</p>
+<ul>
+<li>数据输入：第i个NFU-1单元数据输入为$x_i$</li>
+<li>权值输入：第i个NFU-1单元的第j个权值输入为$w_{ji}$，即第i个NFU-1单元输入的数据为W矩阵的第i列</li>
+<li>NFU-2：配置和实现加法树功能</li>
+</ul>
+<h3 id="池化"><a href="#池化" class="headerlink" title="池化"></a>池化</h3><p>映射以下最大值操作：</p>
+<script type="math/tex; mode=display">
+y = Max(x),x \in R^{T_n}</script><p>有以下配置：</p>
+<ul>
+<li>数据输入：第i个NFU-1单元数据输入为$x_i$</li>
+<li>权值输入：所有权值配置为1</li>
+<li>NFU-2：配置实现最大值树功能（若为求平均值，配置为平均值树）</li>
+</ul>
+<p>对于x的维度小于$T_n$时，推测可以将权值部分设置为1部分设置为0作为掩码，同时计算多个最大值/平均值操作</p>
+<h1 id="系统结构"><a href="#系统结构" class="headerlink" title="系统结构"></a>系统结构</h1><img src="/2018/12/24/DianNao%E8%BF%90%E7%AE%97%E5%8D%95%E5%85%83%E4%B8%8E%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/DianNao.png" class="">
+<p>系统结构如上所述，各部分：</p>
+<ul>
+<li>NFU：神经计算单元，已经加入compute_unit的pool中</li>
+<li>分裂缓存：按功能分裂为三个的缓存，已经加入memory的pool中</li>
+<li>控制模块CP：指令使控制，每个指令分为四个部分，分别是NBin指令，NBout指令，SB指令和NFU指令</li>
+</ul>
+<p>系统使用指令控制，每条指令可以实现一次矩阵-向量乘法运算，每个指令的四个部分被解耦后发送给四个部分，因此存储器的load指令不需要等待NFU运算完成，对于三个缓存，执行完当前步骤后立刻执行下一个指令中对应部分的指令，可以实现数据的预取，但是考虑计算正确性，NFU必须等待运算所需要的数据预存完成后才能执行。</p>
+<h1 id="计算映射"><a href="#计算映射" class="headerlink" title="计算映射"></a>计算映射</h1><p>对于一个矩阵乘法：</p>
+<script type="math/tex; mode=display">
+W \times x = y</script><p>首先进行矩阵分块，参数矩阵W分块为$C^{T_n \times T_n}$的矩阵，输入向量x分块为$C^{T_n}$，再进行计算，如下图所示：</p>
+<img src="/2018/12/24/DianNao%E8%BF%90%E7%AE%97%E5%8D%95%E5%85%83%E4%B8%8E%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/mul.png" class="">
+<p>分块后，原论文给出的加速器参数为$T_n=16$，计算需要的权值矩阵有$W \in Q^{256 \times 8192}$，数据向量有$x \in Q^{8192}$，缓存载入的规则为：</p>
+<ul>
+<li>Nbin：数据向量分块为$\frac{8192 \times 2B}{2KB} = 8$块，每一块数据大小为2KB=$16 \times 2B \times 64$，每次载入一块。即每次载入的输入数据包括64个逻辑块。</li>
+<li>SB：每次载入32768B=$16 \times 16 \times 2B \times 64$，即每次载入的数据包括64个逻辑块。</li>
+</ul>
+<p>映射一个矩阵乘法，步骤为：</p>
+<ol>
+<li>Nbin载入前四个逻辑块D1,D2,~,D64。SB载入与前四个输入逻辑块运算相关的64个数据块W11、W12、W13~W64,1（分块后W的前4列，前16行的块）。NFU计算对应乘法（例如$W<em>{11} \times D_1$，$W</em>{12} \times D<em>2$，…,$W</em>{1,64} \times D_{64}$），并将部分和存储在Nbout中</li>
+<li>Nbin载入第二块输入数据，包括D65~D128，SB继续载入与D1~D64运算相关的权值块W2,1~W2,64。NFU继续计算D1~D64对应乘法。直到将D1~D64相关的乘法计算完成以后，才进行D65~D128相关的乘法。</li>
+<li>…</li>
+<li>当某个输出的计算完成后，Nbout将其输出到外部缓存中</li>
+</ol>
+<p>复用策略为仅复用输入，仅当这一块输入数据需要参与的所有运算完成后才开始进行下一块输入相关的计算。对于每一块输入映射过程如下图所示：</p>
+<img src="/2018/12/24/DianNao%E8%BF%90%E7%AE%97%E5%8D%95%E5%85%83%E4%B8%8E%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/map.png" class="">
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">月见樽</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.yuejianzun.xyz/2018/12/24/DianNao%E8%BF%90%E7%AE%97%E5%8D%95%E5%85%83%E4%B8%8E%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/">http://www.yuejianzun.xyz/2018/12/24/DianNao%E8%BF%90%E7%AE%97%E5%8D%95%E5%85%83%E4%B8%8E%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E5%88%86%E6%9E%90/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.yuejianzun.xyz" target="_blank">月见樽'blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/NeuralNetwork/">NeuralNetwork</a></div><div class="post_share"><div class="social-share" data-image="/img/1.PNG" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2019/01/22/SystemC%E5%85%A5%E9%97%A8%E7%AC%94%E8%AE%B0/"><img class="prev-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">SystemC入门笔记</div></div></a></div><div class="next-post pull-right"><a href="/2018/11/18/AXI%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-1/"><img class="next-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">AXI学习笔记-1</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2018/02/21/CNN的反向传播/" title="CNN的反向传播"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-02-21</div><div class="title">CNN的反向传播</div></div></a></div><div><a href="/2018/03/11/CapsNet学习笔记/" title="CapsNet学习笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-03-11</div><div class="title">CapsNet学习笔记</div></div></a></div><div><a href="/2018/09/16/Deep-compression阅读笔记/" title="Deep-compression阅读笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-09-16</div><div class="title">Deep-compression阅读笔记</div></div></a></div><div><a href="/2019/07/22/EIE结构与算法映射/" title="EIE结构与算法映射"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-07-22</div><div class="title">EIE结构与算法映射</div></div></a></div><div><a href="/2018/08/07/Fast-RCNN阅读笔记/" title="Fast-RCNN阅读笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-08-07</div><div class="title">Fast-RCNN阅读笔记</div></div></a></div><div><a href="/2018/09/05/Faster-RCNN阅读笔记/" title="Faster-RCNN阅读笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-09-05</div><div class="title">Faster-RCNN阅读笔记</div></div></a></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/had.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">月见樽</div><div class="author-info__description">日隐月现，潜龙在渊</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/qiankun214"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E5%8D%95%E5%85%83"><span class="toc-number">1.</span> <span class="toc-text">运算单元</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="toc-number">1.1.</span> <span class="toc-text">基本信息</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%93%E6%9E%84"><span class="toc-number">1.2.</span> <span class="toc-text">结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%90%E7%AE%97%E6%98%A0%E5%B0%84"><span class="toc-number">1.3.</span> <span class="toc-text">运算映射</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A9%E9%98%B5%E4%B9%98%E6%B3%95-%E5%8D%B7%E7%A7%AF"><span class="toc-number">1.3.1.</span> <span class="toc-text">矩阵乘法&#x2F;卷积</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B1%A0%E5%8C%96"><span class="toc-number">1.3.2.</span> <span class="toc-text">池化</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E7%BB%93%E6%9E%84"><span class="toc-number">2.</span> <span class="toc-text">系统结构</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%A1%E7%AE%97%E6%98%A0%E5%B0%84"><span class="toc-number">3.</span> <span class="toc-text">计算映射</span></a></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/09/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%EF%BC%89/" title="网络学习笔记2——信号与系统">网络学习笔记2——信号与系统</a><time datetime="2020-11-09T15:51:13.000Z" title="发表于 2020-11-09 23:51:13">2020-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/" title="网络学习笔记1——协议分层">网络学习笔记1——协议分层</a><time datetime="2020-11-06T15:51:13.000Z" title="发表于 2020-11-06 23:51:13">2020-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/" title="高级综合工具StratusHLS学习笔记(4)">高级综合工具StratusHLS学习笔记(4)</a><time datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/" title="高级综合工具StratusHLS学习笔记(3)">高级综合工具StratusHLS学习笔记(3)</a><time datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/" title="高级综合工具StratusHLS学习笔记(2)">高级综合工具StratusHLS学习笔记(2)</a><time datetime="2020-07-19T15:51:13.000Z" title="发表于 2020-07-19 23:51:13">2020-07-19</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 月见樽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>分时复用的移位相加乘法器 | 月见樽'blog</title><meta name="keywords" content="Verilog,数字信号处理"><meta name="author" content="月见樽"><meta name="copyright" content="月见樽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="基本算法移位相加即是日常我们使用的手算算法，移位相加的描述如下  设置积的初值为0 若乘数的最低位为0，则积不变，否则累加被乘数 若乘数的第一位为0，则积不变，否则累加向左移位一位的被乘数 … 若乘数的第n位（最高位）为0，则积不变，否则累加向左移位n位的被乘数RTL代码12345678910111213module serial_shiftadder_multipcation #  (	para">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分时复用的移位相加乘法器">
+<meta property="og:url" content="http://www.yuejianzun.xyz/2017/09/06/%E5%88%86%E6%97%B6%E5%A4%8D%E7%94%A8%E7%9A%84%E7%A7%BB%E4%BD%8D%E7%9B%B8%E5%8A%A0%E4%B9%98%E6%B3%95%E5%99%A8/index.html">
+<meta property="og:site_name" content="月见樽&#39;blog">
+<meta property="og:description" content="基本算法移位相加即是日常我们使用的手算算法，移位相加的描述如下  设置积的初值为0 若乘数的最低位为0，则积不变，否则累加被乘数 若乘数的第一位为0，则积不变，否则累加向左移位一位的被乘数 … 若乘数的第n位（最高位）为0，则积不变，否则累加向左移位n位的被乘数RTL代码12345678910111213module serial_shiftadder_multipcation #  (	para">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.yuejianzun.xyz/img/1.PNG">
+<meta property="article:published_time" content="2017-09-06T04:35:45.000Z">
+<meta property="article:modified_time" content="2020-11-27T16:47:57.156Z">
+<meta property="article:author" content="月见樽">
+<meta property="article:tag" content="Verilog">
+<meta property="article:tag" content="数字信号处理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yuejianzun.xyz/img/1.PNG"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.yuejianzun.xyz/2017/09/06/%E5%88%86%E6%97%B6%E5%A4%8D%E7%94%A8%E7%9A%84%E7%A7%BB%E4%BD%8D%E7%9B%B8%E5%8A%A0%E4%B9%98%E6%B3%95%E5%99%A8/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-11-28 00:47:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/had.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/1.PNG)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">月见樽'blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">分时复用的移位相加乘法器</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2017-09-06T04:35:45.000Z" title="发表于 2017-09-06 12:35:45">2017-09-06</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-27T16:47:57.156Z" title="更新于 2020-11-28 00:47:57">2020-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Verilog%E5%B7%A9%E5%9B%BA%E6%89%8B%E8%AE%B0/">Verilog巩固手记</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">768</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="基本算法"><a href="#基本算法" class="headerlink" title="基本算法"></a>基本算法</h2><p>移位相加即是日常我们使用的手算算法，移位相加的描述如下</p>
+<ul>
+<li>设置积的初值为0</li>
+<li>若乘数的最低位为0，则积不变，否则累加被乘数</li>
+<li>若乘数的第一位为0，则积不变，否则累加向左移位一位的被乘数</li>
+<li>…</li>
+<li>若乘数的第n位（最高位）为0，则积不变，否则累加向左移位n位的被乘数<h2 id="RTL代码"><a href="#RTL代码" class="headerlink" title="RTL代码"></a>RTL代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">module serial_shiftadder_multipcation #  (</span><br><span class="line">	parameter WIDTH &#x3D; 4</span><br><span class="line">)(</span><br><span class="line">	input clk,    &#x2F;&#x2F; Clock</span><br><span class="line">	input rst_n,  &#x2F;&#x2F; Asynchronous reset active low</span><br><span class="line"></span><br><span class="line">	input multiplier_valid,</span><br><span class="line">	input [WIDTH - 1:0]multiplier1,</span><br><span class="line">	input [WIDTH - 1:0]multiplier2,</span><br><span class="line"></span><br><span class="line">	output reg product_valid,</span><br><span class="line">	output reg [2 * WIDTH - 1:0]product</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+接口定义部分，采用参数化设计，WIDTH为乘数/被乘数的位宽，multiplier_valid拉高时表示输入有效，并开始计算。product_valid被拉高时表示计算完成，当前的输出是有效的<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;*****************buffer and shift*******************&#x2F;</span><br><span class="line">reg [WIDTH - 1:0]min_mult;</span><br><span class="line">reg [2 * WIDTH - 1:0]max_mult;</span><br><span class="line">always @ (posedge clk or negedge rst_n) begin</span><br><span class="line">	if(~rst_n) begin</span><br><span class="line">		&#123;max_mult,min_mult&#125; &lt;&#x3D; &#39;b0;</span><br><span class="line">	end else if(multiplier_valid &#x3D;&#x3D; 1&#39;b1) begin</span><br><span class="line">		if(multiplier1 &gt; multiplier2) begin</span><br><span class="line">			max_mult &lt;&#x3D; &#39;&#123;multiplier1&#125;;</span><br><span class="line">			min_mult &lt;&#x3D; multiplier2;</span><br><span class="line">		end else begin</span><br><span class="line">			max_mult &lt;&#x3D; &#39;&#123;multiplier2&#125;;</span><br><span class="line">			min_mult &lt;&#x3D; multiplier1;</span><br><span class="line">		end</span><br><span class="line">	end else if(min_mult !&#x3D; &#39;b0) begin</span><br><span class="line">		max_mult &lt;&#x3D; max_mult &lt;&lt; 1;</span><br><span class="line">		min_mult &lt;&#x3D; min_mult &gt;&gt; 1;</span><br><span class="line">	end else begin</span><br><span class="line">		max_mult &lt;&#x3D; max_mult;</span><br><span class="line">		min_mult &lt;&#x3D; min_mult;</span><br><span class="line">	end</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+移位部分，有输入时比较两个输入的大小，使用小的数控制迭代数量，减小时间消耗。若较小的乘数不为0，则将较大的数向左移位，较小的的数向右位移。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;******************adder********************&#x2F;</span><br><span class="line">always @ (posedge clk or negedge rst_n) begin</span><br><span class="line">	if(~rst_n) begin</span><br><span class="line">		&#123;product_valid,product&#125; &lt;&#x3D; &#39;b0;</span><br><span class="line">	end else if(min_mult[0] &#x3D;&#x3D; 1&#39;b1) begin</span><br><span class="line">		product &lt;&#x3D; product + max_mult;</span><br><span class="line">		product_valid &lt;&#x3D; 1&#39;b0;</span><br><span class="line">	end else if(min_mult !&#x3D; &#39;b0) begin</span><br><span class="line">		product &lt;&#x3D; product;</span><br><span class="line">		product_valid &lt;&#x3D; 1&#39;b0;</span><br><span class="line">	end else if(multiplier_valid &#x3D;&#x3D; 1&#39;b1) begin</span><br><span class="line">		product &lt;&#x3D; &#39;b0;</span><br><span class="line">		product_valid &lt;&#x3D; 1&#39;b0;</span><br><span class="line">	end else begin</span><br><span class="line">		product &lt;&#x3D; product;</span><br><span class="line">		product_valid &lt;&#x3D; 1&#39;b1;</span><br><span class="line">	end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">endmodule</span><br></pre></td></tr></table></figure>
+累加部分，若较小的乘数最低位为0，保持积不变，否则累加当前的大乘数，当小乘数为0是，表示运算已经结束，输出有效拉高。<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2>使用自动化测试，使用高层次方法计算积，再与输出比较看是否相等<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">module mult_tb (</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">parameter WIDTH &#x3D; 4;</span><br><span class="line"></span><br><span class="line">logic clk,rst_n;</span><br><span class="line">logic multiplier_valid;</span><br><span class="line">logic [WIDTH - 1:0]multiplier1;</span><br><span class="line">logic [WIDTH - 1:0]multiplier2;</span><br><span class="line"></span><br><span class="line">logic product_valid;</span><br><span class="line">logic [2 * WIDTH - 1:0]product;</span><br><span class="line"></span><br><span class="line">serial_shiftadder_multipcation #  (</span><br><span class="line">	.WIDTH(WIDTH)</span><br><span class="line">) dut (</span><br><span class="line">	.clk(clk),    &#x2F;&#x2F; Clock</span><br><span class="line">	.rst_n(rst_n),  &#x2F;&#x2F; Asynchronous reset active low</span><br><span class="line"></span><br><span class="line">	.multiplier_valid(multiplier_valid),</span><br><span class="line">	.multiplier1(multiplier1),</span><br><span class="line">	.multiplier2(multiplier2),</span><br><span class="line"></span><br><span class="line">	.product_valid(product_valid),</span><br><span class="line">	.product(product)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">initial begin</span><br><span class="line">	clk &#x3D; 1&#39;b0;</span><br><span class="line">	forever begin</span><br><span class="line">		# 50 clk &#x3D; ~clk;</span><br><span class="line">	end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">initial begin</span><br><span class="line">	rst_n &#x3D; 1&#39;b1;</span><br><span class="line">	# 5 rst_n &#x3D; 1&#39;b0;</span><br><span class="line">	# 10 rst_n &#x3D; 1&#39;b1;</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">initial begin</span><br><span class="line">	&#123;multiplier_valid,multiplier1,multiplier2&#125; &#x3D; &#39;b0;</span><br><span class="line">	forever begin</span><br><span class="line">		@(negedge clk);</span><br><span class="line">		if(product_valid &#x3D;&#x3D; 1&#39;b1) begin</span><br><span class="line">			multiplier1 &#x3D; (WIDTH)&#39;($urandom_range(0,2 ** WIDTH));</span><br><span class="line">			multiplier2 &#x3D; (WIDTH)&#39;($urandom_range(0,2 ** WIDTH));</span><br><span class="line">			multiplier_valid &#x3D; 1&#39;b1;</span><br><span class="line">		end else begin</span><br><span class="line">			multiplier_valid &#x3D; 1&#39;b0;</span><br><span class="line">		end</span><br><span class="line">	end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">logic [2 * WIDTH - 1:0]exp;</span><br><span class="line">initial begin</span><br><span class="line">	forever begin</span><br><span class="line">		@(posedge product_valid);</span><br><span class="line">		exp &#x3D; multiplier1 * multiplier2;</span><br><span class="line">		if(exp &#x3D;&#x3D; product) begin</span><br><span class="line">			$display(&quot;successfully, mult1&#x3D;%d mult2&#x3D;%d product&#x3D;%d&quot;,multiplier1,multiplier2,product);</span><br><span class="line">		end else begin</span><br><span class="line">			$display(&quot;failed,mult1&#x3D;%d mult2&#x3D;%d product&#x3D;%d exp&#x3D;%d&quot;,multiplier1,multiplier2,product,exp);</span><br><span class="line">		end</span><br><span class="line">	end</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">endmodule</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">月见樽</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.yuejianzun.xyz/2017/09/06/%E5%88%86%E6%97%B6%E5%A4%8D%E7%94%A8%E7%9A%84%E7%A7%BB%E4%BD%8D%E7%9B%B8%E5%8A%A0%E4%B9%98%E6%B3%95%E5%99%A8/">http://www.yuejianzun.xyz/2017/09/06/%E5%88%86%E6%97%B6%E5%A4%8D%E7%94%A8%E7%9A%84%E7%A7%BB%E4%BD%8D%E7%9B%B8%E5%8A%A0%E4%B9%98%E6%B3%95%E5%99%A8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.yuejianzun.xyz" target="_blank">月见樽'blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Verilog/">Verilog</a><a class="post-meta__tags" href="/tags/%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86/">数字信号处理</a></div><div class="post_share"><div class="social-share" data-image="/img/1.PNG" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2017/09/06/%E5%85%A8%E5%B9%B6%E8%A1%8C%E6%B5%81%E6%B0%B4%E7%BA%BF%E7%A7%BB%E4%BD%8D%E7%9B%B8%E5%8A%A0%E4%B9%98%E6%B3%95%E5%99%A8/"><img class="prev-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">全并行流水移位相加乘法器</div></div></a></div><div class="next-post pull-right"><a href="/2017/09/06/%E5%9F%BA%E4%BA%8EOpenCv-Python%E7%9A%84%E8%A7%86%E9%A2%91%E7%BB%84%E5%90%88/"><img class="next-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">基于OpenCv-Python的视频组合</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2018/08/18/P2P接口串行FIR设计/" title="P2P接口串行FIR设计"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-08-18</div><div class="title">P2P接口串行FIR设计</div></div></a></div><div><a href="/2017/09/06/ROM乘法器/" title="ROM乘法器"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-09-06</div><div class="title">ROM乘法器</div></div></a></div><div><a href="/2018/11/14/booth乘法器/" title="booth乘法器"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-11-14</div><div class="title">booth乘法器</div></div></a></div><div><a href="/2017/09/13/不恢复余数除法器/" title="不恢复余数除法器"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-09-13</div><div class="title">不恢复余数除法器</div></div></a></div><div><a href="/2017/09/06/全并行流水线移位相加乘法器/" title="全并行流水移位相加乘法器"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-09-06</div><div class="title">全并行流水移位相加乘法器</div></div></a></div><div><a href="/2019/07/09/基2FFT原理/" title="基2FFT原理"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-07-09</div><div class="title">基2FFT原理</div></div></a></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/had.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">月见樽</div><div class="author-info__description">日隐月现，潜龙在渊</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/qiankun214"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E7%AE%97%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">基本算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RTL%E4%BB%A3%E7%A0%81"><span class="toc-number">2.</span> <span class="toc-text">RTL代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-number">3.</span> <span class="toc-text">测试</span></a></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/09/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%EF%BC%89/" title="网络学习笔记2——信号与系统">网络学习笔记2——信号与系统</a><time datetime="2020-11-09T15:51:13.000Z" title="发表于 2020-11-09 23:51:13">2020-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/" title="网络学习笔记1——协议分层">网络学习笔记1——协议分层</a><time datetime="2020-11-06T15:51:13.000Z" title="发表于 2020-11-06 23:51:13">2020-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/" title="高级综合工具StratusHLS学习笔记(4)">高级综合工具StratusHLS学习笔记(4)</a><time datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/" title="高级综合工具StratusHLS学习笔记(3)">高级综合工具StratusHLS学习笔记(3)</a><time datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/" title="高级综合工具StratusHLS学习笔记(2)">高级综合工具StratusHLS学习笔记(2)</a><time datetime="2020-07-19T15:51:13.000Z" title="发表于 2020-07-19 23:51:13">2020-07-19</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 月见樽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

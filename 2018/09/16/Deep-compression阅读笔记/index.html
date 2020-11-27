@@ -1,0 +1,283 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Deep-compression阅读笔记 | 月见樽'blog</title><meta name="keywords" content="NeuralNetwork"><meta name="author" content="月见樽"><meta name="copyright" content="月见樽"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="基本步骤 以上是Deep compression中所述的神经网络压缩方法，主要包括三个步骤：  剪枝：将部分很小的（认为不重要的）权值设为0，使权值矩阵转为一个稀疏矩阵 量化：将剪枝后保留的权值进行量化，使剪枝后保留的权值共享一些的使用一些值，这样可以减小保存权值使用的空间，进一步压缩所需要的存储空间 霍夫曼编码（可选）：霍夫曼编码是一种编码形式，可以减小数据的保存需要的存储空间  经过以上的步骤">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Deep-compression阅读笔记">
+<meta property="og:url" content="http://www.yuejianzun.xyz/2018/09/16/Deep-compression%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="月见樽&#39;blog">
+<meta property="og:description" content="基本步骤 以上是Deep compression中所述的神经网络压缩方法，主要包括三个步骤：  剪枝：将部分很小的（认为不重要的）权值设为0，使权值矩阵转为一个稀疏矩阵 量化：将剪枝后保留的权值进行量化，使剪枝后保留的权值共享一些的使用一些值，这样可以减小保存权值使用的空间，进一步压缩所需要的存储空间 霍夫曼编码（可选）：霍夫曼编码是一种编码形式，可以减小数据的保存需要的存储空间  经过以上的步骤">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://www.yuejianzun.xyz/img/1.PNG">
+<meta property="article:published_time" content="2018-09-16T05:03:37.000Z">
+<meta property="article:modified_time" content="2020-11-27T16:47:57.058Z">
+<meta property="article:author" content="月见樽">
+<meta property="article:tag" content="NeuralNetwork">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.yuejianzun.xyz/img/1.PNG"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://www.yuejianzun.xyz/2018/09/16/Deep-compression%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2020-11-28 00:47:57'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(function () {  window.activateDarkMode = function () {
+    document.documentElement.setAttribute('data-theme', 'dark')
+    if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+    }
+  }
+  window.activateLightMode = function () {
+    document.documentElement.setAttribute('data-theme', 'light')
+   if (document.querySelector('meta[name="theme-color"]') !== null) {
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+    }
+  }
+  const autoChangeMode = 'false'
+  const t = saveToLocal.get('theme')
+  if (autoChangeMode === '1') {
+    const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+    const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+    const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+    if (t === undefined) {
+      if (isLightMode) activateLightMode()
+      else if (isDarkMode) activateDarkMode()
+      else if (isNotSpecified || hasNoSupport) {
+        const now = new Date()
+        const hour = now.getHours()
+        const isNight = hour <= 6 || hour >= 18
+        isNight ? activateDarkMode() : activateLightMode()
+      }
+      window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+        if (saveToLocal.get('theme') === undefined) {
+          e.matches ? activateDarkMode() : activateLightMode()
+        }
+      })
+    } else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else if (autoChangeMode === '2') {
+    const now = new Date()
+    const hour = now.getHours()
+    const isNight = hour <= 6 || hour >= 18
+    if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+    else if (t === 'light') activateLightMode()
+    else activateDarkMode()
+  } else {
+    if (t === 'dark') activateDarkMode()
+    else if (t === 'light') activateLightMode()
+  }const asideStatus = saveToLocal.get('aside-status')
+if (asideStatus !== undefined) {
+   if (asideStatus === 'hide') {
+     document.documentElement.classList.add('hide-aside')
+   } else {
+     document.documentElement.classList.remove('hide-aside')
+   }
+}})()</script><meta name="generator" content="Hexo 5.2.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="author-avatar"><img class="avatar-img" src="/img/had.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div></div></div><div id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/1.PNG)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">月见樽'blog</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><h1 class="post-title">Deep-compression阅读笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2018-09-16T05:03:37.000Z" title="发表于 2018-09-16 13:03:37">2018-09-16</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-11-27T16:47:57.058Z" title="更新于 2020-11-28 00:47:57">2020-11-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/">神经网络</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="基本步骤"><a href="#基本步骤" class="headerlink" title="基本步骤"></a>基本步骤</h1><img src="/2018/09/16/Deep-compression%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/pipeline.png" class="">
+<p>以上是Deep compression中所述的神经网络压缩方法，主要包括三个步骤：</p>
+<ul>
+<li>剪枝：将部分很小的（认为不重要的）权值设为0，使权值矩阵转为一个稀疏矩阵</li>
+<li>量化：将剪枝后保留的权值进行量化，使剪枝后保留的权值共享一些的使用一些值，这样可以减小保存权值使用的空间，进一步压缩所需要的存储空间</li>
+<li>霍夫曼编码（可选）：霍夫曼编码是一种编码形式，可以减小数据的保存需要的存储空间</li>
+</ul>
+<p>经过以上的步骤，神经网络的存储空间可以被压缩到一个很小的值，同时提高预测运行的速度，降低功耗，且并几乎不损失准确率。</p>
+<h2 id="剪枝"><a href="#剪枝" class="headerlink" title="剪枝"></a>剪枝</h2><p>剪枝的实现非常方便，即设定一个阈值，绝对值大于这个阈值的权值被保留，其他权值被置0，公式如下所示：</p>
+<script type="math/tex; mode=display">
+pruning(x) = \begin{cases} 0 & |x| \leq TH \\ x & |x| > TH\end{cases}</script><p>剪枝过后，权值矩阵由稠密矩阵转为稀疏矩阵（或由稀疏矩阵转为更稀疏的矩阵），由此权值矩阵可以使用存储稀疏矩阵的压缩存储方式存储，例如CSR(compressed sparse row) 或CSC(compressed sparse column)。该论文在CSR和CSC的基础上，将index上的值由绝对坐标转为偏移量，如下所示：</p>
+<img src="/2018/09/16/Deep-compression%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/pruning.PNG" class="">
+<p>即原来的存储方式为：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>idx</th>
+<th>1</th>
+<th>4</th>
+<th>15</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td>3.4</td>
+<td>0.9</td>
+<td>1.7</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>现在的存储方式为：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>diff（3bit）</th>
+<th>1</th>
+<th>3</th>
+<th>8</th>
+<th>3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>value</td>
+<td>3.4</td>
+<td>0.9</td>
+<td>0</td>
+<td>1.7</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>这样的好处是diff可以使用更少的bit为存储，若发生偏移量超过bit位可表示的范围时，插入额外的0以补齐偏移。</p>
+<h2 id="量化"><a href="#量化" class="headerlink" title="量化"></a>量化</h2><p>量化是一种近似的过程，以适度的误差为代价，使无限精度（或很高精度）的数值可以使用较少的位数表示。这里的量化是指定一系列值，使所有的权值都从中进行选择，即完成所有权值的数值共享。该过程分为以下几个步骤：</p>
+<ul>
+<li>初始化k-means质心：因为量化过程通过k-means实现，k-means质心的初值对结果的影响很大，有三种方法：均匀量化，随机量化和按密度量化，论文中证明使用均匀量化的初始化效果较好，均匀量化的量化输出为在权值的最大值和最小值之间隔均匀的去量化输出，如下所示，其中n为量化的位数：</li>
+</ul>
+<script type="math/tex; mode=display">
+c_k^{init} = w_{min} + k \times \cfrac{w_{max} - w_{min}}{2^n}</script><ul>
+<li>确定量化阈值：即确定对于每一个权值$w_{ij}$使用哪个量化输出$c_k$代替值，这一步通常使用一维的k-means确定，k-means的初值由上一步确定。一个簇内的权值均共享一个值（质心值）。需要注意的是，一旦某个权值指定了使用量化输出$c_k$的值量化，这一选择关系不再发生改变，即使下一步量化输出微调后单个权值的量化误差变大。</li>
+<li>进行微调：对k-means的质心再进行微调，参考为反向权值，如下图所示：</li>
+</ul>
+<img src="/2018/09/16/Deep-compression%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/Quantization.PNG" class="">
+<p>微调过程中，首先进行正常的前向传播和反向传播，注意由于由于剪枝的作用，矩阵已经成为稀疏矩阵，权值矩阵中为0表示该连接被移除，因此这些位置的梯度被舍弃（置0）。微调的对象为<strong>类聚质心</strong>即量化后的输出。上一步完成后，每一个权值对应的簇已经确定，在图中的<code>cluster_index</code>表示量化类聚的结果，同时该结果在weights和gradient的图中以颜色标注，例如weights中的2.09（第一行第一列）和2.12（第二行第四列）为同一簇，量化后使用同一值表示。</p>
+<p>当生成梯度矩阵后，对类聚质心进行微调，微调的方式是对属于同一簇的所有权值对应的梯度进行求和，乘以学习率，再从质心中减去，公式如下：</p>
+<script type="math/tex; mode=display">
+c_k^n = c_k^{n-1} - lr \times \sum\limits_{w_{ij} \in C_k}{grad(w_{ij})}</script><p>其中$c_k^n$为第n次微调后的结果，lr为学习率，$C_k$为类聚属于k簇的所有权值构成的集合，$grad(w)$表示权值w对应的梯度。微调过程的初值$c_k^0$为k-means输出的类聚质心。</p>
+<p>完成量化后，原来的稀疏矩阵变为一个稀疏矩阵加一个查找表，即原来的稀疏矩阵存储权值w的位置变为存储w所属簇编号k，簇编号k的位数小于权值w的位数，达到了压缩的目的。查找表索引为簇编号，值为该簇的类聚质心$c_k$（量化输出）。还原一个矩阵的过程变为首先从稀疏矩阵中读出对应的簇编号，再从查找表中查找该类对应的值。如上图的例子，存储结果为：</p>
+<img src="/2018/09/16/Deep-compression%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/store.PNG" class="">
+<h2 id="霍夫曼编码"><a href="#霍夫曼编码" class="headerlink" title="霍夫曼编码"></a>霍夫曼编码</h2><p>霍夫曼编码是进一步压缩的方式，这种编码使用变长编码表进行编码，可以进一步压缩存储所需要的空间，在进行运算的过程中从霍夫曼编码的存储中解码出所需要的数据即可。</p>
+<h1 id="相关分析"><a href="#相关分析" class="headerlink" title="相关分析"></a>相关分析</h1><h2 id="量化过程"><a href="#量化过程" class="headerlink" title="量化过程"></a>量化过程</h2><h3 id="压缩比"><a href="#压缩比" class="headerlink" title="压缩比"></a>压缩比</h3><p>这里的考虑的压缩比主要是量化带来的，因为剪枝的压缩比与权值的值情况密切相关，而量化的压缩比主要是由使用低bit的数表示高精度数带来的，公式如下：</p>
+<script type="math/tex; mode=display">
+r = \cfrac{nb}{nlog_2(k)+kb}</script><p>其中n是权重的数量，b为未量化矩阵的位数，k为量化簇的数量。即每个权值量化后可以使用$log_2(k)$bit表示，这样所有的权值需要的bit数就是$n \times log_2(k)$，初次之外，还需要一张有k个值的查找表，存储需要的bit数为$k \times b$</p>
+<h3 id="反向传播"><a href="#反向传播" class="headerlink" title="反向传播"></a>反向传播</h3><p>反向传播过程中微调的对象是类聚质心，因此考虑量化误差为：</p>
+<script type="math/tex; mode=display">
+loss = \sum\limits_{i=1}^k\sum\limits_{w \in c_k}|w-ci|^2</script><p>这恰好与k-means相符，因此使用k-means进行量化可以尽量减小量化误差。进行微调时，需要考虑量化质心对结果的影响，即量化质心对网络代价函数的影响，梯度传播公式如下：</p>
+<script type="math/tex; mode=display">
+\cfrac{\partial L}{\partial C_k} = \sum\limits_{i,j}\cfrac{\partial L}{\partial W_{ij}}\cfrac{\partial W_{ij}}{\partial C_k} = \sum\limits_{i,j}\cfrac{\partial L}{\partial W_{ij}}II(I_{ij} == k)</script><p>其中$II(\cdot)$为indicator函数（条件成立为1，否则为0），这一公式与量化的微调过程完全对应。</p>
+<h2 id="性能分析"><a href="#性能分析" class="headerlink" title="性能分析"></a>性能分析</h2><h3 id="压缩率vs准确率"><a href="#压缩率vs准确率" class="headerlink" title="压缩率vs准确率"></a>压缩率vs准确率</h3><img src="/2018/09/16/Deep-compression%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/a_c.PNG" class="">
+<p>上图描述了压缩率和准确率的关系，在可以发现无论是单独使用量化与剪枝还是组合使用，都可以在一定的压缩率下达到不损失精度的压缩，同时效果均优于SVD</p>
+<h3 id="量化位数vs准确率"><a href="#量化位数vs准确率" class="headerlink" title="量化位数vs准确率"></a>量化位数vs准确率</h3><img src="/2018/09/16/Deep-compression%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/q_a.PNG" class="">
+<p>上图表明了量化位数对准确率的影响，同时也表示剪枝过程对量化的影响。可以发现对于论文评估的这种网络，全连接层使用2bit量化，卷积网络使用5bit量化就可以达到很好的结果，同时剪枝对量化的影响很小，可以认为两个过程互不干扰。</p>
+<h3 id="质心初始化方法"><a href="#质心初始化方法" class="headerlink" title="质心初始化方法"></a>质心初始化方法</h3><img src="/2018/09/16/Deep-compression%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/init.PNG" class="">
+<p>上图表示的是三种不同的初始化方式对压缩后的准确率的影响，可以发现线性量化的初始化方式比较优秀。论文中分析因为较大的权值对结果影响比较大，但是这种权值的数量较小，使用线性初始化的方式倾向于生成一些比较大的类聚质心。</p>
+<h3 id="运行速度与功耗"><a href="#运行速度与功耗" class="headerlink" title="运行速度与功耗"></a>运行速度与功耗</h3><img src="/2018/09/16/Deep-compression%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/speed.PNG" class="">
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>Deep compression的方法概括为剪枝+量化+霍夫曼编码，可以在不损失精度的情况将神经网络压缩，其中对于AlexNet可以压缩35倍，VGG-16可以压缩49倍，且推理时使存储的应用更有效。目前，剪枝/稀疏矩阵的运算已经广泛被各种框架支持，然而量化的支持很少，因此可以考虑重写CPU库或设计专用ASIC以实现量化网络的高效运算。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">月见樽</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.yuejianzun.xyz/2018/09/16/Deep-compression%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/">http://www.yuejianzun.xyz/2018/09/16/Deep-compression%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.yuejianzun.xyz" target="_blank">月见樽'blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/NeuralNetwork/">NeuralNetwork</a></div><div class="post_share"><div class="social-share" data-image="/img/1.PNG" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2018/10/05/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%8E%8B%E7%BC%A9%E5%AE%9E%E9%AA%8C-Deep-compression/"><img class="prev-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">神经网络压缩实验-Deep-compression</div></div></a></div><div class="next-post pull-right"><a href="/2018/09/05/Faster-RCNN%E9%98%85%E8%AF%BB%E7%AC%94%E8%AE%B0/"><img class="next-cover" src="/img/1.PNG" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Faster-RCNN阅读笔记</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2018/02/21/CNN的反向传播/" title="CNN的反向传播"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-02-21</div><div class="title">CNN的反向传播</div></div></a></div><div><a href="/2018/03/11/CapsNet学习笔记/" title="CapsNet学习笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-03-11</div><div class="title">CapsNet学习笔记</div></div></a></div><div><a href="/2018/12/24/DianNao运算单元与体系结构分析/" title="DianNao运算单元与体系结构分析"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-12-24</div><div class="title">DianNao运算单元与体系结构分析</div></div></a></div><div><a href="/2019/07/22/EIE结构与算法映射/" title="EIE结构与算法映射"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-07-22</div><div class="title">EIE结构与算法映射</div></div></a></div><div><a href="/2018/08/07/Fast-RCNN阅读笔记/" title="Fast-RCNN阅读笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-08-07</div><div class="title">Fast-RCNN阅读笔记</div></div></a></div><div><a href="/2018/09/05/Faster-RCNN阅读笔记/" title="Faster-RCNN阅读笔记"><img class="cover" src="/img/1.PNG" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-09-05</div><div class="title">Faster-RCNN阅读笔记</div></div></a></div></div></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/had.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">月见樽</div><div class="author-info__description">日隐月现，潜龙在渊</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">103</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length-num">17</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length-num">9</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/qiankun214"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/qiankun214" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/qiankun96214@outlook.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="card-content"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.</span> <span class="toc-text">基本步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%AA%E6%9E%9D"><span class="toc-number">1.1.</span> <span class="toc-text">剪枝</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8F%E5%8C%96"><span class="toc-number">1.2.</span> <span class="toc-text">量化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9C%8D%E5%A4%AB%E6%9B%BC%E7%BC%96%E7%A0%81"><span class="toc-number">1.3.</span> <span class="toc-text">霍夫曼编码</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">相关分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8F%E5%8C%96%E8%BF%87%E7%A8%8B"><span class="toc-number">2.1.</span> <span class="toc-text">量化过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%8B%E7%BC%A9%E6%AF%94"><span class="toc-number">2.1.1.</span> <span class="toc-text">压缩比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD"><span class="toc-number">2.1.2.</span> <span class="toc-text">反向传播</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90"><span class="toc-number">2.2.</span> <span class="toc-text">性能分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%8B%E7%BC%A9%E7%8E%87vs%E5%87%86%E7%A1%AE%E7%8E%87"><span class="toc-number">2.2.1.</span> <span class="toc-text">压缩率vs准确率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8F%E5%8C%96%E4%BD%8D%E6%95%B0vs%E5%87%86%E7%A1%AE%E7%8E%87"><span class="toc-number">2.2.2.</span> <span class="toc-text">量化位数vs准确率</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%A8%E5%BF%83%E5%88%9D%E5%A7%8B%E5%8C%96%E6%96%B9%E6%B3%95"><span class="toc-number">2.2.3.</span> <span class="toc-text">质心初始化方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E9%80%9F%E5%BA%A6%E4%B8%8E%E5%8A%9F%E8%80%97"><span class="toc-number">2.2.4.</span> <span class="toc-text">运行速度与功耗</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol></div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/09/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B02%E2%80%94%E2%80%94%E7%89%A9%E7%90%86%E5%B1%82%E5%9F%BA%E7%A1%80%EF%BC%88%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F%EF%BC%89/" title="网络学习笔记2——信号与系统">网络学习笔记2——信号与系统</a><time datetime="2020-11-09T15:51:13.000Z" title="发表于 2020-11-09 23:51:13">2020-11-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/11/06/%E7%BD%91%E7%BB%9C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B01%E2%80%94%E2%80%94%E5%8D%8F%E8%AE%AE%E5%88%86%E5%B1%82/" title="网络学习笔记1——协议分层">网络学习笔记1——协议分层</a><time datetime="2020-11-06T15:51:13.000Z" title="发表于 2020-11-06 23:51:13">2020-11-06</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/09/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(4)/" title="高级综合工具StratusHLS学习笔记(4)">高级综合工具StratusHLS学习笔记(4)</a><time datetime="2020-09-29T15:51:13.000Z" title="发表于 2020-09-29 23:51:13">2020-09-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/29/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(3)/" title="高级综合工具StratusHLS学习笔记(3)">高级综合工具StratusHLS学习笔记(3)</a><time datetime="2020-07-29T15:51:13.000Z" title="发表于 2020-07-29 23:51:13">2020-07-29</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2020/07/19/%E9%AB%98%E7%BA%A7%E7%BB%BC%E5%90%88%E5%B7%A5%E5%85%B7StratusHLS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0(2)/" title="高级综合工具StratusHLS学习笔记(2)">高级综合工具StratusHLS学习笔记(2)</a><time datetime="2020-07-19T15:51:13.000Z" title="发表于 2020-07-19 23:51:13">2020-07-19</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 月见樽</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    loader: {
+      source: {
+        '[tex]/amsCd': '[tex]/amscd'
+      }
+    },
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        addClass: [200,() => {
+          document.querySelectorAll('mjx-container:not([display=\'true\']').forEach( node => {
+            const target = node.parentNode
+            if (!target.classList.contains('has-jax')) {
+              target.classList.add('mathjax-overflow')
+            }
+          })
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>
